@@ -52,8 +52,21 @@ $$
 
 If a sentence $\alpha$ is true in a model $m$, we say that $m$ **satisfies** $\alpha$. The set of all models that satisfy $\alpha$ is denoted by $M(\alpha)$.
 
+**Validity :** A sentence is valid if it is true in *all* models. For example, $A \vee \neg A$ is true in all models. Such sentences are called **tautologies**.
 
-# Laws of logic
+**Satisfiability :** A sentence is satisfiable if it is true in *some* model.
+
+Validity and satisfiability are related. $\alpha$ is valid if and only if $\neg \alpha$ is unsatisfiable. On the other hand, $\alpha$ is satisfiable if and only if $\neg \alpha$ is not valid.
+
+# Logical equivalency
+
+Two sentences $\alpha$ and $\beta$ are logically equivalent if they are true in the same set of models, ie. they are logically equivalent if $M(\alpha) = M(\beta)$.
+
+In the words of entailment, two sentences are equivalent if and only if $\alpha \models \beta$ and $\beta \models \alpha$.
+
+Equivalence is denoted by $\alpha \equiv \beta$.
+
+Some logical equivalencies are given below:
 
 **Commutative law**
 
@@ -107,15 +120,6 @@ $$
 \alpha \iff \beta \equiv (\alpha \implies \beta) \wedge (\beta \implies \alpha)
 $$
 
-# Logical equivalency
-
-Two sentences $\alpha$ and $\beta$ are logically equivalent if they are true in the same set of models, ie. they are logically equivalent if $M(\alpha) = M(\beta)$.
-
-In the words of entailment, two sentences are equivalent if and only if $\alpha \models \beta$ and $\beta \models \alpha$.
-
-Equivalence is denoted by $\alpha \equiv \beta$.
-
-
 # Entailment
 
 Consider two sentences, $\alpha$ and $\beta$. $\alpha$ is true in $M(\alpha)$ and $\beta$ is true in $M(\beta)$. If $M(\alpha)$ is a subset of $M(\beta)$, then whenever $\alpha$ is true, we know $\beta$ is also true.
@@ -151,55 +155,24 @@ Some methods of inference include:
 
 # Model Checking
 
-**Model checking** is a method to check for entailment. In model checking, we enumerate all possible models and check whether $\beta$ is true in all models where $\alpha$ is true. This would test whether $M(\alpha) \subseteq M(\beta)$ and if so, then $\alpha \models \beta$.
-
-If we substitute $\beta$ with the knowledge base, then the agent can use model checking to test a new proposition $\alpha$ based on what it already knows.
-
-Let *KB* include the basic rules of the world and the following: $B_\text{2, 1}$ and $Ok_\text{1, 1}$. The agents wishes to infer whether $[1, 2]$ contains a pit.
-
-There are three unvisited locations and two possible states for each location, so there are $2^3 = 8$ possible models. The eight models are shown below.
-
-<figure style="width: 500px">
-	<img src="/media/logic/wumpus-entailment.png" alt="Wumpus world entailment">
-	<figcaption>Wumpus world entailment</figcaption>
-</figure>
-
-The KB is true only in three of the eight models and $\alpha$ is true in four, where $\alpha = \text{There is no pit in [1, 2]}$.
-
-The agent sees that $M(KB) \subseteq M(\alpha)$, so it infers that there is no pit in $[1, 2]$; $KB \models \alpha$. Of course, there maybe other dangers there but this can only be inferred once it receives more percepts from the locations not considered here.
+**Model checking** is a method to check for entailment. In model checking, we enumerate all possible models and check whether $\beta$ is true in all models where $\alpha$ is true. If so, then $\alpha \models \beta$.
 
 This model checking approach to inference is called by the **TT-Entails algorithm**, a truth table enumeration algorithm. It is both sound and complete.
 
 First, it incrementally creates new models, assigning truth values one variable at a time. Once assignment is completed, it checks if a model satisfies both the knowledge base and the $\alpha$.
 
-```python
-def TT_Entails(kb, alpha):
-  symbols = list of all proposition symbols in kb and alpha
-  return TT_Check_All(kb, alpha, symbols, {})
-
-def TT_Check_All(kb, alpha, symbols, model):
-  if symbols is empty
-    if satisfies(kb, model)
-      return satisfies(alpha, model)
-    else
-      return True
-  else
-    first, rest = symbols
-    return
-      TT_Check_All(kb, alpha, rest, model + {first = True})
-        and
-      TT_Check_All(kb, alpha, rest, model + {first = False})
-```
-
-# Theorem Proving
+<figure style="width: 750px">
+	<img src="/media/logic/tt-enumeration-algorithm.png" alt="TT-Entails algorithm">
+	<figcaption>TT-Entails algorithm</figcaption>
+</figure>
 
 A truth table enumeration will produce an exponential number of models. In this a case, theorem proving can be more efficient because a proof can disregard irrelevant propositions.
 
-In **theorem proving**, instead of enumerating all models we try to derive a proof for the proposition $\alpha$ based on sentences in the *KB*.
+# Theorem Proving
 
-Theorem proving uses concepts like logical equivalency, validity, satisfiability and inference rules. They are described below.
+Theorem proving means applying rules of inference to the sentences in our knowledge base to construct a proof that the desired sentence is true.
 
-**Inference rules:** The following rules can be used for proofs:
+Some rules that are used to derive a proof are:
 
 **Modus Ponens**
 
@@ -217,32 +190,30 @@ $$
 \frac{\alpha \wedge \beta}{\beta}
 $$
 
+Logical equivalences can be also be used as inference rules.
+
 ## Proof by Contradiction
 
-**Validity.** A sentence is **valid** if it is true in all models. For example, $$A \vee \neg A$$ is true in all models. Such sentences are called **tautologies**.
+The basic idea behind this is to assume that the statement $\beta$ we want to prove is false, and then show that this assumption leads to nonsense.
 
-**Satisfiability.** A sentence is satisfiable if it is true in some model.
+We are then led to conclude that we were wrong to assume that $\beta$ was false, so $\beta$ must be true.
 
-Validity and satisfiability are connected. $\alpha$  is valid if and only if $\neg \alpha$ is unsatisfiable. On the other hand, $\alpha$ is satisfiable if and only if $\neg \alpha$ is not valid.
+Lets say, $\alpha$ does entail $\beta$. In this case the sentence $\alpha \wedge \beta$ will be true. In order to prove this we will assume $\alpha \wedge \neg \beta$ is true, and try to find a contradiction.
 
-This gives us an important result named **proof by contradiction**:
-
-$$
-\alpha \models \beta \text{ iff } \alpha \wedge \neg \beta \text{ is unsatisfiable}
-$$
-
-In a proof by contradiction, we assume that $\beta$ is false, and try to show that this assumption leads to a contradiction with known sentences $\alpha$.
+$\alpha \wedge \neg \beta$ is said to be unsatisfiable, if we find a contradiction.
 
 ## Implementing theorem proving
 
-How can a computer perform proof by contradiction? The answer is to define it as a search problem. Search algorithms like iterative deepening can be used to find the sequence of steps that constitute a proof. The *search problem* can be defined as follows:
+How can a computer perform proof by contradiction? The answer is to define it as a search problem. Search algorithms like iterative deepening can be used to find the sequence of steps that constitute a proof.
+
+It can be defined as follows:
 
 - Initial state - initial knowledge base
-- Actions - a set of actions at each line of the proof including logical equivalencies and inference rules that match the LHS of the current sentence
+- Actions - a set of logical equivalencies and inference rules that match the LHS of the current sentence
 - Result - the result of the action on a sentence
 - Goal - is the sentence we want to derive
 
-# Proof by Resolution
+## Proof by Resolution
 
 One problem we face here is that the inference algorithm is not complete. This is because if a particular inference rule is not available, then the goal is unreachable.
 
@@ -250,7 +221,7 @@ But a single inference rule, named *resolution* when coupled with any complete s
 
 A proof that uses resolution is called a **proof by resolution**. Such a proof works on *clauses*. A **clause** is a disjunction of literals like $x \vee y$.
 
-The **resolution rule** takes two clauses and produces a new clause containing all literals of the two clauses except for one pair of complementary literals. The new clause is called a **resolvent**.
+The **resolution rule** takes two clauses and produces a new clause containing all literals of the two clauses except for *one* pair of complementary literals. The new clause is called a **resolvent**.
 
 A resolution can be represented as:
 
@@ -262,77 +233,32 @@ where $l_i$ and $l_i'$ are a pair of complementary literals.
 
 ## Conjunctive Normal Form
 
-The resolution rule only applies to clauses, so all sentences in our agent's KB needs to be expresses as clauses or a conjugation of clauses. This is known as the **conjunctive normal form (CNF)**.
+The resolution rule only applies to clauses, so all sentences in our KB needs to be expressed as clauses or a conjugation of clauses. This is known as the **conjunctive normal form (CNF)**.
 
 Steps to *convert to CNF* are:
 
-1. Eliminate $\iff$. Replace $\alpha \iff \beta$ with $(\alpha \implies \beta) \wedge (\beta \implies \alpha)$
-1. Eliminate $\implies$
-1. Move $\neg$ inwards (use double negation and DeMorgan's law)
-1. Use Distributive law to ensure $\wedge$ operators are not nested inside $\vee$ operators
+1. Eliminate $\iff$ using biconditional elimination
+1. Eliminate $\implies$ using implication elimination
+1. Move $\neg$ inwards, using double negation and DeMorgan's law
+1. Ensure $\wedge$ operators are not nested inside $\vee$ operators using the distributive law
 
 Check page $258$ AIMA for an example.
 
 ## PL-Resolution Algorithm
 
-**PL-Resolution algorithm** is used to show that $KB \models \alpha$, by assuming that $KB \models \alpha$ and then try to find a contradiction.
+The **PL-Resolution algorithm** is used to show that $KB \models \alpha$, by assuming that $KB \wedge \neg \alpha$ and then try to find a contradiction.
 
-The algorithm then converts $KB \models \alpha$ to CNF form. This gives us a set of clauses.
-
-Each pair of clauses with a pair of complementary literals are resolved to produce resolvent. The resolvent is added to the set if it is not already present.
+The algorithm, first converts $KB \wedge \neg \alpha$ to CNF form. This gives us a set of clauses. Each pair of clauses with a pair of complementary literals are resolved to produce a resolvent. The resolvent is added to the set if it is not already present.
 
 The process continues until one of two things happen:
 
 - A resolvent is an empty clause - in which case $KB$ entails $\alpha$. An empty clause arises only from resolving two complementary unit clauses like $P$ and $\neg P$, which is a contradiction.
 - No new clauses can be added - in which case KB does not entail $\alpha$; because a contradiction is not present.
 
-```python
-def PL_Resolution(kb, alpha):
-  clauses = clauses of KB and not alpha
-  new = {}
-
-  while True
-    for each pair of clauses C1, C2 in clauses
-      resolvents = resolve(C1, C2) # returns all resolvents
-      if resolvents contain empty_clause
-        return false
-      new = new + resolvents
-    if new is_subset_of clauses
-      return false
-    clauses = clauses + new
-```
-
-# Forward Chaining
-
-The **Forward chaining algorithm** determines if a proposition symbol *q* is entailed by a knowledge base.
-
-It begins from a known set of sentences, some of which are **facts** (single positive literals) and the rest are implications ($x \implies y$). If all the premises of an implication are known to be true, then its conclusion is added to the knowledge base as a fact.
-
-This is an application of modus ponens. This process continues until the query *q* is added to the KB or until no inferences can be made. This procedure is both sound and complete.
-
-Forward chaining is an example of **data-driven reasoning**.
-
-```python
-def PL_FC_Entails(kb, query)
-  facts = initial set of facts from the kb
-  no_of_uninferred_premises = {} # maps an implication to a number
-
-  while facts
-    fact = pop(facts)
-
-    if fact == query
-      return true
-
-    for each sentence s in kb
-      if fact in s.premise
-        no_of_uninferred_premises[s] -= 1
-        if no_of_uninferred_premises[s] == 0:
-          axioms.add(s.conclusion)
-
-  return False
-```
-
-The **backward chaining algorithm** works backward from a query *q*. It finds an implication with *q* as a conclusion, then attempts to prove that all its premises are true. It is a form of **goal-directed reasoning**.
+<figure style="width: 600px">
+	<img src="/media/logic/pl-resolution-algorithm.png" alt="PL Resolution Algorithm">
+	<figcaption>PL Resolution Algorithm</figcaption>
+</figure>
 
 # DPLL Algorithm
 
@@ -361,34 +287,10 @@ A **unit clause** is a clause which has exactly one literal which is still unass
 
 $\neg B \vee C$ simplifies to unit clause $C$ if the partial model is $\lbrace B : true \rbrace$. Assigning one unit clause creates other unit clauses. This cascade of assignments is called **unit propagation**.
 
-```python
-def DPLL_Satisfiable(sentence)
-  clauses = set of clauses in CNF representation of sentence
-  symbols = get all proposition symbols from sentence
-  return DPLL(clauses, symbols, {})
-
-def DPLL(clauses, symbols, model)
-  if every clause in clauses is true in model
-    return true
-
-  if some clauses in clauses is false in model
-    return false
-
-  s, value = find_pure_symbol_and_value(clauses, symbols, model)
-  if s not null
-    return DPLL(clauses, symbols - s, model + { s = value })
-
-  s, value = find_unit_clause_and_value(clauses, model)
-  if s not null
-    return DPLL(clauses, symbols - s, model + { s = value })
-
-  first, rest = symbols
-  return (
-    DPLL(clauses, rest, model + { s = true })
-    and
-    DPLL(clauses, rest, model + { s = false })
-    )
-```
+<figure style="width: 700px">
+	<img src="/media/logic/dpll.png" alt="DPLL Algorithm">
+	<figcaption>DPLL Algorithm</figcaption>
+</figure>
 
 # WalkSAT
 
@@ -406,25 +308,31 @@ If a model is returned, then WalkSAT has indeed proved satisfiability of the set
 - the sentence is unsatisfiable
 - the algorithm needs more time, ie. larger `max_flips` to find a model
 
-```python
-def WalkSAT(clauses, threshold, max_flips)
-  model = random assignment to all symbols
-
-  for i = 0 to max_flips
-    if model satisfies all clauses
-      return model
-    p = random number between 0 and 1
-    if p > threshold
-      randomly choose a symbol to flip
-    else
-      choose one that reduces number of unsatisfied clauses
-
-  return false
-```
+<figure style="width: 700px">
+	<img src="/media/logic/walk-sat.png" alt="WalkSAT Algorithm">
+	<figcaption>WalkSAT Algorithm</figcaption>
+</figure>
 
 Since WalkSAT cannot always detect unsatisfiability (required to detect entailment), it is most useful when we expect a solution to exists.
 
 For example, an agent cannot reliably use WalkSAT to prove that a square is safe in the wumpus world. What it can do, is say 'I thought for an hour and could not come up with a possible world in which the square isn't safe'.
+
+# Forward Chaining
+
+The **Forward chaining algorithm** determines if a proposition symbol *q* is entailed by a knowledge base.
+
+It begins from a known set of sentences, some of which are **facts** (single positive literals) and the rest are implications ($x \implies y$). If all the premises of an implication are known to be true, then its conclusion is added to the knowledge base as a fact.
+
+This is an application of modus ponens. This process continues until the query *q* is added to the KB or until no inferences can be made. This procedure is both sound and complete.
+
+Forward chaining is an example of **data-driven reasoning**.
+
+<figure style="width: 700px">
+	<img src="/media/logic/forward-chaining.png" alt="Forward Chaining">
+	<figcaption>Forward Chaining</figcaption>
+</figure>
+
+The **backward chaining algorithm** works backward from a query *q*. It finds an implication with *q* as a conclusion, then attempts to prove that all its premises are true. It is a form of **goal-directed reasoning**.
 
 # References
 
