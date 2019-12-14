@@ -1,16 +1,29 @@
 ---
-title: "Knowledge-based agent : Propositional Logic"
+title: "Propositional Logic"
 date: "2019-12-7"
 template: "post"
-draft: true
-slug: "/posts/prop-logic/"
+draft: false
+slug: "/posts/logic/"
 category: "Logic"
 tags:
   - ""
 description: ""
 ---
 
-Pure reflex agents are not competent enough for most situations. Good agents use knowledge about their environment. A **knowledge-based agent** can reason about the environment-state based on internal representations of knowledge.
+**Propositional logic** studies the ways statements interact with each other. It does not care about the *meaning* of the statements under consideration. In logic, the statement "If the moon is made of cheese then basketballs are round", is credible.
+
+A **proposition** is simply a statement with a truth value. A proposition is set of proposition symbols connected by logical operators. Each symbol holds a truth value.
+
+Proposition symbols are represented by capital letters, like $P$ and $Q$.
+
+An **atomic sentence** consist of just a single proposition symbol and no logical operators. **Complex sentences** are constructed from simpler sentences using parenthesis and logical operators.
+
+Operator precedence is as follows : $\neg, \space \wedge, \space \vee, \implies, \iff$.
+
+<figure style="width: 700px">
+	<img src="/media/logic/truth-table.png" alt="Truth Table">
+	<figcaption>Truth Table</figcaption>
+</figure>
 
 # Knowledge base
 
@@ -20,141 +33,27 @@ A knowledge base can capture both mutable and immutable aspects of the environme
 
 The fact that there is mountain at some coordinate is a immutable aspect, whereas an opponent hiding somewhere in the mountain is an mutable fact.
 
-# Wumpus World : A Task Environment
-
-The Wumpus world is a toy problem described in the AIMA textbook. It is a cave consisting of rooms connected by passageways. Lurking in this cave is Wumpus, a terrible monster that eats anyone who enters its room.
-
-<figure style="width: 400px">
-	<img src="/media/logic/wumpus-world.png" alt="Wumpus world">
-	<figcaption>Wumpus world</figcaption>
-</figure>
-
-The wumpus can be shot by an agent, but the agent has only one arrow. Some rooms contain bottomless pits. The good news is that the wumpus cannot move and one room contains a heap of gold.
-
-The agent's primary objective is to kill the monster. The gold is secondary.
-
-## PEAS Description
-
-**Performance Measure.** $+1000$ for climbing out of the cave with gold, $-1000$ for falling into a pit or being eaten by a wumpus, $-1$ for each action taken and $-10$ for using an arrow.
-
-The game ends when the agent dies or climbs out of the cave. The agent dies if it enters a room with a pit or a wumpus.
-
-**Environment.** A $4 \times 4$ grid of rooms. The agent starts in room $[1, 1]$. Locations of gold, pits and the wumpus are chosen randomly for each iteration of the game.
-
-**Actuators.** The movements available to the agent are *Forward*, *Left*, *Right* and *Reverse*. It can also *Grab* the gold and *Shoot* the arrow. The arrow continues until it hits the wumpus or a wall. Finally, it can *Climb* if it is in room $[1, 1]$.
-
-**Sensors.** A percepts consists of five boolean values [*Stench, Breeze, Glitter, Bump, Scream*]:
-- Stench - *True* in rooms with and adjacent to a wumpus
-- Breeze - *True* in rooms adjacent to a pit
-- Glitter - *True* in a room with gold
-- Bump - *True* when an agent walks into a wall
-- Scream - *True* when the wumpus is killed; the scream is heard in all the rooms
-
-The main obstacle in this environment is the ignorance of the initial configuration. Our challenge is to reason based on the percepts and build a practical internal model of the cave.
-
-We conclude that the task environment is *discrete*, *static*, *partially observable*, *sequential* and *single-agent*.
-
-## Reasoning in this world
-
-<figure style="width: 650px">
-	<img src="/media/logic/wumpus-seq-1.png" alt="Wumpus world state 1">
-	<figcaption>Wumpus world state 1</figcaption>
-</figure>
-
-The agent starts at position $[1, 1]$. It receives the percept [*None, None, None, None, None*]. It assigns OK to the safe rooms, $[1, 2]$ and $[2, 1]$.
-
-To scout the environment, it decides randomly to move to $[2, 1]$ and gets the percept [*None, Breeze, None, None, None*]. A breeze means that an adjacent pit might have a pit. Since we already know $[1, 1]$ is safe, the possible unsafe locations are  $[2, 2]$ and  $[3, 1]$.
-
-<figure style="width: 650px">
-	<img src="/media/logic/wumpus-seq-2.png" alt="Wumpus world state 2">
-	<figcaption>Wumpus world state 2</figcaption>
-</figure>
-
-It moves to $[1, 2]$ and senses a stench but no breeze; [*Stench, None, None, None, None*]. This means $[2, 2]$ does not contain a pit, nor does it contain the wumpus because there was no stench in $[2, 1]$. Therefore, the agent can infer that the wumpus is at $[1, 3]$. It can now be shot.
-
-Similar reasoning will help it find the gold at $[2, 3]$.
-
-This was fairly difficult inference, because it combines knowledge gained at different times at different locations to come to a conclusion.
-
-# Entailment
+## Model
 
 A **model** is a description of an environment where we fix truth values to the proposition symbols in all relevant sentences.
 
+Consider the knowledge base,
+
+$$
+P \iff Q \vee R \\\\
+P \wedge Q
+$$
+
+One possible model for this KB is,
+
+$$
+\{ P = \text{false}, Q = \text{false}, R = \text{true} \}
+$$
+
 If a sentence $\alpha$ is true in a model $m$, we say that $m$ **satisfies** $\alpha$. The set of all models that satisfy $\alpha$ is denoted by $M(\alpha)$.
 
-One possible model for the wumpus world is,
 
-$$
-m_1 = \{ P_\text{1, 2} = \text{false}, P_\text{2, 1} = \text{false}, P_\text{2, 2} = \text{true} \}
-$$
-
-where $P_\text{1, 2}$ is a proposition symbol that means "there is a pit at location $[1, 2]$".
-
-Consider two sentences, $\alpha$ and $\beta$. $\alpha$ is true in $M(\alpha)$ and $\beta$ is true in $M(\beta)$. If $M(\alpha)$ is a subset of $M(\beta)$, then whenever $\alpha$ is true, we know $\beta$ is also true. The sentence $\alpha$ is said to **entail** the sentence $\beta$. And $\beta$ is said to **logically follow** from $\alpha$. Entailment is denoted as follows:
-
-$$
-\alpha \models \beta
-$$
-
-Note that $\alpha$ is the more stronger assertion because it rules of more possible worlds.
-
-# Inference
-
-You can think of the consequences of the *KB* or $\beta$ as a haystack and $\alpha$ as a needle. **Entailment** is the *presence* of the needle in the haystack and **inference** is the act of finding it.
-
-An inference algorithm is **sound** if it only finds entailed sentences. An unsound inference algorithm just makes things up as it goes along; finds needles when none exist. The algorithm is **complete** if it can derive *any* sentence that is entailed.
-
-# Model Checking
-
-**Model checking** is a method to check for entailment. In model checking, we enumerate all possible models and check whether $\beta$ is true in all models where $\alpha$ is true. This would test whether $M(\alpha) \subseteq M(\beta)$ and if so, then $\alpha \models \beta$.
-
-If we substitute $\beta$ with the knowledge base, then the agent can use model checking to test a new proposition $\alpha$ based on what it already knows.
-
-Let *KB* include the basic rules of the world and the following: $B_\text{2, 1}$ and $Ok_\text{1, 1}$. The agents wishes to infer whether $[1, 2]$ contains a pit.
-
-There are three unvisited locations and two possible states for each location, so there are $2^3 = 8$ possible models. The eight models are shown below.
-
-<figure style="width: 500px">
-	<img src="/media/logic/wumpus-entailment.png" alt="Wumpus world entailment">
-	<figcaption>Wumpus world entailment</figcaption>
-</figure>
-
-The KB is true only in three of the eight models and $\alpha$ is true in four, where $\alpha = \text{There is no pit in [1, 2]}$.
-
-The agent sees that $M(KB) \subseteq M(\alpha)$, so it infers that there is no pit in $[1, 2]$; $KB \models \alpha$. Of course, there maybe other dangers there but this can only be inferred once it receives more percepts from the locations not considered here.
-
-This model checking approach to inference is called by the **TT-Entails algorithm**, a truth table enumeration algorithm. It is both sound and complete.
-
-First, it incrementally creates new models, assigning truth values one variable at a time. Once assignment is completed, it checks if a model satisfies both the knowledge base and the $\alpha$.
-
-```python
-def TT_Entails(kb, alpha):
-  symbols = list of all proposition symbols in kb and alpha
-  return TT_Check_All(kb, alpha, symbols, {})
-
-def TT_Check_All(kb, alpha, symbols, model):
-  if symbols is empty
-    if satisfies(kb, model)
-      return satisfies(alpha, model)
-    else
-      return True
-  else
-    first, rest = symbols
-    return
-      TT_Check_All(kb, alpha, rest, model + {first = True})
-        and
-      TT_Check_All(kb, alpha, rest, model + {first = False})
-```
-
-# Theorem Proving
-
-A truth table enumeration will produce an exponential number of models. In this a case, theorem proving can be more efficient because a proof can disregard irrelevant propositions.
-
-In **theorem proving**, instead of enumerating all models we try to derive a proof for the proposition $\alpha$ based on sentences in the *KB*.
-
-Theorem proving uses concepts like logical equivalency, validity, satisfiability and inference rules. They are described below.
-
-**Logical equivalency.** Two sentences $\alpha$ and $\beta$ are logically equivalent if they are true in the same set of models, ie. they are logically equivalent if $M(\alpha) = M(\beta)$. In the words of entailment, two sentences are equivalent if and only if $\alpha \models \beta$ and $\beta \models \alpha$. Equivalence is denoted by $\alpha \equiv \beta$.
+# Laws of logic
 
 **Commutative law**
 
@@ -207,6 +106,98 @@ $$
 $$
 \alpha \iff \beta \equiv (\alpha \implies \beta) \wedge (\beta \implies \alpha)
 $$
+
+# Logical equivalency
+
+Two sentences $\alpha$ and $\beta$ are logically equivalent if they are true in the same set of models, ie. they are logically equivalent if $M(\alpha) = M(\beta)$.
+
+In the words of entailment, two sentences are equivalent if and only if $\alpha \models \beta$ and $\beta \models \alpha$.
+
+Equivalence is denoted by $\alpha \equiv \beta$.
+
+
+# Entailment
+
+Consider two sentences, $\alpha$ and $\beta$. $\alpha$ is true in $M(\alpha)$ and $\beta$ is true in $M(\beta)$. If $M(\alpha)$ is a subset of $M(\beta)$, then whenever $\alpha$ is true, we know $\beta$ is also true.
+
+The sentence $\alpha$ is said to **entail** the sentence $\beta$. And $\beta$ is said to **logically follow** from $\alpha$. Entailment is denoted as $\alpha \models \beta$.
+
+Note that $\alpha$ is the more stronger assertion because it rules of more possible worlds.
+
+If you replace $\alpha$ with a conjugation of all the propositions in your KB, you can find the logical consequences $\beta$ of our known knowledge in the KB.
+
+$$
+KB \models \beta
+$$
+
+<figure style="width: 350px">
+	<img src="/media/logic/entailment.png" alt="Entailment">
+	<figcaption>Entailment</figcaption>
+</figure>
+
+## Inference
+
+**Inference** is the act of checking for entailment between $\alpha$ and $\beta$.
+
+An inference algorithm is **sound** if it only finds entailed sentences. An unsound inference algorithm just makes things up as it goes along.
+
+The algorithm is **complete** if it can derive *any* sentence that is entailed.
+
+Some methods of inference include:
+
+- Model Checking
+- Proof By Resolution
+- DPLL Algorithm
+
+# Model Checking
+
+**Model checking** is a method to check for entailment. In model checking, we enumerate all possible models and check whether $\beta$ is true in all models where $\alpha$ is true. This would test whether $M(\alpha) \subseteq M(\beta)$ and if so, then $\alpha \models \beta$.
+
+If we substitute $\beta$ with the knowledge base, then the agent can use model checking to test a new proposition $\alpha$ based on what it already knows.
+
+Let *KB* include the basic rules of the world and the following: $B_\text{2, 1}$ and $Ok_\text{1, 1}$. The agents wishes to infer whether $[1, 2]$ contains a pit.
+
+There are three unvisited locations and two possible states for each location, so there are $2^3 = 8$ possible models. The eight models are shown below.
+
+<figure style="width: 500px">
+	<img src="/media/logic/wumpus-entailment.png" alt="Wumpus world entailment">
+	<figcaption>Wumpus world entailment</figcaption>
+</figure>
+
+The KB is true only in three of the eight models and $\alpha$ is true in four, where $\alpha = \text{There is no pit in [1, 2]}$.
+
+The agent sees that $M(KB) \subseteq M(\alpha)$, so it infers that there is no pit in $[1, 2]$; $KB \models \alpha$. Of course, there maybe other dangers there but this can only be inferred once it receives more percepts from the locations not considered here.
+
+This model checking approach to inference is called by the **TT-Entails algorithm**, a truth table enumeration algorithm. It is both sound and complete.
+
+First, it incrementally creates new models, assigning truth values one variable at a time. Once assignment is completed, it checks if a model satisfies both the knowledge base and the $\alpha$.
+
+```python
+def TT_Entails(kb, alpha):
+  symbols = list of all proposition symbols in kb and alpha
+  return TT_Check_All(kb, alpha, symbols, {})
+
+def TT_Check_All(kb, alpha, symbols, model):
+  if symbols is empty
+    if satisfies(kb, model)
+      return satisfies(alpha, model)
+    else
+      return True
+  else
+    first, rest = symbols
+    return
+      TT_Check_All(kb, alpha, rest, model + {first = True})
+        and
+      TT_Check_All(kb, alpha, rest, model + {first = False})
+```
+
+# Theorem Proving
+
+A truth table enumeration will produce an exponential number of models. In this a case, theorem proving can be more efficient because a proof can disregard irrelevant propositions.
+
+In **theorem proving**, instead of enumerating all models we try to derive a proof for the proposition $\alpha$ based on sentences in the *KB*.
+
+Theorem proving uses concepts like logical equivalency, validity, satisfiability and inference rules. They are described below.
 
 **Inference rules:** The following rules can be used for proofs:
 
