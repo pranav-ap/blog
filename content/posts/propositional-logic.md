@@ -47,7 +47,7 @@ $$
 One possible model for this KB is,
 
 $$
-\{ P = \text{false}, Q = \text{false}, R = \text{true} \}
+\{ P : \text{false}, Q : \text{false}, R : \text{true} \}
 $$
 
 If a sentence $\alpha$ is true in a model $m$, we say that $m$ **satisfies** $\alpha$. The set of all models that satisfy $\alpha$ is denoted by $M(\alpha)$.
@@ -149,7 +149,7 @@ The algorithm is **complete** if it can derive *any* sentence that is entailed.
 
 Some methods of inference include:
 
-- Model Checking
+- TT-Entails algorithm
 - Proof By Resolution
 - DPLL Algorithm
 
@@ -253,7 +253,7 @@ The algorithm, first converts $KB \wedge \neg \alpha$ to CNF form. This gives us
 The process continues until one of two things happen:
 
 - A resolvent is an empty clause - in which case $KB$ entails $\alpha$. An empty clause arises only from resolving two complementary unit clauses like $P$ and $\neg P$, which is a contradiction.
-- No new clauses can be added - in which case KB does not entail $\alpha$; because a contradiction is not present.
+- No new clauses can be added - in which case KB does not entail $\alpha$; because a contradiction is not found.
 
 <figure style="width: 600px">
 	<img src="/media/logic/pl-resolution-algorithm.png" alt="PL Resolution Algorithm">
@@ -270,22 +270,33 @@ It performs a depth first enumeration of all possible models, and is an improvem
 
 The algorithm detects whether a truth value can be assigned to a sentence even with a partial model. Early termination avoids exploration of entire sub-trees.
 
-1. The clause $A \vee B \vee C$, is true if model is $\lbrace  A : true \rbrace$
-1. The sentence $(A \vee B \vee C) \wedge (B \vee X)$, is false if model is $\lbrace  B : false, X : false \rbrace$.
+- The clause $A \vee B \vee C$, is true if model is $\lbrace  A : true \rbrace$
+- The sentence $(A \vee B \vee C) \wedge (B \vee X)$, is false if model is $\lbrace  B : false, X : false \rbrace$.
 
 ## Pure symbol heuristic
 
-A **pure symbol** is a literal one that always appears with the same sign in all clauses of a sentence. In the sentence $(A \vee \neg B) \wedge (\neg B \vee \neg C) \wedge (C \vee D)$, the symbols $A$, $D$ are pure as they only appear as positive literals; and $B$ is pure as it only appears as a negative literal.
+A **pure symbol** is a literal that always appears with the same sign in all clauses of a sentence.
 
-DPLL tries to assign truth values to $A$ and $B$ such that their respective clauses become true even with a partial model. These clauses can be ignored.
+In the sentence $(A \vee \neg B) \wedge (\neg B \vee \neg C) \wedge (C \vee D)$, the symbols $A$, $D$ are pure as they only appear as positive literals; and $B$ is pure as it only appears as a negative literal.
+
+DPLL tries to assign truth values to $A$ and $B$ such that their respective clauses become true even with a partial model. The other symbols in the clauses can be ignored.
 
 For the above given sentence, with a partial model $\lbrace A : true, B : false \rbrace$, only $(C \vee D)$ clause is left.
 
 ## Unit propagation
 
-A **unit clause** is a clause which has exactly one literal which is still unassigned, and the other assigned literals - are all assigned false.
+A **unit clause** is a clause which has exactly one literal which is still unassigned, and the other literals are all assigned false. We assign true to this lone literal to make the clause true.
 
-$\neg B \vee C$ simplifies to unit clause $C$ if the partial model is $\lbrace B : true \rbrace$. Assigning one unit clause creates other unit clauses. This cascade of assignments is called **unit propagation**.
+Consider the KB,
+
+$$
+\neg C \vee B	\\\\
+C \vee A
+$$
+
+Under the partial model $\lbrace B : true \rbrace$, $\neg B \vee C$ simplifies to unit clause $\neg C$. Now $C$ is assigned the value *false* to make its clause *true*.
+
+Note that $C \vee A$ now becomes a unit clause $A$. Assigning one unit clause a value could create other unit clauses waiting for truth value assignments. This cascade of assignments is called **unit propagation**.
 
 <figure style="width: 700px">
 	<img src="/media/logic/dpll.png" alt="DPLL Algorithm">
@@ -305,8 +316,8 @@ We do this for a specified number of steps, or until it finds a model that satis
 
 If a model is returned, then WalkSAT has indeed proved satisfiability of the set of clauses (sentence). Failure, on the other hand, can represent either of the following:
 
-- the sentence is unsatisfiable
-- the algorithm needs more time, ie. larger `max_flips` to find a model
+- The sentence is unsatisfiable
+- The algorithm needs more time, ie. larger `max_flips` to find a model that satisfies the propositions
 
 <figure style="width: 700px">
 	<img src="/media/logic/walk-sat.png" alt="WalkSAT Algorithm">
@@ -315,7 +326,7 @@ If a model is returned, then WalkSAT has indeed proved satisfiability of the set
 
 Since WalkSAT cannot always detect unsatisfiability (required to detect entailment), it is most useful when we expect a solution to exists.
 
-For example, an agent cannot reliably use WalkSAT to prove that a square is safe in the wumpus world. What it can do, is say 'I thought for an hour and could not come up with a possible world in which the square isn't safe'.
+For example, an agent cannot reliably use WalkSAT to prove that a square is safe in the wumpus world. What it can do, is say "I thought for an hour and could not come up with a possible world in which the square isn't safe".
 
 # Forward Chaining
 
@@ -323,7 +334,7 @@ The **Forward chaining algorithm** determines if a proposition symbol *q* is ent
 
 It begins from a known set of sentences, some of which are **facts** (single positive literals) and the rest are implications ($x \implies y$). If all the premises of an implication are known to be true, then its conclusion is added to the knowledge base as a fact.
 
-This is an application of modus ponens. This process continues until the query *q* is added to the KB or until no inferences can be made. This procedure is both sound and complete.
+Forward chaining is an application of modus ponens. This process continues until the query *q* is added to the KB or until no inferences can be made.
 
 Forward chaining is an example of **data-driven reasoning**.
 
