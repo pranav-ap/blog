@@ -3,7 +3,7 @@ title: "Propositional Logic"
 date: "2019-12-7"
 template: "post"
 draft: false
-slug: "/posts/logic/"
+slug: "/posts/prop-logic/"
 category: "Logic"
 tags:
   - ""
