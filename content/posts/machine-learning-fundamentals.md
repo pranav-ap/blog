@@ -68,7 +68,7 @@ This is called **fitting a model** to a dataset. The most common approach for fi
 This approach is called the parametric methods as it reduces the problem of estimating $f$ to simply estimating a set of parameters. The disadvantage is that if the model chosen for $f$ is far from the true $f$, then our model will be poor.
 
 <figure style="width: 500px">
-	<img src="/media/machine learning/parametric-method.png" alt="Parametric Method - Fitting a Linear Model">
+	<img src="/media/machine learning/basics/parametric-method.png" alt="Parametric Method - Fitting a Linear Model">
 	<figcaption>Parametric Method - Fitting a Linear Model</figcaption>
 </figure>
 
@@ -83,7 +83,7 @@ The disadvantage of this approach is that, compared to parametric methods, a dat
 For example, we can use a thin-plate spline. The name thin plate spline refers to a thin sheet of metal. This spline can be bent to get close as possible to all the data points. The resulting shape is the functional shape of $f$.
 
 <figure style="width: 500px">
-	<img src="/media/machine learning/non-parametric-method.png" alt="Non-Parametric Method - Fitting a Thin-Plate Spline">
+	<img src="/media/machine learning/basics/non-parametric-method.png" alt="Non-Parametric Method - Fitting a Thin-Plate Spline">
 	<figcaption>Non-Parametric Method - Fitting a Thin-Plate Spline</figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ The goal of **interpretation** is to understand the relationship between $Y$ and
 - **What is the relationship between the response and each predictor?** The value of $Y$ may increase as a predictor $X_i$ is increased in value. This is a *positive relationship*. Other predictors may have a *negative relationship* with the response. The relationship between a response and a predictor might depend on other predictors.
 
 <figure style="width: 500px">
-	<img src="/media/machine learning/flexibility-interpretability.png" alt="Flexibility Interpretability">
+	<img src="/media/machine learning/basics/flexibility-interpretability.png" alt="Flexibility Interpretability">
 	<figcaption>Flexibility Interpretability</figcaption>
 </figure>
 
@@ -122,7 +122,7 @@ Problems involving continuous response variables are named **regression problems
 In contrast, **categorical variables** take on one of many classes or categories. For example, brand of shoe purchased (Nike, Adidas Or Puma).
 
 <figure style="width: 500px">
-	<img src="/media/machine learning/classification-vs-regression.png" alt="Regression vs Classification">
+	<img src="/media/machine learning/basics/classification-vs-regression.png" alt="Regression vs Classification">
 	<figcaption>Regression vs Classification</figcaption>
 </figure>
 
@@ -137,7 +137,7 @@ $$
 where $\hat{f}(x_i)$ provides the prediction for ith observation, and $y_i$ is the actual response variable for ith observation. The MSE value will be small if the predicted responses are very close to true responses.
 
 <figure style="width: 500px">
-	<img src="/media/machine learning/mse.png" alt="MSE">
+	<img src="/media/machine learning/basics/mse.png" alt="MSE">
 	<figcaption>MSE</figcaption>
 </figure>
 
@@ -150,7 +150,7 @@ Since our goal is to build a model that works accurately with previously unseen 
 A good model accurately *captures the regularities* in its training data and also *generalizes well* to unseen data. An important hurdle in achieving this is finding the proper model flexibility.
 
 <figure style="width: 500px">
-	<img src="/media/machine learning/flexibility.png" alt="Flexibility">
+	<img src="/media/machine learning/basics/flexibility.png" alt="Flexibility">
 	<figcaption>Flexibility</figcaption>
 </figure>
 
@@ -163,7 +163,7 @@ When the model is inflexible it is incapable of representing the regularities in
 We plot the test and training MSE of a model against varying degrees of flexibility.
 
 <figure style="width: 700px">
-	<img src="/media/machine learning/u-shape.png" alt="Flexibility vs MSE">
+	<img src="/media/machine learning/basics/u-shape.png" alt="Flexibility vs MSE">
 	<figcaption>Flexibility vs MSE. The gray curve is the training MSE and red curve is the test MSE.</figcaption>
 </figure>
 
