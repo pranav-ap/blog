@@ -110,11 +110,11 @@ strong {
 
 ul {
   list-style: square;
-  @include margin-bottom(1);
+  @include margin-bottom(0.2);
 
   & li {
-    padding: 0 5px;
-    margin-bottom: 10px;
+    padding: 0 2px;
+    margin-bottom: 2px;
   }
 
 }
