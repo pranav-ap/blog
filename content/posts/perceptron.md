@@ -25,6 +25,11 @@ Each component of the input vector has a weight associated with it. The **weight
 
 Now, calculate the weighted sum $\sum_i w_i  x_i$. The output depends on whether this sum is greater than or less than a **threshold value**.
 
+<figure style="width: 450px">
+	<img src="/media/deep learning/step-function.jpeg" alt="Step Function">
+	<figcaption>Step Function</figcaption>
+</figure>
+
 $$
 \text{output} =
 \begin{cases}
@@ -66,22 +71,27 @@ The general idea behind this learning algorithm is to initially draw a random de
 
 1. Initialize the weights and the threshold with small random values
 1. For each example *misclassified* example $(\bold{x}, y)$ in our training set
-   1. If the $\bold{x}$ is classified positive, but $y$ is a negative label
-         1. Subtract $\alpha x$ from $x$
-         1. Subtract $\alpha$ from $b$
-   1. If the $\bold{x}$ is classified negative, but $y$ has a positive label
-         1. Add $\alpha x$ to $x$
-         1. Add $\alpha$ to $b$
+      1. If the $\bold{x}$ is classified positive, but $y$ is a negative label
+            1. Subtract $\alpha x$ from $x$
+            1. Subtract $\alpha$ from $b$
+      1. If the $\bold{x}$ is classified negative, but $y$ has a positive label
+            1. Add $\alpha x$ to $x$
+            1. Add $\alpha$ to $b$
 
 $\alpha$ is the learning rate. It is a number between 0 and 1 that ensures that $\alpha x$ is a small number. In turn, it ensures that the boundary line does not take very large steps.
 
-# Multilayer perceptron
+# Limitation
 
-A multilayer perceptron (MLP) is a class of feedforward artificial neural network (ANN). The term MLP is used ambiguously, sometimes loosely to refer to any feedforward ANN, sometimes strictly to refer to networks composed of multiple layers of perceptrons (with threshold activation); see § Terminology. Multilayer perceptrons are sometimes colloquially referred to as "vanilla" neural networks, especially when they have a single hidden layer.[1]
+A perceptron is limited to classifying linearly separable data, due to the use of linear combination.
 
-An MLP consists of at least three layers of nodes: an input layer, a hidden layer and an output layer. Except for the input nodes, each node is a neuron that uses a nonlinear activation function. MLP utilizes a supervised learning technique called backpropagation for training.[2][3] Its multiple layers and non-linear activation distinguish MLP from a linear perceptron. It can distinguish data that is not linearly separable.[4] 
+The use of the step function after summation also restricts it to binary classification problems.
+
+To model non-linear relationships, we need to use multiple perceptrons in the form of [Multi Layer Perceptrons](https://en.wikipedia.org/wiki/Multilayer_perceptron).
+
+A Multi Layer Perceptron contains one or more hidden layers, apart from one input and one output layer. While a single layer perceptron can only learn linear functions, a multi layer perceptron can also learn non–linear functions.
 
 # References
 
 - [Michael Nielsen](http://neuralnetworksanddeeplearning.com/chap1.html)
-- [Wikipedia](https://en.wikipedia.org/wiki/Perceptron)
+- [Wikipedia: Perceptron](https://en.wikipedia.org/wiki/Perceptron)
+- [Wikipedia: Multilayer perceptron](https://en.wikipedia.org/wiki/Multilayer_perceptron)
