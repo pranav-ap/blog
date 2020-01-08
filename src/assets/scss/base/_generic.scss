@@ -29,7 +29,7 @@ h6 {
 }
 
 h1 {
-  font-size: $typographic-base-font-size * 1.66;
+  font-size: $typographic-base-font-size * 1.7;
   @include line-height(1);
   @include margin-top(2);
   @include margin-bottom(0.5);
@@ -43,7 +43,7 @@ h2 {
 }
 
 h3 {
-  font-size: $typographic-base-font-size * 1.2;
+  font-size: $typographic-base-font-size * 1.32;
   @include line-height(1);
   @include margin-top(1);
   @include margin-bottom(0.5);
