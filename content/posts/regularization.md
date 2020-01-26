@@ -1,6 +1,6 @@
 ---
 title: "Regularization"
-date: "2019-12-30"
+date: "2020-1-9"
 template: "post"
 draft: false
 slug: "/posts/regularization/"
@@ -36,9 +36,9 @@ Every time the error on the validation set improves, we store a copy of the mode
 	<figcaption>Early Stopping</figcaption>
 </figure>
 
-Note that the performance of a model on a validation set may go up and down many times. This means that the first sign of overfitting may not be a good place to stop training.
+Note that the performance of a model on a validation set may go up and down many times. This means that the first time the validation set goes up sign of overfitting may not be a good place to stop training.
 
-There is no way to predict how many epochs it will take for overfitting to start. So it is important to keep an eye on the graph while training the model.
+There is no way to predict how many epochs it will take for overfitting to start. So, keep an eye on the graph while training the model.
 
 # L1 Regularization
 

@@ -12,14 +12,14 @@ description: ""
 
 A **perceptron** is a binary classifier that linearly separates data. It takes in a vector of real numbers as input $x$ and spits out a binary classification of $1$ or $0$.
 
-It is a very simple model that uses linear regression followed by a threshold function. Just like regular linear regression the weights and bias are calculated during the training phase.
+It is a very simple model that uses *linear regression* followed by a *threshold function*. Just like regular linear regression the weights and bias are calculated during the training phase.
 
 <figure style="width: 580px">
 	<img src="/media/deep learning/perceptron.png" alt="Perceptron">
 	<figcaption>Perceptron</figcaption>
 </figure>
 
-Each component of the input vector has a weight associated with it. The **weight** expresses its relative importance in calculating the output. The weights are stored in the vector $w$.
+Each component of the input vector has a weight associated with it. The **weight** expresses its relative importance while calculating the output. The weights are stored in the vector $w$.
 
 # Calculating the Classification
 
@@ -38,7 +38,7 @@ $$
 \end{cases}
 $$
 
-where, $b$ is the bias. The **bias** value shifts the decision boundary away from the origin and is independent of any input value.
+where, $b$ is the bias. The **bias** value shifts the decision boundary towards or away from the origin and is independent of any input value.
 
 If $b$ is negative and threshold is $0$, then $\sum_i w_i  x_i$ must produce a positive value greater than $\mid b \mid$ in order to push get a positive response.
 
@@ -56,7 +56,9 @@ $$
 \end{cases}
 $$
 
-You can think of the bias as a measure of how easy it is to get the perceptron to output a 1. For a perceptron with a really big bias, it's extremely easy for the perceptron to output a 1. But if the bias is very negative, then it's difficult for the perceptron to output a 1.
+You can think of the bias as a measure of how easy it is to get the perceptron to output a 1.
+
+For a perceptron with a large positive bias value, it's extremely easy for the perceptron to output a 1. But if the bias is a large negative value, then it's difficult for the perceptron to output a 1.
 
 # Learning algorithm
 
@@ -67,28 +69,35 @@ Small changes in weights and biases cause changes in the output. We can use this
 	<figcaption>Learning algorithm</figcaption>
 </figure>
 
-The general idea behind this learning algorithm is to initially draw a random decision boundary across the dataset, then move the boundary to classify the training set properly.
+The general idea behind this learning algorithm is to initially draw a random decision boundary across the dataset, then move the boundary gradually to classify the training set accurately.
 
-1. Initialize the weights and the threshold with small random values
-1. For each example *misclassified* example $(\bold{x}, y)$ in our training set
-      1. If the $\bold{x}$ is classified positive, but $y$ is a negative label
-            1. Subtract $\alpha x$ from $x$
-            1. Subtract $\alpha$ from $b$
-      1. If the $\bold{x}$ is classified negative, but $y$ has a positive label
-            1. Add $\alpha x$ to $x$
-            1. Add $\alpha$ to $b$
+<figure style="width: 620px">
+	<img src="/media/deep learning/perceptron-learning-algorithm.png" alt="Learning algorithm">
+	<figcaption>Perceptron Learning algorithm</figcaption>
+</figure>
 
-$\alpha$ is the learning rate. It is a number between 0 and 1 that ensures that $\alpha x$ is a small number. In turn, it ensures that the boundary line does not take very large steps.
+Let's say we have a *random* initial boundary line,
 
-# Limitation
+$$
+3 x_1 + 4 x_2 - 10 = 0
+$$
+
+We also have a misclassified point $(1, 1)$. In order to classify this point properly, we need to move the boundary line towards it. This can be done by modifying the weights and bias of the boundary line.
+
+<figure style="width: 620px">
+	<img src="/media/deep learning/perceptron-moving-the-line.png" alt="Moving the Boundary line">
+	<figcaption>Moving the Boundary line</figcaption>
+</figure>
+
+$\alpha$ is the learning rate. It is a number between $0$ and $1$ that ensures that $\alpha x$ is a small number. This ensures that the boundary line does not take very large steps.
+
+# Limitations
 
 A perceptron is limited to classifying linearly separable data, due to the use of linear combination.
 
 The use of the step function after summation also restricts it to binary classification problems.
 
 To model non-linear relationships, we need to use multiple perceptrons in the form of [Multi Layer Perceptrons](https://en.wikipedia.org/wiki/Multilayer_perceptron).
-
-A Multi Layer Perceptron contains one or more hidden layers, apart from one input and one output layer. While a single layer perceptron can only learn linear functions, a multi layer perceptron can also learn non–linear functions.
 
 # References
 
