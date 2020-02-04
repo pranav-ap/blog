@@ -23,7 +23,7 @@ $$
 
 where $z$ is a scalar value.
 
-An activation function $f(z)$ defines the output of a node. In order to be useful, $f(z)$ must be *non-linear*, *monotonic* and *continuously differentiable*.
+An activation function $f(z)$ defines the output of a node. In order to be useful, $f(z)$ must be *non-linear*, [*monotonic*](https://en.wikipedia.org/wiki/Monotonic_function), *continuous* and *differentiable*.
 
 ## Why do we need *non-linear* activation functions ?
 
@@ -86,9 +86,9 @@ No matter how many nodes and layers you have you will always end up with a linea
 
 Apparently, there are rare cases where linear activation functions are useful. I don't know what they are.
 
-## Continuously differentiable
+##  Why do we need *differentiable* activation functions ?
 
-During backpropagation, we use the derivative of the activation functions. This property is required to compute the gradients we use to tune the network weights.
+During backpropagation, we calculate the partial derivatives of the error wrt each of the weights. This is required to tune the network weights.
 
 # Types of Activation Functions
 
@@ -101,7 +101,21 @@ There are many types of activation functions, each with its own pros and cons. C
 	<figcaption>Sigmoid activation function</figcaption>
 </figure>
 
+A sigmoid function is a mathematical function having a characteristic "S"-shaped curve or sigmoid curve. A standard choice for a sigmoid function is the logistic function shown in the first figure and defined by the formula
+
+$$
+f(z) = \frac {1} {1 + e^{-z}}
+$$
+
+A sigmoid function is a bounded, differentiable, real function that is defined for all real input values and has a non-negative derivative at each point.[1] A sigmoid "function" and a sigmoid "curve" refer to the same object.
+
 The sigmoid function squashes $z$ into the range 0 and 1. The sigmoid is rarely used any longer, except in the outer layer for binary classifications.
+
+This function's job is to make the numbers between 0 and 1, usually for supervised classification problems. for example in binary supervised classification problems that the labels are only two (for example in the picture below), then one data that is far from others will effect too much on the separator line.
+
+But when we use Sigmoid function we can see that a data far from others won't effect the separator too much.
+
+Also this function can show you a probability as well. for example if you have a new data to predict, then you can use the line and see how much it is possible that the data belongs to some label. (Take a look at the picture to understand better)
 
 Drawback #1: the sigmoid function does not center output around zero
 Drawback #2: small local gradients can mute the gradient and disallow the forward propagation of a useful signal
@@ -133,7 +147,9 @@ Can lead to neuron death, which can be combated using Leaky ReLU modification (s
 ReLU is has become the default activation function for hidden layers (see [3])
 
 Computationally efficient—allows the network to converge very quickly
-Non-linear—although it looks like a linear function, ReLU has a derivative function and allows for backpropagation
+Non-linear—although it looks like a linear function, ReLU has a derivative function and allows for backpropagation.
+
+Functions like ReLU are used in neural networks due to the computational advantages of using these simple equations over more traditional activation functions like tanh or the logistic sigmoid function. The back-propagation algorithm used to optimise neural networks works under the pre-condition that all of the functions contained within the system are differentiable. As discussed ReLU and other variants are non-differentiable at specific points, so how are they used? Essentially, at the points at which they are non-differentiable the function is not evaluated and the output is replaced with a sensible value. For example for ReLU at 𝑓ʹ(𝑥) we just specify the output to be zero or one, which is reasonable given our usage. In Theano [ 3] for example it specified that 𝑥 is not evaluated and taken to be 1 for 𝑥 >= 0. This is not mathematically pure and one could imagine scenarios where this would cause problems, the reality is however that the neural networks that comprise of these functions work well and are stable and so this issue is over-looked in favour of computational efficiency.
 
 ## Leaky ReLU
 
@@ -164,3 +180,10 @@ Neural networks are trained using a process called backpropagation—this is an 
 - [Wikipedia: Artificial neural network](https://en.wikipedia.org/wiki/Artificial_neural_network)
 - [Why Non-linear Activation Functions (C1W3L07)](https://www.youtube.com/watch?v=NkOv_k7r6no)
 - [Derivatives Of Activation Functions (C1W3L08)](https://www.youtube.com/watch?v=P7_jFxTtJEo)
+- [Wikipedia: Sigmoid function](https://en.wikipedia.org/wiki/Sigmoid_function)
+- [Derivative of the Sigmoid function](https://towardsdatascience.com/derivative-of-the-sigmoid-function-536880cf918e)
+- [Why is the ReLU function not differentiable at x=0?](https://sebastianraschka.com/faq/docs/relu-derivative.html)
+
+# Doubts
+
+- why does activation function need to be monotonic?
