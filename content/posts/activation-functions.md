@@ -86,9 +86,13 @@ No matter how many nodes and layers you have you will always end up with a linea
 
 Apparently, there are rare cases where linear activation functions are useful. I don't know what they are.
 
-##  Why do we need *differentiable* activation functions ?
+## Why do we need *differentiable* activation functions ?
 
 During backpropagation, we calculate the partial derivatives of the error wrt each of the weights. This is required to tune the network weights.
+
+## Why we need *monotonic* activation functions ?
+
+During the training phase, backpropagation informs each neuron how much it should influence each neuron in the next layer. If the activation function isn't monotonic then increasing the neuron's weight might cause it to have less influence, the opposite of what was intended. The result would be choatic behavior during training, with the network unlikely to converge to a state that yields an accurate classifier.
 
 # Types of Activation Functions
 
@@ -101,27 +105,25 @@ There are many types of activation functions, each with its own pros and cons. C
 	<figcaption>Sigmoid activation function</figcaption>
 </figure>
 
-A sigmoid function is a mathematical function having a characteristic "S"-shaped curve or sigmoid curve. A standard choice for a sigmoid function is the logistic function shown in the first figure and defined by the formula
+A sigmoid function is a family of functions having a "S"-shaped curve. The sigmoid curve shown in the figure is called a logistic function. It is defined by the formula,
 
 $$
 f(z) = \frac {1} {1 + e^{-z}}
 $$
 
-A sigmoid function is a bounded, differentiable, real function that is defined for all real input values and has a non-negative derivative at each point.[1] A sigmoid "function" and a sigmoid "curve" refer to the same object.
+It takes in a real-valued number $z$ and squashes it into a range monotonically increasing from $0$ to $1$. The output is thus, often interpreted as probabilities.
 
-The sigmoid function squashes $z$ into the range 0 and 1. The sigmoid is rarely used any longer, except in the outer layer for binary classifications.
+Unlike the perceptron neuron, a sigmoid function does not abruptly change the output as we tune the input weights. This made is widely used until it was replaced by others due to the following disadvantages.
 
-This function's job is to make the numbers between 0 and 1, usually for supervised classification problems. for example in binary supervised classification problems that the labels are only two (for example in the picture below), then one data that is far from others will effect too much on the separator line.
+### Not Zero Centered
 
-But when we use Sigmoid function we can see that a data far from others won't effect the separator too much.
+The sigmoid function does not center output around zero, ie. the mean is not $0$.
 
-Also this function can show you a probability as well. for example if you have a new data to predict, then you can use the line and see how much it is possible that the data belongs to some label. (Take a look at the picture to understand better)
+This property is important in deep learning because it has been empirically shown that models operating on normalized data––whether it be inputs or latent activations––enjoy faster convergence. Unfortunately, zero-centered activation functions like tanh saturate at their asymptotes––the gradients within this region get vanishingly smaller over time, leading to a weak training signal. ReLU avoids this problem but it is not zero-centered. So, deep learning practitioners have invented a myriad of normalization layers (batch norm, layer norm, weight norm, etc.) to mitigate this issue.
 
-Drawback #1: the sigmoid function does not center output around zero
-Drawback #2: small local gradients can mute the gradient and disallow the forward propagation of a useful signal
-Drawback #3: incorrect weight initialization can lead to saturation, where most neurons of the network then become saturated and almost no learning will take place (see [1])
+### Vanishing gradient
 
-Vanishing gradient—for very high or very low values of X, there is almost no change to the prediction, causing a vanishing gradient problem. This can result in the network refusing to learn further, or being too slow to reach an accurate prediction.
+For very high or very low values of $z$, there is almost no change in activation. This can result in the network refusing to learn further, or being too slow to reach an accurate prediction.
 
 ## Tanh
 
@@ -183,7 +185,4 @@ Neural networks are trained using a process called backpropagation—this is an 
 - [Wikipedia: Sigmoid function](https://en.wikipedia.org/wiki/Sigmoid_function)
 - [Derivative of the Sigmoid function](https://towardsdatascience.com/derivative-of-the-sigmoid-function-536880cf918e)
 - [Why is the ReLU function not differentiable at x=0?](https://sebastianraschka.com/faq/docs/relu-derivative.html)
-
-# Doubts
-
-- why does activation function need to be monotonic?
+- [StackOverflow : Pros and Cons](https://stats.stackexchange.com/questions/115258/comprehensive-list-of-activation-functions-in-neural-networks-with-pros-cons/229015#229015)
