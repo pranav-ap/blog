@@ -90,9 +90,19 @@ Apparently, there are rare cases where linear activation functions are useful. I
 
 During backpropagation, we calculate the partial derivatives of the error wrt each of the weights. This is required to tune the network weights.
 
-## Why we need *monotonic* activation functions ?
+## Why do we need *monotonic* activation functions ?
 
 During the training phase, backpropagation informs each neuron how much it should influence each neuron in the next layer. If the activation function isn't monotonic then increasing the neuron's weight might cause it to have less influence, the opposite of what was intended. The result would be choatic behavior during training, with the network unlikely to converge to a state that yields an accurate classifier.
+
+
+
+## Why do we need *zero-centered* activation functions ?
+
+This property is important in deep learning because it has been empirically shown that models operating on normalized data enjoy faster convergence.
+
+Unfortunately, zero-centered activation functions like tanh saturate at their asymptotes––the gradients within this region get vanishingly smaller over time, leading to a weak training signal. ReLU avoids this problem but it is not zero-centered. So, deep learning practitioners have invented a myriad of normalization layers (batch norm, layer norm, weight norm, etc.) to mitigate this issue.
+
+During back propagation, the derivative can be positive or negative  i.e We might want to increase a particular weight and decrease another weight in the same neural network at the same time. With non-zero centred activation function the above steps cannot be done in a single epoch, this is the reason why we are going for zero centred activation function. Zero centred activation functions can do the above task in fewer steps and thus faster convergence.
 
 # Types of Activation Functions
 
@@ -115,17 +125,13 @@ It takes in a real-valued number $z$ and squashes it into a range monotonically 
 
 Unlike the perceptron neuron, a sigmoid function does not abruptly change the output as we tune the input weights. This made is widely used until it was replaced by others due to the following disadvantages.
 
-### Not Zero Centered
-
 The sigmoid function does not center output around zero, ie. the mean is not $0$.
-
-This property is important in deep learning because it has been empirically shown that models operating on normalized data––whether it be inputs or latent activations––enjoy faster convergence. Unfortunately, zero-centered activation functions like tanh saturate at their asymptotes––the gradients within this region get vanishingly smaller over time, leading to a weak training signal. ReLU avoids this problem but it is not zero-centered. So, deep learning practitioners have invented a myriad of normalization layers (batch norm, layer norm, weight norm, etc.) to mitigate this issue.
 
 ### Vanishing gradient
 
 For very high or very low values of $z$, there is almost no change in activation. This can result in the network refusing to learn further, or being too slow to reach an accurate prediction.
 
-## Tanh
+## Hyperbolic tangent (Tanh)
 
 <figure style="width: 700px">
 	<img src="/media/deep learning/tanh.png" alt="Tanh">
@@ -155,6 +161,11 @@ Functions like ReLU are used in neural networks due to the computational advanta
 
 ## Leaky ReLU
 
+<figure style="width: 700px">
+	<img src="/media/deep learning/leaky-and-parametric-relu.png" alt="Leaky ReLU and Parametric ReLU">
+	<figcaption>Leaky ReLU and Parametric ReLU</figcaption>
+</figure>
+
 The Dying ReLU problem—when inputs approach zero, or are negative, the gradient of the function becomes zero, the network cannot perform backpropagation and cannot learn.
 
 Prevents dying ReLU problem—this variation of ReLU has a small positive slope in the negative area, so it does enable backpropagation, even for negative input values
@@ -162,18 +173,28 @@ Otherwise like ReLU
 
 Results not consistent—leaky ReLU does not provide consistent predictions for negative input values.
 
+## Parametric ReLU (PReLU)
+
+## Exponential Linear Unit (ELU)
+
+<figure style="width: 700px">
+	<img src="/media/deep learning/elu.png" alt="Exponential Linear Unit">
+	<figcaption>Exponential Linear Unit</figcaption>
+</figure>
+
+## ReLU-6
+
+<figure style="width: 700px">
+	<img src="/media/deep learning/relu-6.png" alt="ReLU-6">
+	<figcaption>ReLU-6</figcaption>
+</figure>
+
 ## Softmax
 
 Able to handle multiple classes only one class in other activation functions—normalizes the outputs for each class between 0 and 1, and divides by their sum, giving the probability of the input value being in a specific class.
 
 Useful for output neurons—typically Softmax is used only for the output layer, for neural networks that need to
 classify inputs into multiple categories.
-
-Derivatives or Gradients of Activation Functions
-
-The derivative—also known as a gradient—of an activation function is extremely important for training the neural network.
-
-Neural networks are trained using a process called backpropagation—this is an algorithm which traces back from the output of the model, through the different neurons which were involved in generating that output, back to the original weight applied to each neuron. Backpropagation suggests an optimal weight for each neuron which results in the most accurate prediction.
 
 # References
 
