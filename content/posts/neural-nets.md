@@ -1,6 +1,6 @@
 ---
 title: "Neural Networks"
-date: "2020-1-9"
+date: "2020-2-9"
 template: "post"
 draft: false
 slug: "/posts/neural-networks/"
@@ -48,7 +48,6 @@ Every neural net has three types of layers: input, hidden, and output. Each laye
 	<figcaption>A Simple Neural Net</figcaption>
 </figure>
 
-
 **Size** refers to the number of nodes in the model. **Width** is the number of nodes in a specific layer.
 The number of layers in a neural net is called the **depth**.
 
@@ -78,7 +77,16 @@ $$
 
 This approximation can be improved by increasing the number of hidden neurons.
 
-If a single hidden layer can learn any problem, why bother with multiple hidden layers? While a neural net with a single hidden layer *can* learn anything, it may not always be *easy* to learn it.
+Even though the architecture can closely represent $f(x)$, we don't have a guarantee that the training algorithm will be able to learn it. Learning can fail due to two reasons:
+
+- The optimization algorithm may not be able to find the parameter values in $f(x)$
+- Overfitting or underfitting will deviate $g(x)$ from reaching $f(x)$
+
+The biggest obstacle to simply using a single hidden layer all the time, is that in the worst case it requires an exponential number of nodes. This makes learning more infeasible.
+
+The solution is to use more hidden layers. This reduces the number of hidden nodes required to estimate $f(x)$.
+
+### How many hidden layers should we use?
 
 One or two hidden layers is sufficient for a large majority of problems.
 
@@ -86,6 +94,8 @@ Adding more hidden layers helps in learning hierarchical representations of the 
 to unseen data.
 
 But this does increase computational costs and learning time, due to the increase in number of parameters to be learned during the learning phase.
+
+### How many hidden nodes per layer should we use?
 
 # References
 
