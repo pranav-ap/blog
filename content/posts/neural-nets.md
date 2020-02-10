@@ -41,7 +41,11 @@ Examples of supervised feature learning include neural networks and multilayer p
 
 # Neural Networks
 
-Every neural net has three types of layers: input, hidden, and output. Each layer has a set of nodes. The arrangement of the layers and nodes in the network is called its **architecture**.
+Every neural net has three types of *layers*: input, hidden, and output.
+
+Each layer has a set of nodes connected to the nodes in other layers by *links*. Each link has a weight, which determines the strength of the current node's influence on the next.
+
+The arrangement of the layers and nodes in the network is called its **architecture**.
 
 <figure style="width: 700px">
 	<img src="/media/deep learning/simple-net.png" alt="Simple Neural Net">
@@ -84,18 +88,35 @@ Even though the architecture can closely represent $f(x)$, we don't have a guara
 
 The biggest obstacle to simply using a single hidden layer all the time, is that in the worst case it requires an exponential number of nodes. This makes learning more infeasible.
 
-The solution is to use more hidden layers. This reduces the number of hidden nodes required to estimate $f(x)$.
+The solution is to use more hidden layers. This is empirically shown to reduce the number of hidden nodes required to estimate $f(x)$.
 
-### How many hidden layers should we use?
+The more layers and nodes you add, the more representational capacity, your network will have.
 
-One or two hidden layers is sufficient for a large majority of problems.
+# Feedforward networks
 
-Adding more hidden layers helps in learning hierarchical representations of the input data and generalize better
-to unseen data.
+The feedforward neural net is a simple network where the nodes and links don't form closed loops. Every net including this one, has two operations defined on it: the forward pass and the backward pass.
 
-But this does increase computational costs and learning time, due to the increase in number of parameters to be learned during the learning phase.
+The **forward pass** is how a network processes the given input. It takes the input vector $\bold{x}$ and performs the calculations specified by the hidden and output layers to obtain the result. Once your model is trained, this is the only operation you will need in production.
 
-### How many hidden nodes per layer should we use?
+For the training phase however, we need both the passes. The forward pass gives you an output, and the **backward pass** uses it to optimize the weights to make the network more precise.
+
+A forward pass followed by a backward pass, together is called an **iteration**.
+
+## Forward Pass Calculation
+
+<figure style="width: 600px">
+	<img src="/media/deep learning/three-nodes.png" alt="Three nodes">
+	<figcaption>Three nodes</figcaption>
+</figure>
+
+We have three layers with one node each. The weight of each link is denoted by $\theta$.
+
+<figure style="width: 900px">
+	<img src="/media/deep learning/three-nodes-detailed.png" alt="Three nodes - Detailed view">
+	<figcaption>Three nodes - Detailed view</figcaption>
+</figure>
+
+## Backward Pass Calculation
 
 # References
 

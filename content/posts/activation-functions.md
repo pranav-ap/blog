@@ -98,11 +98,7 @@ During the training phase, backpropagation informs each neuron how much it shoul
 
 ## Why do we need *zero-centered* activation functions ?
 
-This property is important in deep learning because it has been empirically shown that models operating on normalized data enjoy faster convergence.
-
-Unfortunately, zero-centered activation functions like tanh saturate at their asymptotes––the gradients within this region get vanishingly smaller over time, leading to a weak training signal. ReLU avoids this problem but it is not zero-centered. So, deep learning practitioners have invented a myriad of normalization layers (batch norm, layer norm, weight norm, etc.) to mitigate this issue.
-
-During back propagation, the derivative can be positive or negative  i.e We might want to increase a particular weight and decrease another weight in the same neural network at the same time. With non-zero centred activation function the above steps cannot be done in a single epoch, this is the reason why we are going for zero centred activation function. Zero centred activation functions can do the above task in fewer steps and thus faster convergence.
+During backpropagation, the derivative can be positive or negative. This is used to increase a particular weight and decrease another weight in the neural net. With non-zero centred activation function the above steps cannot be done in a single epoch. This is why we prefer zero centred activation function.
 
 # Types of Activation Functions
 
