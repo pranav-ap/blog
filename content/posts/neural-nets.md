@@ -39,7 +39,7 @@ Feature learning can be either *supervised* or *unsupervised*.
 
 Examples of supervised feature learning include neural networks and multilayer perceptrons. Unsupervised feature learning includes principal component analysis and K-means clustering.
 
-# Neural Networks
+# Layers
 
 Every neural net has three types of *layers*: input, hidden, and output.
 
@@ -92,7 +92,7 @@ The solution is to use more hidden layers. This is empirically shown to reduce t
 
 The more layers and nodes you add, the more representational capacity, your network will have.
 
-# Feedforward networks
+# Training phase in Feedforward networks
 
 The feedforward neural net is a simple network where the nodes and links don't form closed loops. Every net including this one, has two operations defined on it: the forward pass and the backward pass.
 
@@ -102,19 +102,46 @@ For the training phase however, we need both the passes. The forward pass gives 
 
 A forward pass followed by a backward pass, together is called an **iteration**.
 
+We will use the following simple neural net to demonstrate the passes.
+
+<figure style="width: 550px">
+	<img src="/media/deep learning/pass-calculation-network.png" alt="Network Pass Calculation">
+	<figcaption>Network Pass Calculation</figcaption>
+</figure>
+
+### Notation
+
+The inputs $x_1$ and $x_2$ are from the vector $\bold{x}$. $\theta^{(p)}$ is a two-dimensional matrix that holds the weights of links starting from layer $p$. In the diagram, $\theta^{(1)}$ holds the weights for links starting from the input layer.
+
+To denote a specific link that starts from layer $p$ node $q$ to layer $p + 1$ node $r$, we use subscripts as follows: $\theta^{(p)}_{r q}$.
+
+$$
+\begin{bmatrix}
+   \textcolor{#ffa366}{\theta^{(p)}_{1 1}} & \textcolor{#ffa366}{\theta^{(p)}_{1 2}} \\
+   \textcolor{blue}{\theta^{(p)}_{2 1}} & \textcolor{blue}{\theta^{(p)}_{2 2}}
+\end{bmatrix}
+$$
+
+Finally, $a^{(2)}_1$ represents the activation function for the first node in layer $2$. For convenience, the activations of a layer $p$ can be denoted by a one-dimensional vector $\bold{a}^{(p)}$.
+
+$$
+\bold{a}^{(2)}
+
+=
+
+\begin{bmatrix}
+   a^{(2)}_1 \\
+   a^{(2)}_2
+\end{bmatrix}
+$$
+
 ## Forward Pass Calculation
 
-<figure style="width: 600px">
-	<img src="/media/deep learning/three-nodes.png" alt="Three nodes">
-	<figcaption>Three nodes</figcaption>
-</figure>
+The goal of forward pass is to calculate the output vector $\bold{a}^{(3)}$ of this network.
 
-We have three layers with one node each. The weight of each link is denoted by $\theta$.
+## Calculate the Error
 
-<figure style="width: 900px">
-	<img src="/media/deep learning/three-nodes-detailed.png" alt="Three nodes - Detailed view">
-	<figcaption>Three nodes - Detailed view</figcaption>
-</figure>
+Now, we need to calculate how wrong our output was compared to the true value. 
 
 ## Backward Pass Calculation
 
