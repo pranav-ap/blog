@@ -137,11 +137,65 @@ $$
 
 ## Forward Pass Calculation
 
-The goal of forward pass is to calculate the output vector $\bold{a}^{(3)}$ of this network.
+The goal of forward pass is to calculate the output vector $\bold{a}^{(3)}$ of this network. Let's start by calculating $\bold{a}^{(2)}_{1}$ and $\bold{a}^{(2)}_{2}$.
+
+$$
+\bold{a}^{(2)}_{1}
+=
+g ( \theta^{(1)}_{1 1} x_1 + \theta^{(1)}_{1 2} x_2 + b_1 )
+$$
+
+$$
+\bold{a}^{(2)}_{2}
+=
+g ( \theta^{(1)}_{2 1} x_1 + \theta^{(1)}_{2 2} x_2 + b_2 )
+$$
+
+For ease, we can represent the activations of the entire layer using the matrix notation,
+
+$$
+\begin{bmatrix}
+   a^{(2)}_1 \\
+   a^{(2)}_2
+\end{bmatrix}
+
+=
+
+g \Bigg(
+
+\begin{bmatrix}
+   \textcolor{#ffa366}{\theta^{(p)}_{1 1}} & \textcolor{#ffa366}{\theta^{(p)}_{1 2}} \\
+   \textcolor{blue}{\theta^{(p)}_{2 1}} & \textcolor{blue}{\theta^{(p)}_{2 2}}
+\end{bmatrix}
+
+\begin{bmatrix}
+   x_1 \\
+   x_2
+\end{bmatrix}
+
++
+
+\begin{bmatrix}
+   b_1 \\
+   b_2
+\end{bmatrix}
+
+\Bigg)
+$$
+
+$$
+\bold{a}^{(1)} = g (\theta^{(1)} \bold{x} + \bold{b})
+$$
+
+Similarly, we can find $\bold{a}^{(3)}$.
+
+$$
+\bold{a}^{(3)} =  g (\theta^{(2)} \bold{a}^{(1)} + \bold{b})
+$$
 
 ## Calculate the Error
 
-Now, we need to calculate how wrong our output was compared to the true value. 
+Now, we need to calculate how wrong our output was compared to the true value.
 
 ## Backward Pass Calculation
 
