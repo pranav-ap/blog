@@ -135,7 +135,7 @@ $$
 \end{bmatrix}
 $$
 
-## Forward Pass Calculation
+## Forward Propagation
 
 The goal of forward pass is to calculate the output vector $\bold{a}^{(3)}$ of this network. Let's start by calculating $\bold{a}^{(2)}_{1}$ and $\bold{a}^{(2)}_{2}$.
 
@@ -143,9 +143,9 @@ $$
 \bold{a}^{(2)}_{1}
 =
 g ( \theta^{(1)}_{1 1} x_1 + \theta^{(1)}_{1 2} x_2 + b_1 )
-$$
 
-$$
+\\
+
 \bold{a}^{(2)}_{2}
 =
 g ( \theta^{(1)}_{2 1} x_1 + \theta^{(1)}_{2 2} x_2 + b_2 )
@@ -164,8 +164,8 @@ $$
 g \Bigg(
 
 \begin{bmatrix}
-   \textcolor{#ffa366}{\theta^{(p)}_{1 1}} & \textcolor{#ffa366}{\theta^{(p)}_{1 2}} \\
-   \textcolor{blue}{\theta^{(p)}_{2 1}} & \textcolor{blue}{\theta^{(p)}_{2 2}}
+   \textcolor{#ffa366}{\theta^{(1)}_{1 1}} & \textcolor{#ffa366}{\theta^{(1)}_{1 2}} \\
+   \textcolor{blue}{\theta^{(1)}_{2 1}} & \textcolor{blue}{\theta^{(1)}_{2 2}}
 \end{bmatrix}
 
 \begin{bmatrix}
@@ -184,20 +184,74 @@ g \Bigg(
 $$
 
 $$
-\bold{a}^{(1)} = g (\theta^{(1)} \bold{x} + \bold{b})
+\bold{a}^{(2)} = g (\theta^{(1)} \bold{x} + \bold{b}^{(1)})
 $$
 
 Similarly, we can find $\bold{a}^{(3)}$.
 
 $$
-\bold{a}^{(3)} =  g (\theta^{(2)} \bold{a}^{(1)} + \bold{b})
+\bold{a}^{(3)} =  g (\theta^{(2)} \bold{a}^{(2)} + \bold{b}^{(2)})
 $$
 
 ## Calculate the Error
 
-Now, we need to calculate how wrong our output was compared to the true value.
+Now, we need to calculate how wrong the components of the output vector $\bold{a}^{(3)}$ is compared to the true values in the training dataset.
 
-## Backward Pass Calculation
+This error calculation is done by a **loss function** $J (\theta)$. It takes in all the weights of the network as the input and returns a real-valued number that quantifies the errors.
+
+The *Mean Squared Error* (MSE) is a widely used loss function, and is calculated as follows,
+
+$$
+J (\theta) = \frac {1} {2 n} ( \bold{y} - \bold{a}^{(3)})^2
+$$
+
+where $\bold{y}$ is the vector that holds the true values for the response variable, and $n$ is the number of components in the vector, and is used for normalization.
+
+## Backward Propagation
+
+During backward propagation, we define a relationship between the loss function $J (\theta)$ and each of the weights $\theta^{(p)}_{q \space r}$. Then we modify the weights with the aim of reducing the error as calculated by the loss function.
+
+This relationship is defined using *partial derivatives*. Consider the following,
+
+$$
+\frac {\partial f(x, y)} {\partial x}
+$$
+
+It denotes the partial derivative of the function with respect to one of its parameters $x$. The other variable $y$ is treated as a constant.
+
+This partial derivative tells us how the value of $f(x, y)$ changes if we change only one variable $x$.
+
+Similarly, we take denote the the relationship between the loss function and a weight $\theta^{(2)}_{1 \space 1}$ as,
+
+$$
+\frac {\partial J (\theta)} {\partial \theta^{(2)}_{1 \space 1}}
+$$
+
+This partial derivative tells us how the loss function $J (\theta)$ changes if we change only one weight $\theta^{(2)}_{1 \space 1}$.
+
+<figure style="width: 1000px">
+	<img src="/media/deep learning/backprop-partial-derivative.png" alt="Backward Propagation - Partial Derivatives">
+	<figcaption>Backward Propagation - Partial Derivatives</figcaption>
+</figure>
+
+Expand it using the chain rule,
+
+$$
+\frac {\partial J (\theta)} {\partial \theta^{(2)}_{1 \space 1}}
+=
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}} {\partial z} \Bigg)
+\Bigg ( \frac {\partial z} {\partial \theta^{(2)}_{1 \space 1}} \Bigg)
+$$
+
+Calculating $\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}$ is a bit more tedious because $\theta^{(1)}_{1 \space 1}$ affects both $\bold{a}^{(3)}_{1}$ and $\bold{a}^{(3)}_{2}$.
+
+<figure style="width: 1000px">
+	<img src="/media/deep learning/backprop-partial-derivative-2.png" alt="Backward Propagation - Partial Derivatives">
+	<figcaption>Backward Propagation - Partial Derivatives</figcaption>
+</figure>
+
+
 
 # References
 
