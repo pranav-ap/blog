@@ -239,19 +239,62 @@ Expand it using the chain rule,
 $$
 \frac {\partial J (\theta)} {\partial \theta^{(2)}_{1 \space 1}}
 =
-\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}} \Bigg)
-\Bigg ( \frac {\partial a^{(3)}} {\partial z} \Bigg)
-\Bigg ( \frac {\partial z} {\partial \theta^{(2)}_{1 \space 1}} \Bigg)
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{1}} {\partial \theta^{(2)}_{1 \space 1}} \Bigg)
 $$
 
-Calculating $\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}$ is a bit more tedious because $\theta^{(1)}_{1 \space 1}$ affects both $\bold{a}^{(3)}_{1}$ and $\bold{a}^{(3)}_{2}$.
+### Calculating $\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}$
+
+Calculating $\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}$ is a bit more complex because $\theta^{(1)}_{1 \space 1}$ affects both $\bold{a}^{(3)}_{1}$ and $\bold{a}^{(3)}_{2}$.
 
 <figure style="width: 1000px">
 	<img src="/media/deep learning/backprop-partial-derivative-2.png" alt="Backward Propagation - Partial Derivatives">
 	<figcaption>Backward Propagation - Partial Derivatives</figcaption>
 </figure>
 
+The derivative chain for the blue path is,
 
+$$
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{1}} {\partial a^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{1}} {\partial z^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{1}} {\partial \theta^{(1)}_{1 \space 1}} \Bigg)
+$$
+
+The derivative chain for the orange path is,
+
+$$
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{2}} {\partial a^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{1}} {\partial z^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{1}} {\partial \theta^{(1)}_{1 \space 1}} \Bigg)
+$$
+
+Combining these, we get the total expression,
+
+$$
+\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}
+=
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{1}} {\partial a^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{1}} {\partial z^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{1}} {\partial \theta^{(1)}_{1 \space 1}} \Bigg)
++ \\
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{2}} {\partial a^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{1}} {\partial z^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{1}} {\partial \theta^{(1)}_{1 \space 1}} \Bigg)
+$$
+
+This formula is usually simplified by two changes.
+
+- The term $\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{q}} \Bigg)$ is found to be equal to the scaled difference between the *true output* and *calculated output* for each of the output neurons.
+- The $a^{(p)}_{q}$ function is same for all nodes in a layer $p$ .
 
 # References
 
