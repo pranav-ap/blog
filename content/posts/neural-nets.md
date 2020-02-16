@@ -237,14 +237,140 @@ This partial derivative tells us how the loss function $J (\theta)$ changes if w
 Expand it using the chain rule,
 
 $$
-\frac {\partial J (\theta)} {\partial \theta^{(2)}_{1 \space 1}}
-=
-\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
-\Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
-\Bigg ( \frac {\partial z^{(3)}_{1}} {\partial \theta^{(2)}_{1 \space 1}} \Bigg)
+   \begin{aligned}
+      \frac {\partial J (\theta)} {\partial \theta^{(2)}_{1 \space 1}}
+   &=
+   \Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
+   \Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
+   \Bigg ( \frac {\partial z^{(3)}_{1}} {\partial \theta^{(2)}_{1 \space 1}} \Bigg)
+
+   \\
+
+   \frac {\partial J (\theta)} {\partial \theta^{(2)}_{1 \space 2}}
+   &=
+   \Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
+   \Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
+   \Bigg ( \frac {\partial z^{(3)}_{1}} {\partial \theta^{(2)}_{1 \space 2}} \Bigg)
+
+   \\
+
+   \frac {\partial J (\theta)} {\partial \theta^{(2)}_{2 \space 1}}
+   &=
+   \Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{2}} \Bigg)
+   \Bigg ( \frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}} \Bigg)
+   \Bigg ( \frac {\partial z^{(3)}_{2}} {\partial \theta^{(2)}_{1 \space 1}} \Bigg)
+
+   \\
+
+   \frac {\partial J (\theta)} {\partial \theta^{(2)}_{2 \space 2}}
+   &=
+   \Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{2}} \Bigg)
+   \Bigg ( \frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}} \Bigg)
+   \Bigg ( \frac {\partial z^{(3)}_{2}} {\partial \theta^{(2)}_{2 \space 2}} \Bigg)
+\end{aligned}
 $$
 
-### Calculating $\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}$
+The first term $\partial J (\theta)$ / $\partial a^{(3)}_{q}$ returns the same value, regardless of $q$ because all nodes in a layer use the same activation function.
+
+$$
+\frac {\partial J (\theta)} {\partial a^{(3)}_{q}}
+=
+\frac {1} {n} ( \bold{y}_{q} - \bold{a}^{(3)}_{q})
+$$
+
+The second term $\partial a^{(3)}_{2}$ / $\partial z^{(3)}_{2}$ is simply the derivative of the activation function.
+
+$$
+\frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}}
+=
+g^{\prime} (\bold{z}^{(3)}_{2})
+$$
+
+The first two terms are grouped together and named the **error term** $\bold{\delta}^{(l)}_{i}$.
+
+$$
+\bold{\delta}^{(3)}_{i}
+=
+\frac {1} {n} ( \bold{y}_{i} - \bold{a}^{(3)}_{i})
+g^{\prime} (\bold{z}^{(3)}_{i})
+$$
+
+The third term $\partial z^{(3)}_{q}$ / $\partial \theta^{(2)}_{q \space p}$ is simply differentiated,
+
+$$
+\bold{z}^{(3)}_q =  \theta^{(2)}_{q \space p} \bold{a}^{(2)}_p + \bold{b}^{(2)}_p
+$$
+
+$$
+\frac{\partial z^{(3)}_{q}} {\partial \theta^{(2)}_{q \space p}}
+=
+\bold{a}^{(2)}_p
+$$
+
+Rewrite the equations into a simple matrix multiplication,
+
+$$
+   \begin{aligned}
+      \frac {\partial J (\theta)} {\partial \theta^{(2)}_{1 \space 1}}
+      &=
+      \bold{\delta}^{(3)}_1
+      \bold{a}^{(2)}_1
+
+      \\
+
+      \frac {\partial J (\theta)} {\partial \theta^{(2)}_{1 \space 2}}
+      &=
+      \bold{\delta}^{(3)}_1
+      \bold{a}^{(2)}_2
+
+      \\
+
+      \frac {\partial J (\theta)} {\partial \theta^{(2)}_{2 \space 1}}
+      &=
+      \bold{\delta}^{(3)}_2
+      \bold{a}^{(2)}_1
+
+      \\
+
+      \frac {\partial J (\theta)} {\partial \theta^{(2)}_{2 \space 2}}
+      &=
+      \bold{\delta}^{(3)}_2
+      \bold{a}^{(2)}_2
+   \end{aligned}
+$$
+
+Generalize these formulas into,
+
+$$
+\frac {\partial J (\theta)} {\partial \theta^{(2)}_{i \space j}}
+=
+\bold{\delta}^{(3)}_i
+\bold{a}^{(2)}_j
+$$
+
+$$
+\frac {\partial J (\theta)} {\partial \theta^{(2)}_{i \space j}}
+=
+\begin{bmatrix}
+   \bold{\delta}^{(3)}_1 \\
+   \bold{\delta}^{(3)}_2
+\end{bmatrix}
+
+\begin{bmatrix}
+   \bold{a}^{(2)}_1 & \bold{a}^{(2)}_2
+\end{bmatrix}
+$$
+
+$$
+\frac {\partial J (\theta)} {\partial \theta^{(2)}_{i \space j}}
+=
+\begin{bmatrix}
+   \bold{\delta}^{(3)}_1 \bold{a}^{(2)}_1 & \bold{\delta}^{(3)}_1 \bold{a}^{(2)}_2 \\
+   \bold{\delta}^{(3)}_2 \bold{a}^{(2)}_1 & \bold{\delta}^{(3)}_2 \bold{a}^{(2)}_2
+\end{bmatrix}
+$$
+
+### Layer 1 Calculations
 
 Calculating $\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}$ is a bit more complex because $\theta^{(1)}_{1 \space 1}$ affects both $\bold{a}^{(3)}_{1}$ and $\bold{a}^{(3)}_{2}$.
 
@@ -276,6 +402,8 @@ $$
 Combining these, we get the total expression,
 
 $$
+\small{
+
 \frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}
 =
 \Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
@@ -283,18 +411,101 @@ $$
 \Bigg ( \frac {\partial z^{(3)}_{1}} {\partial a^{(2)}_{1}} \Bigg)
 \Bigg ( \frac {\partial a^{(2)}_{1}} {\partial z^{(2)}_{1}} \Bigg)
 \Bigg ( \frac {\partial z^{(2)}_{1}} {\partial \theta^{(1)}_{1 \space 1}} \Bigg)
-+ \\
+
+\\
+
++
+
+\\
+
 \Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{2}} \Bigg)
 \Bigg ( \frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}} \Bigg)
 \Bigg ( \frac {\partial z^{(3)}_{2}} {\partial a^{(2)}_{1}} \Bigg)
 \Bigg ( \frac {\partial a^{(2)}_{1}} {\partial z^{(2)}_{1}} \Bigg)
 \Bigg ( \frac {\partial z^{(2)}_{1}} {\partial \theta^{(1)}_{1 \space 1}} \Bigg)
+
+}
 $$
 
-This formula is usually simplified by two changes.
+$$
+\small{
 
-- The term $\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{q}} \Bigg)$ is found to be equal to the scaled difference between the *true output* and *calculated output* for each of the output neurons.
-- The $a^{(p)}_{q}$ function is same for all nodes in a layer $p$ .
+\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 2}}
+=
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{1}} {\partial a^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{1}} {\partial z^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{1}} {\partial \theta^{(1)}_{1 \space 2}} \Bigg)
+
+\\
+
++
+
+\\
+
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{2}} {\partial a^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{1}} {\partial z^{(2)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{1}} {\partial \theta^{(1)}_{1 \space 2}} \Bigg)
+
+}
+$$
+
+$$
+\small{
+
+\frac {\partial J (\theta)} {\partial \theta^{(1)}_{1 \space 1}}
+=
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{1}} {\partial a^{(2)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{2}} {\partial z^{(2)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{2}} {\partial \theta^{(1)}_{2 \space 1}} \Bigg)
+
+\\
+
++
+
+\\
+
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{2}} {\partial a^{(2)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{2}} {\partial z^{(2)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{2}} {\partial \theta^{(1)}_{2 \space 1}} \Bigg)
+
+}
+$$
+
+$$
+\small{
+
+\frac {\partial J (\theta)} {\partial \theta^{(1)}_{2 \space 2}}
+=
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{1}} {\partial z^{(3)}_{1}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{1}} {\partial a^{(2)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{2}} {\partial z^{(2)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{2}} {\partial \theta^{(1)}_{2 \space 2}} \Bigg)
+
+\\
+
++
+
+\\
+
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}_{2}} {\partial z^{(3)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}_{2}} {\partial a^{(2)}_{2}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}_{2}} {\partial z^{(2)}_{2}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}_{2}} {\partial \theta^{(1)}_{2 \space 2}} \Bigg)
+
+}
+$$
+
+# Weights Initialization
 
 # References
 
