@@ -505,10 +505,25 @@ $$
 }
 $$
 
+# Gradient Descent
+
+Gradient descent is an optimization algorithm used to minimize some function by iteratively moving in the direction of steepest descent as defined by the negative of the gradient. In machine learning, we use gradient descent to update the parameters of our model.
+
+Gradient descent is an optimization algorithm used to find the values of parameters (coefficients) of a function (f) that minimizes a cost function (cost).
+
+Gradient descent is a first-order iterative optimization algorithm for finding the local minimum of a differentiable function. To find a local minimum of a function using gradient descent, we take steps proportional to the negative of the gradient (or approximate gradient) of the function at the current point. But if we instead take steps proportional to the positive of the gradient, we approach a local maximum of that function; the procedure is then known as gradient ascent. Gradient descent was originally proposed by Cauchy in 1847.[1]
+
+Gradient descent is best used when the parameters cannot be calculated analytically (e.g. using linear algebra) and must be searched for by an optimization algorithm.
+gradient = vector of derivatives
+
+step = slope x alpha
+new parameter = old - step
+
 # Weights Initialization
 
 # References
 
+- [Gradient Descent, Step-by-Step](https://youtu.be/sDv4f4s2SB8)
 - [Michael Nielsen](http://neuralnetworksanddeeplearning.com)
 - [Wikipedia: Artificial neural network](https://en.wikipedia.org/wiki/Artificial_neural_network)
 - [Wikipedia: Feature engineering](https://en.wikipedia.org/wiki/Feature_engineering)
