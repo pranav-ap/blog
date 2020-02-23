@@ -61,24 +61,52 @@ The algorithm to minimize $f(x, y)$ is as follows,
 - Repeat for each parameter until convergence,
 
 $$
-Q_{new} = Q_{old} - \alpha \frac {\partial f(x, y)} {\partial Q}
+Q_{new} = Q_{old} - \underbrace{ \alpha \underbrace{ \frac {\partial f(x, y)} {\partial Q} }_{\text{slope}} }_{\text{step}}
 $$
 
-where $Q$ represents a parameter, and $\alpha$ is the learning rate.
+where $Q$ represents a function parameter, and $\alpha$ is the learning rate.
+
+# Learning Rate
+
+The **learning rate** is a small positive number between $0$ to $1$ that controls the magnitude of the step.
 
 <figure style="width: 500px">
 	<img src="/media/deep learning/learning-rate.png" alt="Learning Rate">
 	<figcaption>Learning Rate</figcaption>
 </figure>
 
+If the learning rate is too high, gradient descent might jump over the minima, but a tiny learning rate will take too long to reach the minima.
+
+<figure style="width: 800px">
+	<img src="/media/deep learning/slope-signs-2.jpg" alt="Sign of a slope">
+	<figcaption>Sign of the slope</figcaption>
+</figure>
+
+The sign of the partial derivative decides the direction of the step. If the slope is positive, then the step is positive, and the parameter value is decreased.
+
+$$
+Q_{new} = Q_{old} - \underbrace{ \alpha \underbrace{ \text { positive} }_{\text{slope}} }_{\text{step}}
+$$
+
+If the slope is negative, then the step is negative, and the parameter value is increased.
+
+$$
+Q_{new} = Q_{old} - \underbrace{ \alpha \underbrace{ \text { negative} }_{\text{slope}} }_{\text{step}}
+$$
+
+##
+
+Note that the step size decreases as we go through the iterations, due to the decrease in slope as we get closer to the minima.
+
+The optimal learning rate will be dependent on the topology of your loss landscape, which is in turn dependent on both your model architecture and your dataset.
+
 # Badlands
 
-step = slope x alpha
-
-new parameter = old - step
+Gradient Descent is an algorithm which is designed to find the optimal points, but these optimal points are not necessarily global.
 
 # References
 
 - [Gradient](https://en.wikipedia.org/wiki/Gradient)
 - [Gradient Descent, Step-by-Step](https://youtu.be/sDv4f4s2SB8)
 - [Michael Nielsen](http://neuralnetworksanddeeplearning.com)
+- [Wikipedia: Learning rate](https://en.wikipedia.org/wiki/Learning_rate)
