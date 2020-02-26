@@ -1,9 +1,9 @@
 ---
-title: "Gradient Descent"
+title: "An Introduction to Gradient Descent"
 date: "2020-2-22"
 template: "post"
 draft: false
-slug: "/posts/gradient-descent/"
+slug: "/posts/gradient-descent-intro/"
 category: "Deep Learning"
 tags:
    - ""
@@ -35,7 +35,7 @@ Every function $f$ has a set of maximum and minimum values.
 	<figcaption>Gradient Descent</figcaption>
 </figure>
 
-Gradient descent is an optimization algorithm used to find the parameters of a function $f$ that lead to a local minima. It is used when the parameters cannot be calculated [analytically](https://math.stackexchange.com/questions/567014/what-does-it-mean-to-solve-a-math-problem-analytically).
+Gradient descent is an optimization algorithm used to find the parameters of a function $f$ that lead to a minima. It is used when the parameters cannot be calculated [analytically](https://math.stackexchange.com/questions/567014/what-does-it-mean-to-solve-a-math-problem-analytically).
 
 Consider a function with two parameters $f(x, y)$. Our goal is to reach the local minima starting from a randomly chosen initial point $(x_0, y_0)$.
 
@@ -57,8 +57,9 @@ $$
 
 The algorithm to minimize $f(x, y)$ is as follows,
 
-- Choose a random initial point $(x_0, y_0)$.
-- Repeat for each parameter until convergence,
+- Compute the gradient for $f(x, y)$ wrt $x$ and $y$.
+- Choose a random initial values for parameters $x$ and $y$.
+- Repeat for each parameter until it reaches a minima,
 
 $$
 Q_{new} = Q_{old} - \underbrace{ \alpha \underbrace{ \frac {\partial f(x, y)} {\partial Q} }_{\text{slope}} }_{\text{step}}
@@ -94,15 +95,15 @@ $$
 Q_{new} = Q_{old} - \underbrace{ \alpha \underbrace{ \text { negative} }_{\text{slope}} }_{\text{step}}
 $$
 
-##
+## Optimal Learning Rate
 
-Note that the step size decreases as we go through the iterations, due to the decrease in slope as we get closer to the minima.
+The optimal learning rate will be dependent on the shape of the function $f$. In deep learning, the shape of $f$ depends on the examples available in the dataset and how it gets processes by the model architecture.
 
-The optimal learning rate will be dependent on the topology of your loss landscape, which is in turn dependent on both your model architecture and your dataset.
+Note that the step size decreases as we go through the iterations, due to the decrease in slope as we get closer to the minima. This reduces the chance of overshooting the minima.
 
-# Badlands
+# Improvements
 
-Gradient Descent is an algorithm which is designed to find the optimal points, but these optimal points are not necessarily global.
+Gradient Descent is designed to find a minima, but it does not *necessarily* find a global minima. In order to aid
 
 # References
 
