@@ -39,48 +39,48 @@ We will now show that even though we have *two* layers of linear activation func
 The $z$ linear combination value for the hidden layer is given by the matrix $\bold{z}^{[1]}$,
 
 $$
-\bold{z}^{[1]} = \bold{w^{[1]}} \cdot \bold{x} + b^{[1]}
+\bold{z}^{(1)} = \bold{w^{(1)}} \cdot \bold{x} + b^{(1)}
 $$
 
-The outputs from the hidden layer's nodes is given by the matrix $\bold{a}^{[1]}$,
+The outputs from the hidden layer's nodes is given by the matrix $\bold{a}^{(1)}$,
 
 $$
-\bold{a}^{[1]} = f(\bold{z}^{[1]})
+\bold{a}^{(1)} = f(\bold{z}^{(1)})
 $$
 
 Since $f(z)$ is an identity function, we can expand this into,
 
 $$
-\bold{a}^{[1]} = \bold{w^{[1]}} \cdot \bold{x} + b^{[1]}
+\bold{a}^{(1)} = \bold{w^{(1)}} \cdot \bold{x} + b^{(1)}
 $$
 
-The matrix $\bold{a}^{[1]}$ is the input for the output layer. The $\bold{z}^{[2]}$ for the output layer is,
+The matrix $\bold{a}^{(1)}$ is the input for the output layer. The $\bold{z}^{(2)}$ for the output layer is,
 
 $$
-\bold{z}^{[2]} = \bold{w^{[2]}} \cdot \bold{a}^{[1]} + b^{[2]}
+\bold{z}^{(2)} = \bold{w^{(2)}} \cdot \bold{a}^{(1)} + b^{(2)}
 $$
 
-The output matrix $\bold{a}^{[2]}$ can be calculated as,
+The output matrix $\bold{a}^{(2)}$ can be calculated as,
 
 $$
-\bold{a}^{[2]} = f(\bold{z}^{[2]})	\\
+\bold{a}^{(2)} = f(\bold{z}^{(2)})	\\
 
-\bold{a}^{[2]} = \bold{w^{[2]}} \cdot \bold{a}^{[1]} + b^{[2]}
+\bold{a}^{(2)} = \bold{w^{(2)}} \cdot \bold{a}^{(1)} + b^{(2)}
 $$
 
-Expand the $\bold{a}^{[1]}$ variable,
+Expand the $\bold{a}^{(1)}$ variable,
 
 $$
-\bold{a}^{[2]} = \bold{w^{[2]}} \cdot (\bold{w^{[1]}} \cdot \bold{x} + b^{[1]}) + b^{[2]}
+\bold{a}^{(2)} = \bold{w^{(2)}} \cdot (\bold{w^{(1)}} \cdot \bold{x} + b^{(1)}) + b^{(2)}
 $$
 
 Finally, we rearranging the variables,
 
 $$
-\bold{a}^{[2]} = (\bold{w^{[2]}} \cdot \bold{w^{[1]}}) \cdot \bold{x} + (\bold{w^{[2]}}  \cdot b^{[1]} + b^{[2]})
+\bold{a}^{(2)} = (\bold{w^{(2)}} \cdot \bold{w^{(1)}}) \cdot \bold{x} + (\bold{w^{(2)}}  \cdot b^{(1)} + b^{(2)})
 $$
 
-We can now see that $\bold{a}^{[2]}$ is a linear function.
+We can now see that $\bold{a}^{(2)}$ is a linear function.
 
 No matter how many nodes and layers you have you will always end up with a linear function if you use linear activations.
 
@@ -88,21 +88,23 @@ Apparently, there are rare cases where linear activation functions are useful. I
 
 ## Why do we need *differentiable* activation functions ?
 
-During backpropagation, we calculate the partial derivatives of the error wrt each of the weights. This is required to tune the network weights.
+During backpropagation, we calculate the partial derivatives of the loss function wrt each of the weights and biases. This is required to update the network weights and biases.
 
 ## Why do we need *monotonic* activation functions ?
 
-During the training phase, backpropagation informs each neuron how much it should influence each neuron in the next layer. If the activation function isn't monotonic then increasing the neuron's weight might cause it to have less influence, the opposite of what was intended. The result would be choatic behavior during training, with the network unlikely to converge to a state that yields an accurate classifier.
+Backpropagation with gradient descent informs each neuron how much it should influence each neuron in the next layer through weights.
 
+If the activation function isn't monotonic then increasing the neuron's weight might cause it to have less influence, the opposite of what was intended.
 
+The result would be chaotic behavior during training, with the network unlikely to converge to a minima that yields an accurate model.
 
 ## Why do we need *zero-centered* activation functions ?
 
-During backpropagation, the derivative can be positive or negative. This is used to increase a particular weight and decrease another weight in the neural net. With non-zero centred activation function the above steps cannot be done in a single epoch. This is why we prefer zero centred activation function.
+During backpropagation, the partial derivative can be positive or negative. This is used to increase or decrease weights in the neural net. With a non-zero centred activation function the above steps cannot be done in a single epoch.
 
 # Types of Activation Functions
 
-There are many types of activation functions, each with its own pros and cons. Choose one depending on your needs.
+There are many types of activation functions, each with its own pros and cons. Choose one depending on your network's requirements.
 
 ## Sigmoid
 
@@ -117,9 +119,9 @@ $$
 f(z) = \frac {1} {1 + e^{-z}}
 $$
 
-It takes in a real-valued number $z$ and squashes it into a range monotonically increasing from $0$ to $1$. The output is thus, often interpreted as probabilities.
+It takes in a real-valued number $z$ and squashes it into a range monotonically increasing from $0$ to $1$. So, the output can be interpreted as probabilities when it used as the activation function for the output layer.
 
-Unlike the perceptron neuron, a sigmoid function does not abruptly change the output as we tune the input weights. This made is widely used until it was replaced by others due to the following disadvantages.
+Unlike the perceptron neuron, a sigmoid function does not abruptly change the output as we tune the input weights. This made is widely used until it was replaced due to some disadvantages.
 
 The sigmoid function does not center output around zero, ie. the mean is not $0$.
 

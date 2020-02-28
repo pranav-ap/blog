@@ -151,3 +151,4 @@ As you approach the minima the gradient will get smaller but not as drastically 
 - [Gradient Descent, Step-by-Step](https://youtu.be/sDv4f4s2SB8)
 - [Michael Nielsen](http://neuralnetworksanddeeplearning.com)
 - [Wikipedia: Learning rate](https://en.wikipedia.org/wiki/Learning_rate)
+- [An overview of gradient descent optimization algorithms, Sebastian Ruder](https://ruder.io/optimizing-gradient-descent/)
