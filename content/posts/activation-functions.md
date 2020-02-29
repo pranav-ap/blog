@@ -203,7 +203,7 @@ It is almost always preferable compared to the sigmoid function, even though it 
 	<figcaption>Rectified Linear Unit (ReLU)</figcaption>
 </figure>
 
-ReLU is the most widely used activation function. It is defined as,
+**ReLU** is the most widely used activation function. It is defined as,
 
 $$
 f(z) = max(0, z)
@@ -325,11 +325,9 @@ $$
 
 Since $\bold{a}(z) = 0$, its gradient $\partial a(z) / \partial z$ is also $0$, which means that $w_1$ will never again get updated during gradient descent optimization.
 
-Problems with ReLU
+One reason why $w_1$ is highly negative in the first place could be because of bad initialization of weights. This is easily remedied by ensuring that only small values are assigned to all the weights.
 
-If the learning rate is too high the weights may change to a value that causes the neuron to not get updated at any data point again.
-ReLU generally not used in RNN because they can have very large outputs so they might be expected to be far more likely to explode than units that have bounded values.
-
+Another reason is the use of a high learning rate $\alpha$. When $\alpha$ is large, then the update rule will assign a large negative value to $w_1$.
 
 ## Leaky ReLU
 
@@ -338,28 +336,34 @@ ReLU generally not used in RNN because they can have very large outputs so they 
 	<figcaption>Leaky ReLU and Parametric ReLU</figcaption>
 </figure>
 
-The Dying ReLU problem—when inputs approach zero, or are negative, the gradient of the function becomes zero, the network cannot perform backpropagation and cannot learn.
+A dead ReLU does not take part in backprop. The **leaky ReLU** is a variant that alleviates this problem by adding a slight slope in the negative range. It is defined as,
 
-Prevents dying ReLU problem—this variation of ReLU has a small positive slope in the negative area, so it does enable backpropagation, even for negative input values
-Otherwise like ReLU
-
-Results not consistent—leaky ReLU does not provide consistent predictions for negative input values.
+$$
+f(z) = max(0.01 \space z, z)
+$$
 
 ## Parametric ReLU (PReLU)
 
-## Exponential Linear Unit (ELU)
+Parametric ReLU is a type of leaky ReLU that, instead of having a predetermined slope like 0.01, makes it a parameter for the neural network to learn. It is defined as,
 
-<figure style="width: 700px">
-	<img src="/media/deep learning/elu.png" alt="Exponential Linear Unit">
-	<figcaption>Exponential Linear Unit</figcaption>
-</figure>
+$$
+f(z) = max(az, z)
+$$
+
+where, $a$ is the parameter for the slope.
 
 ## Softmax
 
-Able to handle multiple classes only one class in other activation functions—normalizes the outputs for each class between 0 and 1, and divides by their sum, giving the probability of the input value being in a specific class.
+The softmax activation function is used in the last layer of neural nets for multi-class classification.
 
-Useful for output neurons—typically Softmax is used only for the output layer, for neural networks that need to
-classify inputs into multiple categories.
+It takes in a vector of real numbers and returns a vector of whose sum of elements is always $1$. So, it can be used for categorical probability distribution. It is defined as,
+
+$$
+f_{i}(\bold{x})
+=
+\frac {e^{x_i}} {\sum_{j = 1}^{n} e^{x_j}}
+$$
+
 
 # References
 
@@ -374,3 +378,4 @@ classify inputs into multiple categories.
 - [StackOverflow : Pros and Cons](https://stats.stackexchange.com/questions/115258/comprehensive-list-of-activation-functions-in-neural-networks-with-pros-cons/229015#229015)
 - [Deeplizard : Vanishing & Exploding Gradient explained](https://youtu.be/qO_NLVjD6zE)
 - [StackOverflow : What is the “dying ReLU” problem in neural networks?](https://datascience.stackexchange.com/questions/5706/what-is-the-dying-relu-problem-in-neural-networks)
+- [Victor Zhou : Softmax](https://victorzhou.com/blog/softmax/)
