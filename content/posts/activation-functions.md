@@ -121,23 +121,80 @@ $$
 
 It takes in a real-valued number $z$ and squashes it into a range monotonically increasing from $0$ to $1$. So, the output can be interpreted as probabilities when it used as the activation function for the output layer.
 
-Unlike the perceptron neuron, a sigmoid function does not abruptly change the output as we tune the input weights. This made is widely used until it was replaced due to some disadvantages.
+Unlike the perceptron neuron, a sigmoid function does not abruptly change the output as we tune the input weights. But it has recently fallen out of favor and it is rarely ever used, due to some drawbacks.
 
-The sigmoid function does not center output around zero, ie. the mean is not $0$.
+The first of which is that a sigmoid function does not center output around zero. The second is the *vanishing gradient problem*.
 
-### Vanishing gradient
+## Vanishing Gradient Problem
 
-For very high or very low values of $z$, there is almost no change in activation. This can result in the network refusing to learn further, or being too slow to reach an accurate prediction.
+For very high or very low values of $z$, there is almost no change in activation. In other words, the slope is very small on both ends of the curve.
 
-## Hyperbolic tangent (Tanh)
+$$
+\tag {saturation at the tails} \frac {\partial a^{(l)}_{p}} {\partial z^{(l)}_{p}} \approx 0
+$$
+
+This saturation is the root cause for the vanishing gradient problem observed during backprop.
+
+<figure style="width: 600px">
+	<img src="/media/deep learning/simple-line-net.png" alt="">
+	<figcaption></figcaption>
+</figure>
+
+The gradient of the loss function $J(\theta)$ for the parameter $\theta_{2}$ is given by,
+
+$$
+\frac {\partial J (\theta)} {\partial \theta_{2}}
+=
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}} {\partial z^{(3)}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}} {\partial \theta_{2}} \Bigg)
+$$
+
+The update rule for $\theta_{2}$ during gradient descent is,
+
+$$
+\theta_{2}
+=
+\theta_{2}
+-
+\alpha
+\frac {\partial J (\theta)} {\partial \theta_{2}}
+$$
+
+If the activation function $a^{(3)}$ returns values from the tail, then its slope $\partial a^{(3)} / \partial z^{(3)} \approx 0$. This means $\partial J (\theta) / \partial \theta_{2}$ will be a tiny number $< 1$. So, $\theta_{2}$ is updated at a snail's pace.
+
+This problem gets worse as we pass through more layers. The gradient of the loss function $J(\theta)$ for the parameter $\theta_{1}$ is given by,
+
+$$
+\frac {\partial J (\theta)} {\partial \theta_{1}}
+=
+\Bigg ( \frac {\partial J (\theta)} {\partial a^{(3)}} \Bigg)
+\Bigg ( \frac {\partial a^{(3)}} {\partial z^{(3)}} \Bigg)
+\Bigg ( \frac {\partial z^{(3)}} {\partial a^{(2)}} \Bigg)
+\Bigg ( \frac {\partial a^{(2)}} {\partial z^{(2)}} \Bigg)
+\Bigg ( \frac {\partial z^{(2)}} {\partial \theta_{1}} \Bigg)
+$$
+
+The gradients for the weights in the front of the network have longer chains of small numbers. The gradient may be so small by the time it reaches them that it may have very little effect in the update rule. So these weights train very slowly.
+
+## Hyperbolic tangent (tanh)
 
 <figure style="width: 700px">
 	<img src="/media/deep learning/tanh.png" alt="Tanh">
 	<figcaption>Tanh</figcaption>
 </figure>
 
-The tanh function "squashes" values to the range -1 and 1. Output values are, therefore, centered around zero
-Can be thought of as a scaled, or shifted, sigmoid, and is almost always preferable to the sigmoid function
+The tanh function takes in a real-valued number $z$ and squashes it into a range monotonically increasing from $-1$ to $1$. It is defined by the formula,
+
+$$
+f(z)
+=
+\frac {2} {1 + e^{-2z}} + 1
+$$
+
+Unlike the sigmoid function, its output values are zero-centered. It can be thought of as a scaled and shifted sigmoid.
+
+It is almost always preferable compared to the sigmoid function, even though it suffers from vanishing gradients.
 
 ## Rectified Linear Unit (ReLU)
 
@@ -146,16 +203,133 @@ Can be thought of as a scaled, or shifted, sigmoid, and is almost always prefera
 	<figcaption>Rectified Linear Unit (ReLU)</figcaption>
 </figure>
 
-Function takes the form of f(x) = max(0, x)
-Transformation leads positive values to be 1, and negative values to be zero
-Shown to accelerate convergence of gradient descent compared to above functions
-Can lead to neuron death, which can be combated using Leaky ReLU modification (see [1])
-ReLU is has become the default activation function for hidden layers (see [3])
+ReLU is the most widely used activation function. It is defined as,
 
-Computationally efficient—allows the network to converge very quickly
-Non-linear—although it looks like a linear function, ReLU has a derivative function and allows for backpropagation.
+$$
+f(z) = max(0, z)
+$$
 
-Functions like ReLU are used in neural networks due to the computational advantages of using these simple equations over more traditional activation functions like tanh or the logistic sigmoid function. The back-propagation algorithm used to optimise neural networks works under the pre-condition that all of the functions contained within the system are differentiable. As discussed ReLU and other variants are non-differentiable at specific points, so how are they used? Essentially, at the points at which they are non-differentiable the function is not evaluated and the output is replaced with a sensible value. For example for ReLU at 𝑓ʹ(𝑥) we just specify the output to be zero or one, which is reasonable given our usage. In Theano [ 3] for example it specified that 𝑥 is not evaluated and taken to be 1 for 𝑥 >= 0. This is not mathematically pure and one could imagine scenarios where this would cause problems, the reality is however that the neural networks that comprise of these functions work well and are stable and so this issue is over-looked in favour of computational efficiency.
+It simply returns $z$ if it is positive and $0$ otherwise. So it is efficient and easy to compute, unlike the sigmoid or tanh where we need to calculate the exponential.
+
+It does not suffer from the vanishing gradient problem. Thus, it allows for faster and effective training of deep neural architectures.
+
+One drawback of ReLU is that it is non-differentiable at $0$. For a function to be differentiable at a given point $x$, the following conditions must be true.
+
+1. The left-hand limit exists
+1. The right-hand limit exists
+1. The left-hand and right-hand limits are equal
+
+The derivative for a function $f$ at $x$ at $0$ is given by,
+
+$$
+f'(x)
+=
+\lim\limits_{x \to 0}
+\frac {f(x + \Delta x) - f(x)} {\Delta x}
+$$
+
+The derivative for ReLU  at $0$ is,
+
+$$
+f'(x)
+=
+\lim\limits_{x \to 0}
+\frac {\text{max}(0, x + \Delta x) - \text{max}(0, x)} {\Delta x}
+$$
+
+The right hand limit is,
+
+$$
+\begin{aligned}
+
+f'(x)
+&=
+\lim\limits_{x \to 0^{\text{+}}}
+\frac {\text{max}(0, x + \Delta x) - \text{max}(0, x)} {\Delta x}
+
+\\
+
+&=
+\lim\limits_{x \to 0^{\text{+}}}
+\frac {x + \Delta x - x} {\Delta x}
+
+\\
+
+&= 1
+
+\end{aligned}
+$$
+
+The left hand limit is,
+
+$$
+\begin{aligned}
+
+f'(x)
+&=
+\lim\limits_{x \to 0^{\text{-}}}
+\frac {\text{max}(0, x + \Delta x) - \text{max}(0, x)} {\Delta x}
+
+\\
+
+&=
+\lim\limits_{x \to 0^{\text{-}}}
+\frac {0 - 0} {\Delta x}
+
+\\
+
+&= 0
+
+\end{aligned}
+$$
+
+As we can see, the left-hand limit and the right-hand limit are not equal at $0$, Hence, we say that the derivative $f'$ is undefined at $0$.
+
+As a workaround, deep learning frameworks do not evaluate it at non-differentiable points and simply return some sensible output value for ReLU neurons and its variants.
+
+Another drawback with ReLU is that it suffers from what is called the *dying ReLU problem*.
+
+## Dying ReLU Problem
+
+<figure style="width: 700px">
+	<img src="/media/deep learning/inside-a-neuron.png" alt="Inside a Neuron">
+	<figcaption>Inside a Neuron</figcaption>
+</figure>
+
+If a weight like $w_1$ or bias $b$ has a large negative value, then the sum $z$ will likely be a negative value for any input vector $\bold{x}$. In this case, ReLU will always output $0$ for any input.
+
+$$
+\tag{\text{a dying ReLU's output}} \bold{a}(z) = 0
+$$
+
+This has a terrible affect on backprop. The gradient of the loss function $J(\theta)$ for the parameter $w_1$ is given by,
+
+$$
+\frac {\partial J (W)} {\partial w_1}
+=
+\Bigg ( \frac {\partial J (W)} {\partial a(z)} \Bigg)
+\Bigg ( \frac {\partial a(z)} {\partial z} \Bigg)
+\Bigg ( \frac {\partial z} {\partial w_1} \Bigg)
+$$
+
+The update rule for $\theta_{2}$ during gradient descent is,
+
+$$
+w_1
+=
+w_1
+-
+\alpha
+\frac {\partial J (\theta)} {\partial w_1}
+$$
+
+Since $\bold{a}(z) = 0$, its gradient $\partial a(z) / \partial z$ is also $0$, which means that $w_1$ will never again get updated during gradient descent optimization.
+
+Problems with ReLU
+
+If the learning rate is too high the weights may change to a value that causes the neuron to not get updated at any data point again.
+ReLU generally not used in RNN because they can have very large outputs so they might be expected to be far more likely to explode than units that have bounded values.
+
 
 ## Leaky ReLU
 
@@ -180,13 +354,6 @@ Results not consistent—leaky ReLU does not provide consistent predictions for 
 	<figcaption>Exponential Linear Unit</figcaption>
 </figure>
 
-## ReLU-6
-
-<figure style="width: 700px">
-	<img src="/media/deep learning/relu-6.png" alt="ReLU-6">
-	<figcaption>ReLU-6</figcaption>
-</figure>
-
 ## Softmax
 
 Able to handle multiple classes only one class in other activation functions—normalizes the outputs for each class between 0 and 1, and divides by their sum, giving the probability of the input value being in a specific class.
@@ -205,3 +372,5 @@ classify inputs into multiple categories.
 - [Derivative of the Sigmoid function](https://towardsdatascience.com/derivative-of-the-sigmoid-function-536880cf918e)
 - [Why is the ReLU function not differentiable at x=0?](https://sebastianraschka.com/faq/docs/relu-derivative.html)
 - [StackOverflow : Pros and Cons](https://stats.stackexchange.com/questions/115258/comprehensive-list-of-activation-functions-in-neural-networks-with-pros-cons/229015#229015)
+- [Deeplizard : Vanishing & Exploding Gradient explained](https://youtu.be/qO_NLVjD6zE)
+- [StackOverflow : What is the “dying ReLU” problem in neural networks?](https://datascience.stackexchange.com/questions/5706/what-is-the-dying-relu-problem-in-neural-networks)
