@@ -505,8 +505,6 @@ $$
 }
 $$
 
-# Weights Initialization
-
 # References
 
 - [Gradient Descent, Step-by-Step](https://youtu.be/sDv4f4s2SB8)
