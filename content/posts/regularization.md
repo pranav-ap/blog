@@ -10,7 +10,14 @@ tags:
 description: ""
 ---
 
-When training a neural net with high capacity, there will be a point when it stops generalizing and starts overfitting to the training set.
+Consider a polynomial regression model. As you keep increasing its degree $M$, there will be a point when it stops generalizing and starts overfitting to the training set.
+
+<figure style="width: 700px">
+	<img src="/media/deep learning/increasing-model-flexibility.png" alt="Increasing Polynomial Model Flexibility">
+	<figcaption>Increasing Polynomial Model Flexibility</figcaption>
+</figure>
+
+If you examine the coefficients of the model, you will find that they increase in magnitude as $M$ increases. So, in order to reduce overfitting the magnitude of these weights must be controlled.
 
 **Regularization** is a family of methods to prevent overfitting. Some of these methods include
 
@@ -18,7 +25,11 @@ When training a neural net with high capacity, there will be a point when it sto
 - **L1** Regularization
 - **L2** Regularization
 
-**L1** and **L2** regularization are explicit methods that directly reduce the representational capacity of a neural net by adding a penalty term to the loss function. Implicit methods reduce overfitting indirectly.
+**L1** and **L2** regularization are explicit methods that directly reduce the representational capacity of a neural net by adding a penalty term to the loss function.
+
+They prevent the weights in the model becoming too large.
+
+Implicit methods reduce overfitting indirectly.
 
 # Early Stopping
 
@@ -68,9 +79,10 @@ where $\theta$ represents all the weights, and $\lambda$ governs the degree to w
 
 If the weights $\theta$ are large, then $\lambda \sum^n_{i = 1} \mid \theta_i \mid$ will also be large, which leads to a large loss $J (\theta)$.
 
-This expression is commonly used for feature selection as it tends to produce sparse parameter vectors where Only the important features take on non-zero values.
+When gradient descent uses **L1** regularization, it tends to reduce unimportant weights to $0$, completely removing some inputs of some neurons.
 
-When gradient descent uses **L1** regularization, it tends to reduce unimportant weights to $0$, completely removing some inputs to a neuron.
+This makes **L1** useful when you have many features that for feature selection.
+
 
 
 Lasso shrinks the less important feature’s coefficient to zero thus, removing some feature altogether. So, this works well for feature selection in case we have a huge number of features.
@@ -115,3 +127,4 @@ Max norm constraints. Another form of regularization is to enforce an absolute u
 
 - [Wikipedia: Early stopping](https://en.wikipedia.org/wiki/Early_stopping)
 - [A Gentle Introduction to Early Stopping to Avoid Overtraining Neural Networks](https://machinelearningmastery.com/early-stopping-to-avoid-overtraining-neural-network-models/)
+- [Use Weight Regularization to Reduce Overfitting of Deep Learning Models](https://machinelearningmastery.com/weight-regularization-to-reduce-overfitting-of-deep-learning-models/)
