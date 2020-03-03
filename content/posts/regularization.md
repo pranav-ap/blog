@@ -19,17 +19,13 @@ Consider a polynomial regression model. As you keep increasing its degree $M$, t
 
 If you examine the coefficients of the model, you will find that they increase in magnitude as $M$ increases. So, in order to reduce overfitting the magnitude of these weights must be controlled.
 
-**Regularization** is a family of methods to prevent overfitting. Some of these methods include
+**Regularization** is a family of methods that help learn small weights to prevent overfitting. Some of these methods include
 
 - Early Stopping
 - **L1** Regularization
 - **L2** Regularization
 
-**L1** and **L2** regularization are explicit methods that directly reduce the representational capacity of a neural net by adding a penalty term to the loss function.
-
-They prevent the weights in the model becoming too large.
-
-Implicit methods reduce overfitting indirectly.
+**L1** and **L2** regularization are explicit methods that directly reduce the representational capacity of a neural net by adding a penalty term to the loss function. Implicit methods like early stopping reduce overfitting indirectly.
 
 # Early Stopping
 
@@ -83,12 +79,6 @@ When gradient descent uses **L1** regularization, it tends to reduce unimportant
 
 This makes **L1** useful when you have many features that for feature selection.
 
-
-
-Lasso shrinks the less important feature’s coefficient to zero thus, removing some feature altogether. So, this works well for feature selection in case we have a huge number of features.
-
-In other words, neurons with **L1** regularization end up using only a sparse subset of their most important inputs and become nearly invariant to the “noisy” inputs. In comparison, final weight vectors from **L2** regularization are usually diffuse, small numbers. In practice, if you are not concerned with explicit feature selection, **L2** regularization can be expected to give superior performance over **L1**.
-
 # L2 Regularization
 
 **L2** Regularization is the most common form of regularization. It adds a penalty term to the loss function to discourage the coefficients from holding large values. The penalty is simply the *sum of squares all coefficients*,
@@ -109,11 +99,7 @@ $$
 
 where $\lambda$ governs the degree to which we penalize large parameters, and $\theta$ represents all the weights.
 
-It encourages the network to use all of its inputs a little rather than some of its inputs a lot.
-
-This expression doesn't tend to push less important weights to zero and typically produces better results when training a model.
-
-Max norm constraints. Another form of regularization is to enforce an absolute upper bound on the magnitude of the weight vector for every neuron and use projected gradient descent to enforce the constraint. In practice, this corresponds to performing the parameter update as normal, and then enforcing the constraint by clamping the weight vector w⃗  of every neuron to satisfy ∥w⃗ ∥2<c. Typical values of c are on orders of 3 or 4. Some people report improvements when using this form of regularization. One of its appealing properties is that network cannot “explode” even when the learning rates are set too high because the updates are always bounded.
+It encourages the neurons to use all of their inputs a little rather than some of its inputs a lot. It doesn't tend to push less important weights to zero and typically produces better results when training a model.
 
 # Dropout
 
