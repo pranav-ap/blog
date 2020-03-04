@@ -81,7 +81,9 @@ This makes **L1** useful when you have many features that for feature selection.
 
 # L2 Regularization
 
-**L2** Regularization is the most common form of regularization. It adds a penalty term to the loss function to discourage the coefficients from holding large values. The penalty is simply the *sum of squares all coefficients*,
+**L2** Regularization is the most common form of regularization. It adds a penalty term to the loss function to discourage the coefficients from holding large values. This is also called **weight decay**.
+
+The penalty is simply the *sum of squares all coefficients*,
 
 $$
 \lambda \sum^n_{i = 1} \theta_i^2
@@ -103,14 +105,33 @@ It encourages the neurons to use all of their inputs a little rather than some o
 
 # Dropout
 
-<figure style="width: 580px">
+In dropout, we randomly ignore a subset of nodes *including* their incoming and outgoing links from the input and hidden layers for each epoch during backprop.
+
+Ignoring some nodes results in a smaller network which reduces capacity. This in turn reduces chances of overfitting.
+
+It also prevents the network from relying on a small segment of nodes for its task. It forces nodes within a layer to take on more responsibility for the inputs, making the network more robust.
+
+For an epoch, each node is retained with a probability $p$ independent of other units. It can be chosen using a validation set or can simply be a fixed value. A common value for $p$ for nodes in hidden layers is around $0.5$ and for input nodes, it is closer to $1$.
+
+<figure style="width: 560px">
 	<img src="/media/deep learning/dropout.png" alt="Dropout">
 	<figcaption>Dropout</figcaption>
 </figure>
 
+Due to dropout, the architecture of the network is different for every epoch.
+
+Dropout approximates training a large number of neural networks with different architectures in parallel.
+
+Applying dropout to a neural network amounts to sampling a “thinned” network from it. The thinned network consists of all the units that survived dropout (Figure 1b). A neural net with n units, can be seen as a collection of 2n possible thinned neural networks.
+
+Training a neural network with dropout can be seen as training a collection of 2n thinned networks with extensive weight sharing,
+
+
+training a network with dropout and using this approximate averaging method at test time leads to signiﬁcantly lower generalization error
 
 # References
 
 - [Wikipedia: Early stopping](https://en.wikipedia.org/wiki/Early_stopping)
 - [A Gentle Introduction to Early Stopping to Avoid Overtraining Neural Networks](https://machinelearningmastery.com/early-stopping-to-avoid-overtraining-neural-network-models/)
 - [Use Weight Regularization to Reduce Overfitting of Deep Learning Models](https://machinelearningmastery.com/weight-regularization-to-reduce-overfitting-of-deep-learning-models/)
+- [Dropout Paper](https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf)
