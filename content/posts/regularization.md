@@ -120,14 +120,7 @@ For an epoch, each node is retained with a probability $p$ independent of other 
 
 Due to dropout, the architecture of the network is different for every epoch.
 
-Dropout approximates training a large number of neural networks with different architectures in parallel.
-
-Applying dropout to a neural network amounts to sampling a “thinned” network from it. The thinned network consists of all the units that survived dropout (Figure 1b). A neural net with n units, can be seen as a collection of 2n possible thinned neural networks.
-
-Training a neural network with dropout can be seen as training a collection of 2n thinned networks with extensive weight sharing,
-
-
-training a network with dropout and using this approximate averaging method at test time leads to signiﬁcantly lower generalization error
+A neural net with $n$ nodes can be seen as a collection of $2^n$ possible thinned neural networks with different architectures. Dropout approximates training a large number of neural networks with different architectures in parallel.
 
 # References
 
