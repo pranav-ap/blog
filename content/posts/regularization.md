@@ -118,9 +118,7 @@ For an epoch, each node is retained with a probability $p$ independent of other 
 	<figcaption>Dropout</figcaption>
 </figure>
 
-Due to dropout, the architecture of the network is different for every epoch.
-
-A neural net with $n$ nodes can be seen as a collection of $2^n$ possible thinned neural networks with different architectures. Dropout approximates training a large number of neural networks with different architectures in parallel.
+Due to dropout, the architecture of the network is different for every epoch. A neural net with $n$ nodes can be seen as a collection of $2^n$ possible thinned neural networks with different architectures. Dropout approximates training a large number of neural networks with different architectures in parallel.
 
 # References
 
