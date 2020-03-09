@@ -10,29 +10,49 @@ tags:
 description: ""
 ---
 
-# Image representation
+Computers see an image as a matrix of numbers, where each element is called a **pixel**. For grayscale images, each pixel has a value between $0$ and $255$, where $0$ is black and $255$ is white; shades of gray fall in between.
 
-A gray scale image is a two-dimensional matrix of numbers, where each element, called a **pixel**, ranges from $0$ to $255$. Black pixels are encoded as $0$, and white pixels are encoded as $255$. Gray colors fall between them.
-
-<figure style="width: 400px">
-	<img src="/media/vision/grayscale-number.gif" alt="Grayscale Number">
-	<figcaption>Grayscale Number</figcaption>
+<figure style="width: 650px">
+	<img src="/media/vision/grayscale-image.png" alt="Grayscale Image">
+	<figcaption>Grayscale Image</figcaption>
 </figure>
 
-Color images are represented using a three-dimensional matrix. Each dimension is called a **channel** and they hold the red, green and blue pixel values.
+Standard color images are represented using the **RGB** color model. It uses the summation of red, green, and blue light components in various ways to produce a broad array of colors.
 
-<figure style="width: 450px">
-	<img src="/media/vision/color channels.png" alt="Color Channels">
-	<figcaption>Color Channels</figcaption>
+Color images are seen as a stack of three images, one for each color component. A pixel in a color image is written as a list of three numerical values, one for each color component. For example, the RGB pixel value $[200, 0, 200]$ represents purple.
+
+In this way, we can think of any image as a 3D matrix or volume with some width, height, and color depth. Grayscale images have a color depth of $1$.
+
+<figure style="width: 650px">
+	<img src="/media/vision/color-image.png" alt="Color Image">
+	<figcaption>Color Image</figcaption>
 </figure>
 
-Pixels of both gray scale and color images are usually normalized into the range $0$ to $1$ by dividing each by $255$ for use in training.
+The challenge is to create an image classifier that looks at these pixel values and can classify this image as a car under *varying* light conditions, angles and positions.
+
+# Convolutional Neural Networks
+
+Convolutional neural networks represent a data-driven approach to image classification. Every CNN is made up of multiple layers, the three main types of layers are convolutional, pooling, and fully-connected, as pictured below.
+
+<figure style="width: 650px">
+	<img src="/media/vision/cnn/simple-cnn.png" alt="CNN">
+	<figcaption>CNN</figcaption>
+</figure>
 
 # Convolution
+
+In image processing, a kernel, convolution matrix, or mask is a small matrix. It is used for blurring, sharpening, embossing, edge detection, and more. This is accomplished by doing a convolution between a kernel and an image.
+
+Depending on the element values, a kernel can cause a wide range of effects.
 
 The convolution operation is used to transform an image to make it easier to identify primitive shapes within the original image.
 
 The general idea is that we use multiple filters to extract a different features from an input image and these features will be useful for classifying it.
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/conv-calc.jpg" alt="Convolution Operation">
+	<figcaption>Convolution Operation</figcaption>
+</figure>
 
 The primary tool for convolution is the **filter**. They are simple two-dimensional matrices that can detect horizontal or vertical lines, curves and edges within the image. Some filters are used to blur images, while others can smoothen rough edges.
 
@@ -66,32 +86,40 @@ Sometimes the you may need to pad the input image with $0$'s to facilitate the e
 
 # Pooling
 
-Pooling is used to reduce the size of a feature map in order to decrease compute.
+A limitation of feature maps is that they record the precise position of features in the input. This means that small movements in the position of the feature in the input image will result in a different feature map. Pooling helps to retain features that do not change depe
 
-A limitation of feature maps is that they record the precise position of features in the input. This means that small movements in the position of the feature in the input image will result in a different feature map.
-
-The size of the pooling filter is almost always 2×2 pixels applied with a stride of 2 pixels.
+Another purpose of pooling is to reduce the dimensionality of feature maps, which in turn, reduces the number of parameters. This shortens the training time and controls overfitting.
 
 <figure style="width: 450px">
 	<img src="/media/vision/cnn/max pooling.png" alt="Max Pooling with stride 2">
 	<figcaption>Max Pooling with stride 2</figcaption>
 </figure>
 
-Two common functions used in the pooling operation are:
+Two common types of pooling operations are:
 
-- Average Pooling: Calculate the average value for each patch on the feature map
-- Max Pooling: Calculate the maximum value for each patch of the feature map
+- **Max Pooling** - Calculate the maximum value for each patch of the feature map
+- **Average Pooling** - Calculate the average value for each patch on the feature map
 
-Pooling layers follow a sequence of one or more convolutional layers and are intended to consolidate the features learned and expressed in the previous layers feature map. As such, pooling may be consider a technique to compress or generalize feature representations and generally reduce the overfitting of the training data by the model.
+# Changes in dimensions
 
-They too have a receptive field, often much smaller than the convolutional layer. Their stride is often equal to the size of the receptive field to avoid any overlap.
+Say you have an image with dimensions $28 \times 28$.
 
-The function of pooling is to continuously reduce the dimensionality to reduce the number of parameters and computation in the network. This shortens the training time and controls overfitting.
+If you perform convolution on it using $8$ different filters, you will get $8$ feature maps. We stack them together and consider it a volume with depth $8$. The change in height and width depend on the stride and padding.
 
-Pooling is a generalization process to reduce overfitting.
+<figure style="width: 450px">
+	<img src="/media/vision/cnn/dim-change.png" alt="Changes in Dimension">
+	<figcaption>Changes in Dimension</figcaption>
+</figure>
+
+Next, we apply pooling. Pooling changes the height and width depending on the stride and window size. It does not change the depth, ie. it does not create or remove feature maps.
 
 # References
 
 - [Brandon Rohrer: How Convolutional Neural Networks work](https://youtu.be/FmpDIaiMIeA?list=LLm-oVeNttHguGRcnMcWtZRg)
 - [A Gentle Introduction to Pooling Layers for Convolutional Neural Networks](https://machinelearningmastery.com/pooling-layers-for-convolutional-neural-networks/)
 - [Convolutional Neural Networks](https://cezannec.github.io/Convolutional_Neural_Networks/)
+- [CNNs, Part 1: An Introduction to Convolutional Neural Networks](https://victorzhou.com/blog/intro-to-cnns-part-1/)
+- [CNNs, Part 2: Training a Convolutional Neural Network](https://victorzhou.com/blog/intro-to-cnns-part-2/)
+- [Basics of convolutions](https://aishack.in/tutorials/convolutions/)
+- [Image convolution examples](https://aishack.in/tutorials/image-convolution-examples/)
+- [Wikipedia: Kernel (image processing)](https://en.wikipedia.org/wiki/Kernel_(image_processing))
