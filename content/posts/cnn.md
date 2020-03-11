@@ -30,9 +30,22 @@ In this way, we can think of any image as a 3D matrix or volume with some width,
 
 The challenge is to create an image classifier that looks at these pixel values and can classify this image as a car under *varying* light conditions, angles and positions.
 
+# Feedforward nets for image classification
+
+We could try to use an feedforward nets for this task by *flattening* all the pixels into a vector. The drawback is that spatial information within the image is lost. So, they are unable to perform well on complex datasets.
+
+<figure style="width: 650px">
+	<img src="/media/vision/cnn/mlp-for-image.png" alt="Using a feedforward nets for Image Classification">
+	<figcaption>Using a feedforward net for Image Classification</figcaption>
+</figure>
+
+Another drawback of feedforward nets is the they use **fully connected layers**, ie. ever neuron is connected to all the neurons of the previous layer. Even with a small $24 \times 24$ image, we get a vector of length $576$. You can imagine how many incoming and outgoing connections they will have.
+
 # Convolutional Neural Networks
 
-Convolutional neural networks represent a data-driven approach to image classification. It contains three main types of layers:
+Convolutional neural networks represent a data-driven approach to image classification. They are a specialized form of neural nets for processing grid-like data such as images.
+
+It contains three main types of layers:
 
 - Convolutional layer
 - Pooling layer
@@ -40,6 +53,34 @@ Convolutional neural networks represent a data-driven approach to image classifi
 
 <figure style="width: 650px">
 	<img src="/media/vision/cnn/simple-cnn.png" alt="CNN">
+	<figcaption>CNN</figcaption>
+</figure>
+
+Due to the fully connected nature of feedforward neural nets, a neuron in the first layer would be responsible for understanding the entire image.
+
+But in a CNN, a neuron is only responsible for a small region of the input image. These are called **locally connected layers**. They have the advantage of using far fewer parameters compared to fully connected layers.
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/sparse-connections.png" alt="Locally connected layers">
+	<figcaption>Locally connected layers</figcaption>
+</figure>
+
+The output layer can combine the findings of the each of the hidden nodes to make a prediction.
+
+We can rearrange the input vector of pixels and the hidden layer as matrices.
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/reorder-neurons-1.png" alt="CNN">
+	<figcaption>CNN</figcaption>
+</figure>
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/reorder-multiple-filters.png" alt="CNN">
+	<figcaption>CNN</figcaption>
+</figure>
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/conv-net-neurons.png" alt="CNN">
 	<figcaption>CNN</figcaption>
 </figure>
 
@@ -68,7 +109,7 @@ $$
 
 The values inside a kernel are called **weights**, because they determine how important a input pixel is in forming the filtered image. A kernel also has a **bias** parameter associated with it. Both weight and bias  parameters are learnt via backprop.
 
-We execute a convolution by sliding the filter over the input image. At every location, calculate the *dot product* between the filter matrix and the underlying values in the image and add the *bias* to get the final pixel value. Write it into the output matrix.
+We execute a convolution by sliding the filter over the input image. At every location, calculate perform *element-wise multiplication* between the filter matrix and the underlying values in the image and add the *bias* to get the final pixel value. Write it into the output matrix.
 
 If the final value large, then the filter has found a good candidate for the feature it was looking for.
 
@@ -117,6 +158,8 @@ All pooling operations first break an image into smaller patches, often $2 \time
 
 For each $2 \times 2$ patch, a **max pooling** layer looks at each value and selects only the maximum value. In the pink patch, it selects $20$ and so on until we are left with four values from the four patches. For similar images, even if a patch has some slightly different pixel values, the maximum values extracted in successive pooling layers, should be similar.
 
+Max-pooling layers kind of “zoom out”. They allow later convolutional layers to work on larger sections of the data, because a small patch after the pooling layer corresponds to a much larger patch before it.
+
 On the other hand, an **average pooling** layer takes the average of the values in a patch. But empirically, averaging is not as effective as max pooling.
 
 <figure style="width: 450px">
@@ -145,6 +188,10 @@ If you perform convolution on it using $8$ different filters, you will get $8$ f
 
 Next, we apply pooling. Pooling changes the height and width depending on the stride and window size. It does not change the depth, ie. it does not create or remove feature maps.
 
+# Parameter Sharing
+
+# Local Connectivity
+
 # References
 
 - [Brandon Rohrer: How Convolutional Neural Networks work](https://youtu.be/FmpDIaiMIeA?list=LLm-oVeNttHguGRcnMcWtZRg)
@@ -155,3 +202,12 @@ Next, we apply pooling. Pooling changes the height and width depending on the st
 - [Basics of convolutions](https://aishack.in/tutorials/convolutions/)
 - [Image convolution examples](https://aishack.in/tutorials/image-convolution-examples/)
 - [Wikipedia: Kernel (image processing)](https://en.wikipedia.org/wiki/Kernel_(image_processing))
+
+- more about para and hyper
+- output feature map size formula
+- why convolutions
+  - fully connected layers, too many weights
+  - use the udacity local connectivity video and screenshots
+  - also Convolutional Layers (Part 2)
+
+
