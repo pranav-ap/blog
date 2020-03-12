@@ -10,7 +10,7 @@ tags:
 description: ""
 ---
 
-Computers see an image as a matrix of numbers, where each element is called a **pixel**. For grayscale images, each pixel has a value between $0$ and $255$, where $0$ is black and $255$ is white; shades of gray fall in between.
+Computers see an image as a matrix of numbers, where each element is called a **pixel**. For grayscale images, each pixel has a value between $0$ and $255$, where $0$ is black and $255$ is white; various shades of gray fall in between.
 
 <figure style="width: 650px">
 	<img src="/media/vision/grayscale-image.png" alt="Grayscale Image">
@@ -28,22 +28,102 @@ In this way, we can think of any image as a 3D matrix or volume with some width,
 	<figcaption>Color Image</figcaption>
 </figure>
 
-The challenge is to create an image classifier that looks at these pixel values and can classify this image as a car under *varying* light conditions, angles and positions.
+The challenge is to create an image classifier that looks at these pixel values and can classify the image as a car under *varying* light conditions, angles and positions.
 
-# Feedforward nets for image classification
+# Challenges faced by ordinary neural networks
 
-We could try to use an feedforward nets for this task by *flattening* all the pixels into a vector. The drawback is that spatial information within the image is lost. So, they are unable to perform well on complex datasets.
+Ordinary feedforward neural nets receive a single input vector and transform it through a series of hidden layers. Each hidden layer is made up of a set of neurons, where each neuron is connected to *all* neurons in the previous layer. Neurons within a layer are completely independent of each other and do not share any connections.
+
+**Scaling to large images** We could try to use a traditional feedforward net for image classification by *flattening* all the image pixels into a vector.
+
+In CIFAR-10, images are only of size $32 \times 32 \times 3$, so a single fully-connected neuron in the first hidden layer of a regular neural net would have $32 \times 32 \times 3 = 3072$ weights. Clearly, fully connected layers cannot scale to larger images, since the number of weights would add up quickly!
 
 <figure style="width: 650px">
-	<img src="/media/vision/cnn/mlp-for-image.png" alt="Using a feedforward nets for Image Classification">
-	<figcaption>Using a feedforward net for Image Classification</figcaption>
+	<img src="/media/vision/cnn/mlp-for-image.png" alt="Fully Connected Layer">
+	<figcaption>Fully Connected Layer</figcaption>
 </figure>
 
-Another drawback of feedforward nets is the they use **fully connected layers**, ie. ever neuron is connected to all the neurons of the previous layer. Even with a small $24 \times 24$ image, we get a vector of length $576$. You can imagine how many incoming and outgoing connections they will have.
+**Spatial information** Another important drawback is that after flattening, the spatial information within the image is now lost. So, normal neural nets are unable to perform well on complex image datasets.
 
 # Convolutional Neural Networks
 
-Convolutional neural networks represent a data-driven approach to image classification. They are a specialized form of neural nets for processing grid-like data such as images.
+Convolutional neural networks are very similar to ordinary neural networks. They are made up of neurons that have learnable weights and biases. The whole network expresses a single function $f$ that takes raw image pixels and gives class scores. It uses backprop to learn the weights and biases based on a loss function $J(\theta)$.
+
+ConvNet architectures make the explicit assumption that the inputs are images, which allows us to encode certain properties into the architecture. The *convolution* operation is at the heart of conv nets and gives rise to most of these properties.
+
+<!-- gives rise to what properties ? -->
+
+There are three main types of layers in a ConvNets: Convolutional Layer, Pooling Layer, and Fully-Connected Layer. They are stacked together to form a full ConvNet architecture.
+
+## Convolution
+
+Convolution is used to transform an image to make it easier to identify primitive shapes within it. The primary tool for convolution is the **filter** or **kernel**. They are matrices that can detect lines, curves and edges within an image, while some can blur or sharpen the image.
+
+Filters are small *spatially* (along width and height), but extend through the full depth of the input image.
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/filter_in_action.gif" alt="Convolution Operation">
+	<figcaption>Convolution Operation</figcaption>
+</figure>
+
+Different kernel matrices have different effects on an image. An example of matrix for edge detection is,
+
+$$
+\begin{bmatrix}
+   -1 & -1 & -1 \\
+   -1 & 8 & -1 \\
+   -1 & -1 & -1 \\
+\end{bmatrix}
+$$
+
+We execute a convolution by sliding the filter over the input image. At every location, calculate perform *element-wise multiplication* between the filter matrix and the underlying values in the image and add the *bias* to get the final pixel value.
+
+The output matrix is called a **feature map** and represents the filtered image. If an element is large, it means that the filter has found a good candidate for the feature it was looking for.
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/conv-calc.jpg" alt="Convolution Operation">
+	<figcaption>Convolution Operation</figcaption>
+</figure>
+
+The height and width of a filter are usually odd numbers like $3 \times 3$ or $5 \times 5$. This ensures that the filter has a proper center position, which in turn decides the location of the filtered pixel value.
+
+The values inside a kernel are the *weight* parameters. One $3 \times 3$ filter introduces $9$ weight parameters. A kernel also has a *bias* parameter associated with it. Both weight and bias parameters are learnt via backprop. *None* of the filters are hand-engineered by the designer.
+
+<figure style="width: 400px">
+	<img src="/media/vision/cnn/convolution.gif" alt="Convolution Operation">
+	<figcaption>Convolution Operation</figcaption>
+</figure>
+
+The size of the output feature map changes depending on three hyperparameters:
+
+- Number of filters **F**
+- Stride **S**
+- Padding **P**
+
+**Number of filters** Typically, a convolution layer uses multiple filters, say $32$ filters. Each of them will produce a separate $2$-dimensional feature map. We will stack them to produce an *volume of feature maps* of depth $32$.
+
+**Stride** The number of pixels a filter moves across in a single step is called the **stride**. When the stride is $1$ then we move the filters one pixel at a time. When the stride is $2$ then the filters jump $2$ pixels at a time as we slide them around. This will produce smaller output volumes spatially.
+
+**Padding** Convolution reduces the height and width of the input matrix. If we want to use a very deep ConvNet we will need to retain the original height and width.
+
+The most common way to deal with this is to border the image or input feature map with $0$’s so that we can perfectly overlay a kernel on all the pixel values in the original image. It provides a way for us to control the spatial size of the output volumes. This is called **padding**.
+
+<figure style="width: 1000px">
+	<img src="/media/vision/cnn/padding.png" alt="Padding">
+	<figcaption>Padding</figcaption>
+</figure>
+
+The number of elements in the output volume is given by the formula,
+
+$$
+\frac {W - F + 2P} {S + 1}
+$$
+
+where, $W$ is the number of elements in the input volume.
+
+For example for a $7 \times 7$ input and a $3 \times 3$ filter with stride $1$ and padding $0$ we would get a $5 \times 5$ output. With stride 2 we would get a $3 \times 3$ output.
+
+A ConvNet contains multiple convolution layers. The first convolution layer will use multiple filters to extract simple features from the original input image. Successive convolution layers will discover new features based on these simpler features. This creates an hierarchy of features that finally leads to the classes we wish to classify.
 
 It contains three main types of layers:
 
@@ -53,12 +133,10 @@ It contains three main types of layers:
 
 <figure style="width: 650px">
 	<img src="/media/vision/cnn/simple-cnn.png" alt="CNN">
-	<figcaption>CNN</figcaption>
+	<figcaption>Convolutional Neural Network</figcaption>
 </figure>
 
-Due to the fully connected nature of feedforward neural nets, a neuron in the first layer would be responsible for understanding the entire image.
-
-But in a CNN, a neuron is only responsible for a small region of the input image. These are called **locally connected layers**. They have the advantage of using far fewer parameters compared to fully connected layers.
+The layers of a ConvNet have neurons arranged in 3 dimensions: width, height, depth. For example, the input images in CIFAR-10 are an input volume with dimensions $32 \times 32 \times 3$. The architecture will reduce this volume into a vector with dimensions $1 \times 1 \times 10$ class scores, arranged along the depth dimension.
 
 <figure style="width: 600px">
 	<img src="/media/vision/cnn/sparse-connections.png" alt="Locally connected layers">
@@ -74,71 +152,14 @@ We can rearrange the input vector of pixels and the hidden layer as matrices.
 	<figcaption>CNN</figcaption>
 </figure>
 
+## Parameter Sharing
+
 <figure style="width: 600px">
 	<img src="/media/vision/cnn/reorder-multiple-filters.png" alt="CNN">
 	<figcaption>CNN</figcaption>
 </figure>
 
-<figure style="width: 600px">
-	<img src="/media/vision/cnn/conv-net-neurons.png" alt="CNN">
-	<figcaption>CNN</figcaption>
-</figure>
-
-# Convolution
-
-The convolution operation is used to transform an image to make it easier to identify primitive shapes within the original image.
-
-The general idea is that we use multiple filters to extract a different features from an input image and these features will be useful for classifying it.
-
-<figure style="width: 600px">
-	<img src="/media/vision/cnn/filter_in_action.gif" alt="Convolution Operation">
-	<figcaption>Convolution Operation</figcaption>
-</figure>
-
-The primary tool for convolution is the **filter** or **kernel**. They are three-dimensional matrices that can detect lines, curves and edges within an image, while some can blur or sharpen images.
-
-Different kernel matrices have different effects on an image. An example of matrix for edge detection is,
-
-$$
-\begin{bmatrix}
-   -1 & -1 & -1 \\
-   -1 & 8 & -1 \\
-   -1 & -1 & -1 \\
-\end{bmatrix}
-$$
-
-The values inside a kernel are called **weights**, because they determine how important a input pixel is in forming the filtered image. A kernel also has a **bias** parameter associated with it. Both weight and bias  parameters are learnt via backprop.
-
-We execute a convolution by sliding the filter over the input image. At every location, calculate perform *element-wise multiplication* between the filter matrix and the underlying values in the image and add the *bias* to get the final pixel value. Write it into the output matrix.
-
-If the final value large, then the filter has found a good candidate for the feature it was looking for.
-
-<figure style="width: 600px">
-	<img src="/media/vision/cnn/conv-calc.jpg" alt="Convolution Operation">
-	<figcaption>Convolution Operation</figcaption>
-</figure>
-
-The output matrix is called a **feature map**. The number of pixels a filter moves across in a single step is called the **stride**.
-
-The size of the output feature map changes depending on the stride and the filter size. The higher the stride, smaller the output feature map. Larger the filter size, smaller the output feature map.
-
-<figure style="width: 400px">
-	<img src="/media/vision/cnn/convolution.gif" alt="Convolution Operation">
-	<figcaption>Convolution Operation</figcaption>
-</figure>
-
-The height and width of a filter are usually odd numbers like $3 \times 3$ or $5 \times 5$. This ensures that the filter has a proper center position, which in turn decides the location of the filtered pixel value.
-
-## Padding
-
-Convolution reduces the height and width of the input matrix. If we want to use a very deep ConvNet we may need to retain the original height and width.
-
-<figure style="width: 1000px">
-	<img src="/media/vision/cnn/padding.png" alt="Padding">
-	<figcaption>Padding</figcaption>
-</figure>
-
-The most common way to deal with this is to surround this image with a border of $0$’s so that we can perfectly overlay a kernel on all the pixel values in the original image. This is called **padding**.
+Local Connectivity. When dealing with high-dimensional inputs such as images, as we saw above it is impractical to connect neurons to all neurons in the previous volume. Instead, we will connect each neuron to only a local region of the input volume. The spatial extent of this connectivity is a hyperparameter called the receptive field of the neuron (equivalently this is the filter size). The extent of the connectivity along the depth axis is always equal to the depth of the input volume. It is important to emphasize again this asymmetry in how we treat the spatial dimensions (width and height) and the depth dimension: The connections are local in space (along width and height), but always full along the entire depth of the input volume.
 
 # Pooling
 
@@ -188,12 +209,10 @@ If you perform convolution on it using $8$ different filters, you will get $8$ f
 
 Next, we apply pooling. Pooling changes the height and width depending on the stride and window size. It does not change the depth, ie. it does not create or remove feature maps.
 
-# Parameter Sharing
-
-# Local Connectivity
-
 # References
 
+- [CS231n Convolutional Neural Networks for Visual Recognition](http://cs231n.github.io/convolutional-networks/)
+- [Conv Nets: A Modular Perspective](https://colah.github.io/posts/2014-07-Conv-Nets-Modular/)
 - [Brandon Rohrer: How Convolutional Neural Networks work](https://youtu.be/FmpDIaiMIeA?list=LLm-oVeNttHguGRcnMcWtZRg)
 - [A Gentle Introduction to Pooling Layers for Convolutional Neural Networks](https://machinelearningmastery.com/pooling-layers-for-convolutional-neural-networks/)
 - [Convolutional Neural Networks](https://cezannec.github.io/Convolutional_Neural_Networks/)
@@ -202,12 +221,3 @@ Next, we apply pooling. Pooling changes the height and width depending on the st
 - [Basics of convolutions](https://aishack.in/tutorials/convolutions/)
 - [Image convolution examples](https://aishack.in/tutorials/image-convolution-examples/)
 - [Wikipedia: Kernel (image processing)](https://en.wikipedia.org/wiki/Kernel_(image_processing))
-
-- more about para and hyper
-- output feature map size formula
-- why convolutions
-  - fully connected layers, too many weights
-  - use the udacity local connectivity video and screenshots
-  - also Convolutional Layers (Part 2)
-
-
