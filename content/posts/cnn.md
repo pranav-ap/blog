@@ -49,11 +49,19 @@ In CIFAR-10, images are only of size $32 \times 32 \times 3$, so a single fully-
 
 Convolutional neural networks are very similar to ordinary neural networks. They are made up of neurons that have learnable weights and biases. The whole network expresses a single function $f$ that takes raw image pixels and gives class scores. It uses backprop to learn the weights and biases based on a loss function $J(\theta)$.
 
-ConvNet architectures make the explicit assumption that the inputs are images, which allows us to encode certain properties into the architecture. The *convolution* operation is at the heart of conv nets and gives rise to most of these properties.
+Convolutional architectures make the explicit assumption that the inputs are images, which allows us to encode certain properties into the architecture. The *convolution* operation is at the heart of convolutional nets and gives rise to *parameter sharing* and *local connectivity*. Another operation, called *pooling*, helps improve computational efficiency and generalization error. It is often applied after convolution.
 
-<!-- gives rise to what properties ? -->
+There are three main types of layers in a convolutional nets: *Convolutional layer*, *Pooling layer*, and *Fully-Connected layer*. They are stacked together in different number and order to form its architecture.
 
-There are three main types of layers in a ConvNets: Convolutional Layer, Pooling Layer, and Fully-Connected Layer. They are stacked together to form a full ConvNet architecture.
+<figure style="width: 650px">
+	<img src="/media/vision/cnn/simple-cnn.png" alt="Convolutional Neural Network">
+	<figcaption>Convolutional Neural Network</figcaption>
+</figure>
+
+For example, the input images in CIFAR-10 are an input volume with dimensions $32 \times 32 \times 3$. The architecture will transform this volume into a vector with dimensions $1 \times 1 \times 10$ class scores.
+
+<!--
+A ConvNet contains multiple convolution layers. The first convolution layer will use multiple filters to extract simple features from the original input image. Successive convolution layers will discover new features based on these simpler features. This creates an hierarchy of features that finally leads to the classes we wish to classify. -->
 
 ## Convolution
 
@@ -81,8 +89,8 @@ We execute a convolution by sliding the filter over the input image. At every lo
 The output matrix is called a **feature map** and represents the filtered image. If an element is large, it means that the filter has found a good candidate for the feature it was looking for.
 
 <figure style="width: 600px">
-	<img src="/media/vision/cnn/conv-calc.jpg" alt="Convolution Operation">
-	<figcaption>Convolution Operation</figcaption>
+	<img src="/media/vision/cnn/conv-calc.jpg" alt="Convolution Calculation">
+	<figcaption>Convolution Calculation</figcaption>
 </figure>
 
 The height and width of a filter are usually odd numbers like $3 \times 3$ or $5 \times 5$. This ensures that the filter has a proper center position, which in turn decides the location of the filtered pixel value.
@@ -94,78 +102,81 @@ The values inside a kernel are the *weight* parameters. One $3 \times 3$ filter 
 	<figcaption>Convolution Operation</figcaption>
 </figure>
 
-The size of the output feature map changes depending on three hyperparameters:
+# Output volume dimensions for Convolution
 
-- Number of filters **F**
+<figure style="width: 450px">
+	<img src="/media/vision/cnn/dim-change.png" alt="Changes in Dimension">
+	<figcaption>Changes in Dimension</figcaption>
+</figure>
+
+A convolution layer accepts a volume of feature maps of size $W_1 \times H_1 \times D_1$. It transforms this into an output volume of size $W_2 \times H_2 \times D_2$. The dimensions of the output volume changes depending on four hyperparameters:
+
+- Number of filters **K**
+- Spatial extent **F**
 - Stride **S**
-- Padding **P**
+- Amount of padding **P**
 
 **Number of filters** Typically, a convolution layer uses multiple filters, say $32$ filters. Each of them will produce a separate $2$-dimensional feature map. We will stack them to produce an *volume of feature maps* of depth $32$.
+
+**Spatial extent** It refers to the height or width of a filter. Filters are square matrices, so they are both the same.
 
 **Stride** The number of pixels a filter moves across in a single step is called the **stride**. When the stride is $1$ then we move the filters one pixel at a time. When the stride is $2$ then the filters jump $2$ pixels at a time as we slide them around. This will produce smaller output volumes spatially.
 
 **Padding** Convolution reduces the height and width of the input matrix. If we want to use a very deep ConvNet we will need to retain the original height and width.
 
-The most common way to deal with this is to border the image or input feature map with $0$’s so that we can perfectly overlay a kernel on all the pixel values in the original image. It provides a way for us to control the spatial size of the output volumes. This is called **padding**.
+The most common way to deal with this is to border the image or input feature map with one or more layers of $0$’s so that we can perfectly overlay a kernel on all the pixel values in the original image. It provides a way for us to control the spatial size of the output volumes. This is called **padding**.
 
 <figure style="width: 1000px">
 	<img src="/media/vision/cnn/padding.png" alt="Padding">
 	<figcaption>Padding</figcaption>
 </figure>
 
-The number of elements in the output volume is given by the formula,
+The dimensions of the output volume is given by,
 
 $$
-\frac {W - F + 2P} {S + 1}
+\begin{aligned}
+W_2 &= \frac {W_1 - F + 2P} {S} + 1
+\\
+H_2 &= \frac {H_1 - F + 2P} {S} + 1
+\\
+D_2 &= K
+\end{aligned}
 $$
 
-where, $W$ is the number of elements in the input volume.
+## Example
 
-For example for a $7 \times 7$ input and a $3 \times 3$ filter with stride $1$ and padding $0$ we would get a $5 \times 5$ output. With stride 2 we would get a $3 \times 3$ output.
+Consider a CONV layer that accepts an input volume of size $W_1 = 5$, $H_1 = 5$, $D_1 = 3$ and let its parameters be as follows: number of filters $K = 2$, spatial extent $F = 3$, stride $S = 2$ and zero padding $P = 1$.
 
-A ConvNet contains multiple convolution layers. The first convolution layer will use multiple filters to extract simple features from the original input image. Successive convolution layers will discover new features based on these simpler features. This creates an hierarchy of features that finally leads to the classes we wish to classify.
-
-It contains three main types of layers:
-
-- Convolutional layer
-- Pooling layer
-- Fully-connected layer
-
-<figure style="width: 650px">
-	<img src="/media/vision/cnn/simple-cnn.png" alt="CNN">
-	<figcaption>Convolutional Neural Network</figcaption>
+<figure style="width: 1100px">
+	<img src="/media/vision/cnn/conv-dim-calc.gif" alt="Calculating Output Volume Dimensions">
+	<figcaption>Calculating Output Volume Dimensions</figcaption>
 </figure>
 
-The layers of a ConvNet have neurons arranged in 3 dimensions: width, height, depth. For example, the input images in CIFAR-10 are an input volume with dimensions $32 \times 32 \times 3$. The architecture will reduce this volume into a vector with dimensions $1 \times 1 \times 10$ class scores, arranged along the depth dimension.
+Using the above formulas, we find the output volume size to be,
 
-<figure style="width: 600px">
-	<img src="/media/vision/cnn/sparse-connections.png" alt="Locally connected layers">
-	<figcaption>Locally connected layers</figcaption>
-</figure>
+$$
+\begin{aligned}
+W_2 &= \frac {W_1 - F + 2P} {S} + 1
+\\
+&= \frac {5 - 3 + 2 \times 1} {2} + 1
+\\
+&= \frac {4} {2} + 1 = 3
+\\
+H_2 &= \frac {H_1 - F + 2P} {S} + 1
+\\
+&= \frac {5 - 3 + 2 \times 1} {2} + 1
+\\
+&= \frac {4} {2} + 1 = 3
+\\
+D_2 &= K = 3
+\end{aligned}
+$$
 
-The output layer can combine the findings of the each of the hidden nodes to make a prediction.
+## Pooling
 
-We can rearrange the input vector of pixels and the hidden layer as matrices.
+A limitation of feature maps is that they record the precise position of features in the input image. This means small movements in the position of the feature in the input image will result in a different feature map. Pooling makes a network resistant to small pixel value changes in the input image.
 
-<figure style="width: 600px">
-	<img src="/media/vision/cnn/reorder-neurons-1.png" alt="CNN">
-	<figcaption>CNN</figcaption>
-</figure>
-
-## Parameter Sharing
-
-<figure style="width: 600px">
-	<img src="/media/vision/cnn/reorder-multiple-filters.png" alt="CNN">
-	<figcaption>CNN</figcaption>
-</figure>
-
-Local Connectivity. When dealing with high-dimensional inputs such as images, as we saw above it is impractical to connect neurons to all neurons in the previous volume. Instead, we will connect each neuron to only a local region of the input volume. The spatial extent of this connectivity is a hyperparameter called the receptive field of the neuron (equivalently this is the filter size). The extent of the connectivity along the depth axis is always equal to the depth of the input volume. It is important to emphasize again this asymmetry in how we treat the spatial dimensions (width and height) and the depth dimension: The connections are local in space (along width and height), but always full along the entire depth of the input volume.
-
-# Pooling
-
-A limitation of feature maps is that they record the precise position of features in the input image. This means that small movements in the position of the feature in the input image will result in a different feature map. Pooling makes a network resistant to small pixel value changes in the input image.
-
-Another purpose of pooling is to reduce the dimensionality of feature maps, which in turn, reduces the number of weight parameters. This improves training time and controls overfitting.
+Another purpose of pooling is to reduce the dimensionality of feature maps.
 
 <figure style="width: 450px">
 	<img src="/media/vision/cnn/max pooling.png" alt="Max Pooling with stride 2">
@@ -179,35 +190,62 @@ All pooling operations first break an image into smaller patches, often $2 \time
 
 For each $2 \times 2$ patch, a **max pooling** layer looks at each value and selects only the maximum value. In the pink patch, it selects $20$ and so on until we are left with four values from the four patches. For similar images, even if a patch has some slightly different pixel values, the maximum values extracted in successive pooling layers, should be similar.
 
-Max-pooling layers kind of “zoom out”. They allow later convolutional layers to work on larger sections of the data, because a small patch after the pooling layer corresponds to a much larger patch before it.
+On the other hand, an **average pooling** layer takes the average of the values in a patch. Empirically, averaging is not as effective as max pooling.
 
-On the other hand, an **average pooling** layer takes the average of the values in a patch. But empirically, averaging is not as effective as max pooling.
+Pooling changes the height and width depending on the stride and window size. It does not change the depth because it does not create or remove feature maps.
+
+The pooling operation acts independently on every depth slice of the input volume and resizes it spatially. This is called [downsampling](https://en.wikipedia.org/wiki/Downsampling_(signal_processing)).
 
 <figure style="width: 450px">
 	<img src="/media/vision/cnn/downsampling.jpeg" alt="Downsampling">
 	<figcaption>Downsampling</figcaption>
 </figure>
 
-The pooling layer operates independently on every depth slice of the input volume and resizes it spatially. By reducing the width and height of an image ([downsampling](https://en.wikipedia.org/wiki/Downsampling_(signal_processing))) as it moves forward through the CNN, the pooling layer mimics an increase in the *field of view* for later layers.
+**Zooming effect of Pooling** The pooling layer mimics an increase in the *field of view* for later layers. For example, a $3 \times 3$ kernel placed over an original input image will see a $3 \times 3$ pixel area at a time. But that same kernel, when applied to a pooled version of the original input image, will see the same number of pixels, but the $3 \times 3$ area corresponds to a larger area in the original input image. This allows later convolutional layers to detect features in a larger region of the input image.
 
-For example, a $3 \times 3$ kernel placed over an original input image will see a $3 \times 3$ pixel area at a time. But that same kernel, when applied to a pooled version of the original input image, will see the same number of pixels, but the $3 \times 3$ area corresponds to a larger area in the original input image. This allows later convolutional layers to detect features in a larger region of the input image.
-
-Many people dislike the pooling operation and think that we can get away without it. Some propose discarding pooling layer in favor of architecture that only consists of repeated convolution layers. To reduce the size of the representation they suggest using larger stride in the convolution layers once in a while.
-
-Discarding pooling layers has also been found to be important in training models such as generative adversarial networks. It seems likely that future architectures will feature very few to no pooling layers.
-
-# Changes in volume dimensions
-
-Say you have an image with dimensions $28 \times 28$. As it passes through the network, it undergoes a lot of changes in its dimensions.
-
-If you perform convolution on it using $8$ different filters, you will get $8$ feature maps. We stack them together and consider it a *volume* with depth $8$. The change in height and width depend on the stride and padding.
+# Output volume dimensions for Pooling
 
 <figure style="width: 450px">
 	<img src="/media/vision/cnn/dim-change.png" alt="Changes in Dimension">
 	<figcaption>Changes in Dimension</figcaption>
 </figure>
 
-Next, we apply pooling. Pooling changes the height and width depending on the stride and window size. It does not change the depth, ie. it does not create or remove feature maps.
+A pooling layer accepts a volume of feature maps of size $W_1 \times H_1 \times D_1$. It transforms this into an output volume of size $W_2 \times H_2 \times D_2$. The dimensions of the output volume changes depending on four hyperparameters:
+
+- Spatial extent **F**
+- Stride **S**
+
+The dimensions of the output volume is given by,
+
+$$
+\begin{aligned}
+W_2 &= \frac {W_1 - F} {S} + 1
+\\
+H_2 &= \frac {H_1 - F} {S} + 1
+\\
+D_2 &= K
+\end{aligned}
+$$
+
+In practice, we only use two variations of the max pooling layer: A pooling layer with $F = 3$, $S = 2$, also called *overlapping pooling*, and more commonly $F = 2$, $S = 2$, which is non-overlapping. Pooling sizes with larger receptive fields $F$ are too destructive.
+
+# Local Connectivity
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/sparse-connections.png" alt="Locally connected layers">
+	<figcaption>Locally connected layers</figcaption>
+</figure>
+
+When dealing with high-dimensional inputs such as images, it is impractical to use fully connected layers. Instead, we will connect each neuron to only a local region of the input volume. The spatial extent of this connectivity is a hyperparameter called the receptive field of the neuron (equivalently this is the filter size).
+
+The extent of the connectivity along the depth axis is always equal to the depth of the input volume. It is important to emphasize again this asymmetry in how we treat the spatial dimensions (width and height) and the depth dimension: The connections are local in space (along width and height), but always full along the entire depth of the input volume.
+
+# Parameter Sharing
+
+<figure style="width: 600px">
+	<img src="/media/vision/cnn/reorder-multiple-filters.png" alt="CNN">
+	<figcaption>CNN</figcaption>
+</figure>
 
 # References
 
@@ -218,6 +256,6 @@ Next, we apply pooling. Pooling changes the height and width depending on the st
 - [Convolutional Neural Networks](https://cezannec.github.io/Convolutional_Neural_Networks/)
 - [CNNs, Part 1: An Introduction to Convolutional Neural Networks](https://victorzhou.com/blog/intro-to-cnns-part-1/)
 - [CNNs, Part 2: Training a Convolutional Neural Network](https://victorzhou.com/blog/intro-to-cnns-part-2/)
+- [Wikipedia: Kernel (image processing)](https://en.wikipedia.org/wiki/Kernel_(image_processing))
 - [Basics of convolutions](https://aishack.in/tutorials/convolutions/)
 - [Image convolution examples](https://aishack.in/tutorials/image-convolution-examples/)
-- [Wikipedia: Kernel (image processing)](https://en.wikipedia.org/wiki/Kernel_(image_processing))
