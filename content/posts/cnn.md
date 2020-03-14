@@ -49,7 +49,9 @@ In CIFAR-10, images are only of size $32 \times 32 \times 3$, so a single fully-
 
 Convolutional neural networks are very similar to ordinary neural networks. They are made up of neurons that have learnable weights and biases. The whole network expresses a single function $f$ that takes raw image pixels and gives class scores. It uses backprop to learn the weights and biases based on a loss function $J(\theta)$.
 
-Convolutional architectures make the explicit assumption that the inputs are images, which allows us to encode certain properties into the architecture. The *convolution* operation is at the heart of convolutional nets and gives rise to *parameter sharing* and *local connectivity*. Another operation, called *pooling*, helps improve computational efficiency and generalization error. It is often applied after convolution.
+Convolutional architectures make the explicit assumption that the inputs are images, which allows us to encode certain properties into the architecture.
+
+Each layer is a volume of neurons instead of a vector of neurons as in ordinary neural nets. We can use *parameter sharing* between some neurons within the same layer and *local connectivity* between neurons of different layers.
 
 There are three main types of layers in a convolutional nets: *Convolutional layer*, *Pooling layer*, and *Fully-Connected layer*. They are stacked together in different number and order to form its architecture.
 
@@ -58,14 +60,20 @@ There are three main types of layers in a convolutional nets: *Convolutional lay
 	<figcaption>Convolutional Neural Network</figcaption>
 </figure>
 
-For example, the input images in CIFAR-10 are an input volume with dimensions $32 \times 32 \times 3$. The architecture will transform this volume into a vector with dimensions $1 \times 1 \times 10$ class scores.
+The layers of a ConvNet are volumes of neurons that act on an input volume of feature maps to produce an output volume of feature maps.
 
-<!--
-A ConvNet contains multiple convolution layers. The first convolution layer will use multiple filters to extract simple features from the original input image. Successive convolution layers will discover new features based on these simpler features. This creates an hierarchy of features that finally leads to the classes we wish to classify. -->
+A volume of neurons of any ConvNet layer with dimensions $3 \times 3 \times 4$ is shown below. This layer has $3 \times 3 \times 4 = 36$ neurons. A layer of neurons within this volume at some depth is called a **depth slice**.
 
-## Convolution
+<figure style="width: 550px">
+	<img src="/media/vision/cnn/conv-layer-as-neurons.png" alt="Volume of Neurons">
+	<figcaption>Volume of Neurons</figcaption>
+</figure>
 
-Convolution is used to transform an image to make it easier to identify primitive shapes within it. The primary tool for convolution is the **filter** or **kernel**. They are matrices that can detect lines, curves and edges within an image, while some can blur or sharpen the image.
+A single column of neurons across all depth slices is called a **depth column**.
+
+# Convolution
+
+The *convolution* operation is the workhorse of convolutional nets. Convolution is used to transform an image to make it easier to identify primitive shapes within it. The primary tool for convolution is the **filter** or **kernel**. They are matrices that can detect lines, curves and edges within an image, while some can blur or sharpen the image.
 
 Filters are small *spatially* (along width and height), but extend through the full depth of the input image.
 
@@ -86,7 +94,7 @@ $$
 
 We execute a convolution by sliding the filter over the input image. At every location, calculate perform *element-wise multiplication* between the filter matrix and the underlying values in the image and add the *bias* to get the final pixel value.
 
-The output matrix is called a **feature map** and represents the filtered image. If an element is large, it means that the filter has found a good candidate for the feature it was looking for.
+The output matrix is called a **feature map** or an **activation map** and represents the filtered image. If an element is large, it means that the filter has found a good candidate for the feature it was looking for.
 
 <figure style="width: 600px">
 	<img src="/media/vision/cnn/conv-calc.jpg" alt="Convolution Calculation">
@@ -100,6 +108,13 @@ The values inside a kernel are the *weight* parameters. One $3 \times 3$ filter 
 <figure style="width: 400px">
 	<img src="/media/vision/cnn/convolution.gif" alt="Convolution Operation">
 	<figcaption>Convolution Operation</figcaption>
+</figure>
+
+The filter acts on every depth slice of the input volume and resizes it spatially. This is called [downsampling](https://en.wikipedia.org/wiki/Downsampling_(signal_processing)). So a filter can be considered a three dimensional volume, with a depth equal to the number of feature maps in the incoming layer.
+
+<figure style="width: 700px">
+	<img src="/media/vision/cnn/k filters with depth C.png" alt="K filters with depth C">
+	<figcaption>K filters with depth C</figcaption>
 </figure>
 
 # Output volume dimensions for Convolution
@@ -122,7 +137,7 @@ A convolution layer accepts a volume of feature maps of size $W_1 \times H_1 \ti
 
 **Stride** The number of pixels a filter moves across in a single step is called the **stride**. When the stride is $1$ then we move the filters one pixel at a time. When the stride is $2$ then the filters jump $2$ pixels at a time as we slide them around. This will produce smaller output volumes spatially.
 
-**Padding** Convolution reduces the height and width of the input matrix. If we want to use a very deep ConvNet we will need to retain the original height and width.
+**Padding** Convolution reduces the height and width of the input matrix washing away the information from pixels at the image border. If we want to use a very deep ConvNet we will need to retain the original height and width.
 
 The most common way to deal with this is to border the image or input feature map with one or more layers of $0$’s so that we can perfectly overlay a kernel on all the pixel values in the original image. It provides a way for us to control the spatial size of the output volumes. This is called **padding**.
 
@@ -172,7 +187,7 @@ D_2 &= K = 3
 \end{aligned}
 $$
 
-## Pooling
+# Pooling
 
 A limitation of feature maps is that they record the precise position of features in the input image. This means small movements in the position of the feature in the input image will result in a different feature map. Pooling makes a network resistant to small pixel value changes in the input image.
 
@@ -194,14 +209,19 @@ On the other hand, an **average pooling** layer takes the average of the values 
 
 Pooling changes the height and width depending on the stride and window size. It does not change the depth because it does not create or remove feature maps.
 
-The pooling operation acts independently on every depth slice of the input volume and resizes it spatially. This is called [downsampling](https://en.wikipedia.org/wiki/Downsampling_(signal_processing)).
-
 <figure style="width: 450px">
 	<img src="/media/vision/cnn/downsampling.jpeg" alt="Downsampling">
 	<figcaption>Downsampling</figcaption>
 </figure>
 
-**Zooming effect of Pooling** The pooling layer mimics an increase in the *field of view* for later layers. For example, a $3 \times 3$ kernel placed over an original input image will see a $3 \times 3$ pixel area at a time. But that same kernel, when applied to a pooled version of the original input image, will see the same number of pixels, but the $3 \times 3$ area corresponds to a larger area in the original input image. This allows later convolutional layers to detect features in a larger region of the input image.
+**Zooming effect of Pooling** The pooling layer mimics an increase in the *field of view* for later layers. For example, a $3 \times 3$ kernel placed over an original input image will see a $3 \times 3$ pixel area at a time.
+
+When you apply a kernel of the same size to a pooled version of the original input image, it will see the same number of pixels, but the $3 \times 3$ area corresponds to a larger area in the original input image. This allows later convolutional layers to detect features in a larger region of the input image.
+
+<figure style="width: 570px">
+	<img src="/media/vision/cnn/pooling-zoom-effect.png" alt="Increase in Field of View">
+	<figcaption>Increase in Field of View</figcaption>
+</figure>
 
 # Output volume dimensions for Pooling
 
@@ -229,23 +249,46 @@ $$
 
 In practice, we only use two variations of the max pooling layer: A pooling layer with $F = 3$, $S = 2$, also called *overlapping pooling*, and more commonly $F = 2$, $S = 2$, which is non-overlapping. Pooling sizes with larger receptive fields $F$ are too destructive.
 
-# Local Connectivity
+# Local Connectivity and Parameter Sharing
+
+When dealing with high-dimensional inputs such as images, it is impractical to use fully connected layers, since it introduces a large number of weights.
+
+Instead, we will connect each neuron to only a local region of the input volume. The spatial extent (height and width) of this connectivity is a hyperparameter called the **receptive field** of the neuron. The connections are local in along width and height, but extends along the entire depth of the input volume. This is called **local connectivity**.
 
 <figure style="width: 600px">
-	<img src="/media/vision/cnn/sparse-connections.png" alt="Locally connected layers">
-	<figcaption>Locally connected layers</figcaption>
+	<img src="/media/vision/cnn/conv-layer-as-neurons-2.png" alt="Convolutional layer as Neurons">
+	<figcaption>Convolutional layer as Neurons</figcaption>
 </figure>
 
-When dealing with high-dimensional inputs such as images, it is impractical to use fully connected layers. Instead, we will connect each neuron to only a local region of the input volume. The spatial extent of this connectivity is a hyperparameter called the receptive field of the neuron (equivalently this is the filter size).
+Consider the neuron $n_1$ from the first layer of the depth column. It is connected to a local region in the input volume as defined by its receptive field.
 
-The extent of the connectivity along the depth axis is always equal to the depth of the input volume. It is important to emphasize again this asymmetry in how we treat the spatial dimensions (width and height) and the depth dimension: The connections are local in space (along width and height), but always full along the entire depth of the input volume.
+For example, for an input image of dimensions $28 \times 28 \times 3$, if the receptive field is $5 \times 5$, then each neuron is connected to a region of $5 \times 5 \times 3$ in the input volume. Hence, the neuron $n_1$ will have $75$ weights.
 
-# Parameter Sharing
+Other neurons in the same depth slice as $n_1$ looks at different local regions in the input volume, and they too will introduce $75$ weights *each*. This gives us another opportunity to optimize.
 
-<figure style="width: 600px">
-	<img src="/media/vision/cnn/reorder-multiple-filters.png" alt="CNN">
-	<figcaption>CNN</figcaption>
-</figure>
+Instead of every neuron using a different set of weights, they could use the same set of weights. These weights $\bold{w}$ are stored as values in the three-dimensional filter matrix.
+
+Every neuron in a depth slice shares the same filter, ie. every neuron in a depth slice has the same set of weights. This is called parameter sharing. Each depth slice in the output volume is created by one filter.
+
+Sharing parameters gives the network the ability to look for a given feature everywhere in the image, rather than in just a certain area. This is extremely useful when the object of interest could be anywhere in the image.
+
+Relaxing the parameter sharing allows the network to look for a given feature only in a specific area. For example, if your training data is of faces that are centered, you could end up with a network that looks for eyes, nose, and mouth in the center of the image, a curve towards the top, and shoulders towards the bottom.
+
+Whether a horse appears in the right side or left side of the image shouldn’t affect accurate classification. So even though each neuron (in the same layer) looks at a different part of the image, it makes sense that these neurons should all be looking for the same thing (i.e. features unique to a horse). That’s the reasoning behind sharing parameters among neurons in the same layer.
+
+Now let’s say you have some prior knowledge about the structure of your images—for instance, your task is to classify images of four-legged animals, where the animals will always be scaled to the same size, will always be centered and will always face directly right. In such a scenario, the neurons assigned to the left of the image will always be looking at the butt of the animals and the neurons assigned to the top-right corner will always be looking at the head of the animals. It no longer makes sense to share parameters since forcing these neurons to look for the same thing is now inefficient.
+
+# Introducing Non-linearity
+
+The rectified linear unit layer (ReLU) is an activation function g that is used on all elements of the volume. It aims at introducing non-linearities to the network.
+
+# Fully-Connected Layer
+
+At the end of a convolutional neural network, is a fully-connected layer (sometimes more than one). Fully-connected means that every output that’s produced at the end of the last pooling layer is an input to each node in this fully-connected layer. For example, for a final pooling layer that produces a stack of outputs that are 20 pixels in height and width and 10 pixels in depth (the number of filtered images), the fully-connected layer will see 20x20x10 = 4000 inputs. The role of the last fully-connected layer is to produce a list of class scores, which you saw in the last post, and perform classification based on image features that have been extracted by the earlier convolutional and pooling layers; so, the last fully-connected layer will have as many nodes as there are classes.
+
+The output from the convolutional layers represents high-level features in the data. While that output could be flattened and connected to the output layer, adding a fully-connected layer is a (usually) cheap way of learning non-linear combinations of these features.
+
+Essentially the convolutional layers are providing a meaningful, low-dimensional, and somewhat invariant feature space, and the fully-connected layer is learning a (possibly non-linear) function in that space.
 
 # References
 
@@ -259,3 +302,5 @@ The extent of the connectivity along the depth axis is always equal to the depth
 - [Wikipedia: Kernel (image processing)](https://en.wikipedia.org/wiki/Kernel_(image_processing))
 - [Basics of convolutions](https://aishack.in/tutorials/convolutions/)
 - [Image convolution examples](https://aishack.in/tutorials/image-convolution-examples/)
+- [Convolutional Neural Networks cheatsheet](https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks#)
+- [Convolutional Neural Networks (CNNs): An Illustrated Explanation](https://blog.xrds.acm.org/2016/06/convolutional-neural-networks-cnns-illustrated-explanation/)
