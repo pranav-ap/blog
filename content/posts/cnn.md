@@ -209,7 +209,7 @@ On the other hand, an **average pooling** layer takes the average of the values 
 
 Pooling changes the height and width depending on the stride and window size. It does not change the depth because it does not create or remove feature maps.
 
-<figure style="width: 450px">
+<figure style="width: 400px">
 	<img src="/media/vision/cnn/downsampling.jpeg" alt="Downsampling">
 	<figcaption>Downsampling</figcaption>
 </figure>
@@ -266,29 +266,32 @@ For example, for an input image of dimensions $28 \times 28 \times 3$, if the re
 
 Other neurons in the same depth slice as $n_1$ looks at different local regions in the input volume, and they too will introduce $75$ weights *each*. This gives us another opportunity to optimize.
 
-Instead of every neuron using a different set of weights, they could use the same set of weights. These weights $\bold{w}$ are stored as values in the three-dimensional filter matrix.
+Instead of every neuron using a different set of weights, they could use the same set of weights by sharing the same set of weights. These weights $\bold{w}$ are stored as values in the three-dimensional filter matrix. This is called **parameter sharing** and this allows us to use a convolution.
 
-Every neuron in a depth slice shares the same filter, ie. every neuron in a depth slice has the same set of weights. This is called parameter sharing. Each depth slice in the output volume is created by one filter.
+Sharing parameters gives the network the ability to look for a given feature everywhere in the image, rather than in just a certain area.
+<!--
+Now let’s say you have some prior knowledge about the structure of your images—for instance, your task is to classify images of four-legged animals, where the animals will always be scaled to the same size, will always be centered and will always face directly right. In such a scenario, the neurons assigned to the left of the image will always be looking at the butt of the animals and the neurons assigned to the top-right corner will always be looking at the head of the animals. It no longer makes sense to share parameters since forcing these neurons to look for the same thing is now inefficient. -->
 
-Sharing parameters gives the network the ability to look for a given feature everywhere in the image, rather than in just a certain area. This is extremely useful when the object of interest could be anywhere in the image.
+# Introducing Non-linearity with ReLU
 
-Relaxing the parameter sharing allows the network to look for a given feature only in a specific area. For example, if your training data is of faces that are centered, you could end up with a network that looks for eyes, nose, and mouth in the center of the image, a curve towards the top, and shoulders towards the bottom.
+ReLU is typically applied immediately after every convolution layer. It aims at introducing non-linearity into the network by removing all the negative elements from the input volume.
 
-Whether a horse appears in the right side or left side of the image shouldn’t affect accurate classification. So even though each neuron (in the same layer) looks at a different part of the image, it makes sense that these neurons should all be looking for the same thing (i.e. features unique to a horse). That’s the reasoning behind sharing parameters among neurons in the same layer.
+It is done to offset the linear operations, element-wise multiplications and summations, executed in the convolution layers
 
-Now let’s say you have some prior knowledge about the structure of your images—for instance, your task is to classify images of four-legged animals, where the animals will always be scaled to the same size, will always be centered and will always face directly right. In such a scenario, the neurons assigned to the left of the image will always be looking at the butt of the animals and the neurons assigned to the top-right corner will always be looking at the head of the animals. It no longer makes sense to share parameters since forcing these neurons to look for the same thing is now inefficient.
+<figure style="width: 1000px">
+	<img src="/media/vision/cnn/relu.png" alt="ReLU">
+	<figcaption>ReLU</figcaption>
+</figure>
 
-# Introducing Non-linearity
+In the past, activation functions like tanh and sigmoid were used, but ReLU layers are more computationally efficient since it is just a thresholding function.
 
-The rectified linear unit layer (ReLU) is an activation function g that is used on all elements of the volume. It aims at introducing non-linearities to the network.
+# Classification using Fully-Connected Layers
 
-# Fully-Connected Layer
+Once the previous layers have learned a meaningful, low-dimensional set of features from the image dataset, we can use them for classification. To do this we first flatten the last volume into a vector.
 
-At the end of a convolutional neural network, is a fully-connected layer (sometimes more than one). Fully-connected means that every output that’s produced at the end of the last pooling layer is an input to each node in this fully-connected layer. For example, for a final pooling layer that produces a stack of outputs that are 20 pixels in height and width and 10 pixels in depth (the number of filtered images), the fully-connected layer will see 20x20x10 = 4000 inputs. The role of the last fully-connected layer is to produce a list of class scores, which you saw in the last post, and perform classification based on image features that have been extracted by the earlier convolutional and pooling layers; so, the last fully-connected layer will have as many nodes as there are classes.
+For example, for a final convolution or pooling layer that produces a volume $5 \times 5 \times 10$, the fully-connected layer has to accept a vector of length $5 \times 5 \times 10 = 250$.
 
-The output from the convolutional layers represents high-level features in the data. While that output could be flattened and connected to the output layer, adding a fully-connected layer is a (usually) cheap way of learning non-linear combinations of these features.
-
-Essentially the convolutional layers are providing a meaningful, low-dimensional, and somewhat invariant feature space, and the fully-connected layer is learning a (possibly non-linear) function in that space.
+This vector is treated as an input to a standard neural net. It responsible for learning a function $f$ and produce a list of class scores based on image features that have been extracted by the earlier convolutional and pooling layers. So, the last fully-connected layer will have as many nodes as there are classes.
 
 # References
 
