@@ -167,6 +167,10 @@ figcaption {
   }
 }
 
-.language-json, .language-javascript, .language-python, .language-graphql {
+.language-json, .language-js, .language-python, .language-graphql {
   background-color: white !important;
+}
+
+code.language-text {
+  background-color: #d4fb69 !important;
 }

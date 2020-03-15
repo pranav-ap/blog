@@ -1,8 +1,8 @@
 ---
-title: "Introduction to GraphQL"
+title: "GraphQL"
 date: "2020-3-15"
 template: "post"
-draft: false
+draft: true
 slug: "/posts/graphql/"
 category: "Web Technologies"
 tags:
@@ -10,13 +10,11 @@ tags:
 description: ""
 ---
 
-GraphQL is flexible API standard for modern applications. It defines the syntax and meaning of a *query language* and the behavior of a *server-side runtime* for executing these queries.
+**GraphQL** is flexible API standard for modern applications. It defines a *query language* and the behavior of a *server-side runtime* for executing these queries.
 
-The query language lets you ask for exactly what data you need and the GraphQL server gives you exactly what you asked for; nothing more, nothing less.
+The query language lets you make precise data requests and the GraphQL server returns exactly what you ask for; nothing more, nothing less.
 
-It is a API layer built over existing servers, databases and third party APIs. This enables developers to group multiple data sources together and provide a unified interface to the client applications.
-
-The GraphQL is released as a specification and defines the behavior of a server and a client. It is defined independent of any programming language.
+GraphQL can be used as an API layer over existing servers, databases and third party APIs. This enables developers to group multiple data sources together and provide a unified interface to client applications.
 
 Popular client implementations include Apollo Client and Relay. Popular server implementations include Apollo Server and GraphQL Yoga.
 
@@ -24,20 +22,16 @@ Popular client implementations include Apollo Client and Relay. Popular server i
 
 A GraphQL server receives, validates and executes queries from clients. But before a GraphQL server can talk to clients, we need to define a schema.
 
-## SDL : Defining the API
+## Schema Definition
 
-A GraphQL schema is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it.
+A GraphQL schema is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it. The schema describes the API of the server.
 
-The schema describes the API of the server, ie. defines how clients can interact with it.
+A **GraphQL schema** defines two things:
 
-A `GraphQL schema` defines two things:
+1. A complete description of the available data
+1. A description of the operations : reading, writing and subscribing to data changes
 
-1. A complete description of the data available to the server
-1. A description of the operations; including reading, writing and subscribing to data changes.
-
-The syntax for writing schemas is called `Schema Definition Language (SDL)`. The SDL is used to express the types available within a schema and how those types relate to each other.
-
-An example schema for a blogging site is given below:
+Schemas are written using the **Schema Definition Language (SDL)**. The schema for a blogging site could be written as follows:
 
 ```graphql
 type Post {
@@ -58,14 +52,15 @@ type Comment {
   text: String!
 }
 ```
+
 The core building block within a schema is the **type**. Types provide a wide-range of functionality within a schema, including the ability to:
 
-1. Define data structures, including creating relationships between them.
-1. Define which data fetching and manipulation operations can be executed by the client.
+1. Define data structures and the relationships between them
+1. Define which data fetching and manipulation operations can be executed by the client
 
-In the above example, `Post` is a `type` and `title: String!` is a `field`.
+In the above example, `Post` is a type and `title: String!` is a field.
 
-A type that contains one or more fields is called an `ObjectType`. On the other hand `title` is a `ScalarType` String.
+A type that contains one or more fields is called an **ObjectType**. On the other hand `title` is a **ScalarType** String.
 
 GraphQL comes with a set of scalar types out of the box:
 
@@ -77,18 +72,19 @@ GraphQL comes with a set of scalar types out of the box:
 
 All object types are user-defined, and if necessary there are ways to introduce new scalar types.
 
-Note that these declarations express the relationships and the shape of the data to return, not where the data comes from or how it might be stored.
+Note that these declarations express the relationships and the shape of the data, not where the data comes from or how it might be stored.
 
 ### Type Modifiers
 
-- `Non-nullable fields` are denoted by an exclamation mark:
+- **Non-nullable fields** are denoted by an exclamation mark:
 
 ```graphql
 name: String!
 ```
+
 The name field needs to have a value.
 
-- `Lists` are denoted by square brackets:
+- **Lists** are denoted by square brackets:
 
 ```graphql
 comments: [Comment]!
@@ -98,7 +94,7 @@ comments: [Comment]!
 
 `[Comment!]!` indicates that none of the items within this array can be *null*.
 
-- An `enum` is a scalar value that has a specified set of possible values.
+- An **enum** is a scalar value that has a specified set of possible values.
 
 ```graphql
 enum Sport {
@@ -108,7 +104,7 @@ enum Sport {
 }
 ```
 
-- An `interface` is an abstract type that includes a certain set of fields that a type must include to implement the interface.
+- An **interface** defines a set of fields that a type which implements this interface must include.
 
 ```graphql
 interface Item {
@@ -121,13 +117,13 @@ type Shoe implements Item {
 }
 ```
 
-In the above example, the `Shoe type` implements the `Item interface`.
+In the above example, the `Shoe` type implements the `Item` interface.
 
 ## Exposing Operations
 
-But the schema is not yet complete. It doesn’t expose any functionality to client applications. It simply defines the shape of your data.
+The schema is not yet complete. It doesn’t expose any functionality to client applications. It simply defines the shape of your data.
 
-In order to add functionality to the API, you need to add three types to the root of the GraphQL schema: Query, Mutation and Subscription.
+In order to add functionality to the API, you need to add three types to the root of the GraphQL schema: *Query*, *Mutation* and *Subscription*.
 
 ```graphql
 schema {
@@ -141,7 +137,7 @@ These are the entry points for reading, editing and subscription operations. Of 
 
 ### Query Type
 
-A GraphQL query is for fetching data and is similar to **GET** in REST APIs.
+A GraphQL query is used for fetching data. It is similar to the **GET** request in REST APIs.
 
 ```graphql
 type Query {
@@ -150,7 +146,7 @@ type Query {
 }
 ```
 
-This Query type allows the clients to query for the author's profile and all their posts.
+This Query type allows the clients to query the author's profile and all their posts.
 
 ### Mutation Type
 
@@ -166,10 +162,10 @@ This Mutation type allows clients to add a new post. Once added, it returns a re
 
 GraphQL mutations can return any information the developer wishes, but designing mutation responses in a consistent and robust structure makes them more approachable.
 
-- When fields from one or more types are modified, the client can benefit from having updated fields returned from each type and the response format should support that.
+- When fields from one or more types are modified, the client can benefit from having updated fields returned from each type.
 - If only a portion of a mutation update succeeds, it's important to convey that information to the client to avoid stale local state.
 
-To provide consistent mutation response, we can base all out mutations on the following interface.
+To provide consistent mutation response, we can base all mutations on the following interface.
 
 ```graphql
 interface MutationResponse {
@@ -189,7 +185,8 @@ type PublishPostMutationResponse implements MutationResponse {
   post: Post
 }
 ```
-The Mutation type in our schema should be changed to:
+
+The above Mutation type should be changed to:
 
 ```graphql
 type Mutation {
@@ -201,11 +198,9 @@ Note that a client may send multiple mutation commands at the same time. But the
 
 ### Subscription Type
 
-Subscriptions allow a server to send data to its clients when a specific event happens. The server maintains steady connections with its subscribed clients.
+Subscriptions allow a server to send data to its clients when a specific event happens. The client initiates a long-lived connection to the server by sending a subscription request that specifies which event it is interested in.
 
-The client initiates a long-lived connection to the server by sending a subscription request that specifies which event it is interested in.
-
-Every time this event happens, the server uses the connection to push the event data to the subscribed clients.
+The server maintains connections with each of its subscribed clients. Every time this event occurs, the server pushes the relevant data to the subscribed clients.
 
 ```graphql
 type Subscription {
@@ -214,28 +209,26 @@ type Subscription {
 ```
 
 The above Subscription type allows a client to receive notifications whenever a new post is published.
+<!-- How ?? -->
 
 ## Resolver Functions : Implementing the API
 
-We now have a complete description of the API. But how do we implement this API? To do this, we need to write functions for each and every field in the schema. These functions are called Resolvers.
+We now have a complete description of the API. But how do we implement this API? To do this, we need to write functions, called *resolvers*, for each and every field in the schema.
 
-The purpose of the `resolver` is to fetch from or manipulate the data at its source.
-
-If a resolver's associated field is an ObjectType with fields whose data is stored across different databases, then the resolver needs to connect to each of these sources, to fetch or manipulate.
+The purpose of a **resolver** is to fetch from or manipulate the value of its associated field at its source. If a resolver's associated field is an ObjectType with fields whose data is stored across different databases, then the resolver needs to connect to each of these sources, to fetch or manipulate it.
 
 ```js
-function (root, args, context, info) {
+function (parent, args, context, info) {
   ...
 }
 ```
 
-A resolver function takes four arguments:
+A resolver function accepts four arguments:
+
 - **parent** - result of the parent resolver's call.
 - **args** - parameters of the query, mutation or subscription request.
 - **context** - an object that stores connection objects to various backends.
 - **info** - an AST representation of the query or mutation.
-
-### How do resolvers work ?
 
 Consider the following query type:
 
@@ -289,7 +282,6 @@ The execution of the query is as follows:
 }
 ```
 
-
 <figure style="width: 1000px">
 	<img src="/media/web tech/resolve.png" alt="Resolve">
 	<figcaption>Resolve</figcaption>
@@ -299,7 +291,7 @@ Note that depending on the GraphQL library you are using, you may not need to wr
 
 # The Query Language
 
-A GraphQL client helps you connect to the GraphQL server. It sends the query to the server, along with any variables used.
+A GraphQL client helps you connect to the GraphQL server. It sends the query to the server, along with any variables required.
 
 Client implementations like the Apollo Client provide a complete solution for local state management. Apollo Client takes care of the request cycle from start to finish, including tracking loading and error states for you.
 
@@ -439,13 +431,12 @@ The above subscription requests the server to notify the client whenever a new c
 ```
 
 # References
-1. [Introduction to GraphQL](https://graphql.org/learn/)
-1. [How to GraphQL](https://www.howtographql.com/basics/0-introduction/)
-1. [GraphQL Wikipedia](https://en.wikipedia.org/wiki/GraphQL)
-1. [Apollo GraphQL](https://www.apollographql.com/docs/tutorial/introduction/)
-1. [GraphQL SDL — Schema Definition Language](https://www.prisma.io/blog/graphql-sdl-schema-definition-language-6755bcb9ce51)
-1. [GraphQL Server Basics: GraphQL Schemas, TypeDefs & Resolvers Explained](https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e)
-1. [Principled GraphQL](https://principledgraphql.com/)
 
-
-# References
+- [Introduction to GraphQL](https://graphql.org/learn/)
+- [How to GraphQL](https://www.howtographql.com/basics/0-introduction/)
+- [GraphQL Wikipedia](https://en.wikipedia.org/wiki/GraphQL)
+- [Apollo GraphQL](https://www.apollographql.com/docs/tutorial/introduction/)
+- [GraphQL SDL — Schema Definition Language](https://www.prisma.io/blog/graphql-sdl-schema-definition-language-6755bcb9ce51)
+- [GraphQL Server Basics: GraphQL Schemas, TypeDefs & Resolvers Explained](https://www.prisma.io/blog/graphql-server-basics-the-schema-ac5e2950214e)
+- [Principled GraphQL](https://principledgraphql.com/)
+- [GraphQL specification](https://spec.graphql.org/)
