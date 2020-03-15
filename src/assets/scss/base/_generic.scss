@@ -165,5 +165,8 @@ figcaption {
   .float-left {
     float: left;
   }
+}
 
+.language-json, .language-javascript, .language-python, .language-graphql {
+  background-color: white !important;
 }

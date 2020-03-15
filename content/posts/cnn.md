@@ -55,6 +55,8 @@ Each layer is a volume of neurons instead of a vector of neurons as in ordinary 
 
 There are three main types of layers in a convolutional nets: *Convolutional layer*, *Pooling layer*, and *Fully-Connected layer*. They are stacked together in different number and order to form its architecture.
 
+One very nice property of convolutional layers is that they’re composable. You can feed the output of one convolutional layer into another. With each layer, the network can detect higher-level, more abstract features.
+
 <figure style="width: 650px">
 	<img src="/media/vision/cnn/simple-cnn.png" alt="Convolutional Neural Network">
 	<figcaption>Convolutional Neural Network</figcaption>
@@ -291,7 +293,16 @@ Once the previous layers have learned a meaningful, low-dimensional set of featu
 
 For example, for a final convolution or pooling layer that produces a volume $5 \times 5 \times 10$, the fully-connected layer has to accept a vector of length $5 \times 5 \times 10 = 250$.
 
-This vector is treated as an input to a standard neural net. It responsible for learning a function $f$ and produce a list of class scores based on image features that have been extracted by the earlier convolutional and pooling layers. So, the last fully-connected layer will have as many nodes as there are classes.
+<figure style="width: 1000px">
+	<img src="/media/vision/cnn/fc.png" alt="Fully-Connected Layers">
+	<figcaption>Fully-Connected Layers</figcaption>
+</figure>
+
+This vector is the input to a standard neural net. It responsible for learning a function $f$ and produce a list of class scores based on image features that have been extracted by the earlier convolutional and pooling layers.
+
+Note that, there can be multiple fully connected hidden layers in the CNN architecture.
+
+<!-- FC in middle of CNN ? -->
 
 # References
 
