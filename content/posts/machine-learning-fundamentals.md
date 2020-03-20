@@ -196,8 +196,6 @@ The challenge lies in finding a method for which we both variance and bias are l
 
 Given a fixed model flexibility, overfitting reduces as we increase the number of data points. This because as we increase the number of points it becomes more difficult for the regression line to hug all the points.
 
-## Regularization
-
 # References
 - [StatQuest : Bias and Variance](https://www.youtube.com/watch?v=EuBBz3bI-aA&list=LLm-oVeNttHguGRcnMcWtZRg&index=2&t=0s)
 - [Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/)

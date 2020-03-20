@@ -2,7 +2,7 @@
 title: "Neural Style Transfer"
 date: "2020-3-15"
 template: "post"
-draft: false
+draft: true
 slug: "/posts/neural-style-transfer/"
 category: "Deep Learning"
 tags:
@@ -17,7 +17,7 @@ description: ""
 	<figcaption>Style Transfer Example</figcaption>
 </figure>
 
-The style of an painting includes the brush strokes, texture and the color palette. The content of the image is what objects are present in the image and their locations.
+The style of an painting includes the brush strokes, texture and the color palette. The content of the image is what objects are present in the image, including their locations.
 
 To blend these two images together, we need to separate the style and content information from both of the images. It turns out that this information is captured by the layers of a convolutional network.
 
@@ -40,12 +40,8 @@ Each feature map in, say the first convolution layer, is a different transformat
 
 An example of style would be anything specific to image properties like texture, color, and so on - like a prominent use of a particular color within a drawing. Now the question is, how do you extract a style of an image? This is done by calculating correlations between the convolutional layers. Correlations give us a measure of how similar/related two or more variables are? To understand this, consider a learned convolutional layer which is composed of several feature maps. For each feature map, you can measure how strongly its detected features relate to the other feature maps in the same layer. This gives you an estimate of things like - is a certain color detected in the first feature map similar to a color in another map? Are there any shapes that are common across the feature maps? These traits/similarities define the style of an image. The process of measuring the similarity between the contents of several feature maps within a convolutional layer helps networks to learn a multi-scale representation of the given image that focuses on spatial features like texture and color.
 
-The input image is transformed into representations that increasingly care about the actual content of the image compared to its detailed pixel values.
 
 We can directly visualise the information each layer contains about the input image by reconstructing the image only from the feature maps in that layer.
-
-To obtain a representation of the style of an input image, we use a feature space originally designed to capturetextureinformation.8 Thisfeaturespaceisbuiltontopoftheﬁlterresponses ineachlayerofthenetwork. Itconsistsofthecorrelationsbetweenthedifferentﬁlterresponses over the spatial extent of the feature maps (see Methods for details). By including the feature correlations of multiple layers, we obtain a stationary, multi-scale representation of the input image, which captures its texture information but not the global arrangement.
-
 
 # Cost Function
 
