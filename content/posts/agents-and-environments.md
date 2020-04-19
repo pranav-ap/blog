@@ -12,7 +12,7 @@ description: ""
 
 An **intelligent agent** is an entity that observes and acts upon an environment through its sensors and actuators. It can be a robot in the real world or a software agent within a simulation.
 
-An agent, depending on its environment, can receive a stream of sensory inputs. The inputs at any given instant is called a **percept**. The **percept sequence** is the complete history of all percepts it has perceived. In general, an agent's next action depends on the contents this sequence.
+An agent, depending on its environment, receives a stream of sensory inputs. The inputs at any given instant is called a **percept**. The **percept sequence** is the complete history of all percepts it has perceived. An agent's next action depends on the contents this sequence.
 
 <figure style="width: 500px">
 	<img src="/media/artificial intelligence/agent-environment-interaction.png" alt="Agent Environment Interaction">
@@ -21,23 +21,21 @@ An agent, depending on its environment, can receive a stream of sensory inputs. 
 
 # Rational Behavior
 
-The purpose of any agent is to make some changes in its environment. If the environment undergoes the desired changes then the agent has performed well. This is evaluated using a **performance measure**.
+The purpose of any agent is to produce some change in its environment. If the environment undergoes the desired change then the agent has performed well. This is evaluated using a **performance measure**.
 
 Notice, we use the environment state for evaluation and not the agent state. This is because an agent can delude itself into thinking that its performance is optimal.
-
-## Example
 
 Say we have a vacuum cleaner agent, and we want it to suck up as much dirt as possible. So, we give it a performance measure: **+1** if it cleans up dirt on one tile.
 
 A rational agent can maximize the performance measure by cleaning up all the dirt, dumping it all on the floor and repeating this forever. A more suitable measure will be to reward the agent for having a clean floor.
 
-There remains some knotty issues to untangle. For example, the notion of a clean floor is based on the average cleanliness over time. Yet the same average cleanliness can be achieved by two agents in two ways. One that does a mediocre job all the time and another that cleans energetically but takes long breaks.
+If the notion of a clean floor means average cleanliness over time. Yet the same average cleanliness can be achieved in two ways. By doing a mediocre job all the time or by cleaning energetically after long breaks.
 
-Every performance measure can have bad consequences, even if it is well intentioned. As a general rule it is better to design performance measures according to what you want in the environment rather than according to how an agent should behave.
+Every performance measure can have bad consequences, even if it is well intentioned. So, it is better to design performance measures according to environment states rather than agent behavior.
 
 # Rational Action
 
-A rational agent need not know everything, it only has to make the right choice given adequate prior knowledge and informative percept sequence. *What is rational* at any given time depends on four things:
+A rational agent need not know everything. It simply has to make the right choice given adequate prior knowledge and informative percept sequence. *What is rational* at any given time depends on four things:
 
 - the performance measure that defines success
 - prior knowledge of the environment
@@ -54,9 +52,7 @@ This leads to the definition of a **rational agent** :
 	</blockquote>
 </figure>
 
-Providing it the ability to learn greatly improves the effectiveness of an agent by slowly weaning away its dependency on prior knowledge. It can also widen the range of environments where it can be effective.
-
-And note that, rationality maximizes *expected performance* not *actual performance*.
+Note that, rationality maximizes *expected performance* not *actual performance*.
 
 # Structure
 
@@ -76,13 +72,13 @@ The four basic structures of an agent are:
 These are the simplest type of agents. A **simple reflex agent** selects an action based only on the current percept, ignoring the percept sequence. This is a collection of **condition-action rules**:
 
 ```python
-if car-in-front-is-breaking
-  initiate-breaking
-else if car-in-front-is-moving
-  move-forward
+if car_in_front_is_breaking
+  initiate_breaking
+else if car_in_front_is_moving
+  move_forward
 ```
 
-The major problem with such agents is that a little bit of unobservability or incomplete rule-set will cause serious trouble. When a unseen situation occurs, the agent will not have a corresponding reaction in its rule-set. It may be forced to react with a random action.
+The major problem with such agents is that a little bit of unobservability or an incomplete rule-set will force it react with a random action.
 
 ```python
 def simple_reflex_agent(percept):
@@ -121,17 +117,23 @@ The downside of this approach is that the agent still relies on a fixed set of h
 
 For complex tasks, a state description is not enough information to decide what to do. For example, how will a car decide the action at a fork in the road? It needs a destination or **goal information** which helps the agent evaluate whether a state is desireable or not. This is called a **goal-based agent**.
 
-They do not have inbuilt condition-action rules, rather they use *search* or *planning* algorithms to reach goals, making them more flexible than reflex agents. A goal-based agent's behavior can be changed to go to different destinations easily, unlike a reflex agent where all it's rules have to be rewritten.
+They do not have inbuilt condition-action rules, rather they use *search* or *planning* algorithms to reach goals, making them more flexible than reflex agents.
+
+A goal-based agent's behavior can be changed to go to different destinations easily, unlike a reflex agent where all it's rules have to be rewritten.
 
 ### Utility-based agents
 
 Goals provide a crude distinction between desireable and undesireable states. But to get a more nuanced value for desirability we use the **utility** value given by a **utility function**. This is practically an *internal version* of the performance measure that judges the agent.
 
-When you have two **conflicting goals** like safely and speed, then the utility function can make the appropriate tradeoffs. It can also provide a way to consider the **likelihood of success** against the importance of the goals. It is important to note that the utility function only provides the *expected* utility of actions.
+When you have two **conflicting goals** like safely and speed, then the utility function can make the appropriate tradeoffs. It can also provide a way to consider the likelihood of success against the importance of the goals.
+
+It is important to note that the utility function only provides the *expected* utility of actions.
 
 # Learning Agents
 
-The ability to learn allows an agent to operate in initially unknown environments by becoming more competent than its in-built knowledge alone might allow. This is a **learning agent** and it has four components :
+Providing an agent the ability to learn greatly improves its effectiveness by weaning away its dependency on its in-built knowledge. This expands the range of environments where it is effective.
+
+This is called a **learning agent** and it has four components :
 
 - Performance element
 - Learning element
@@ -151,13 +153,9 @@ The **critic** tells the learning element how well the agent is doing according 
 
 The **problem generator** is responsible for suggesting actions that will lead to new states and experiences, even if they are sub-optimal. This allows the agent to learn and make better decisions in the long run.
 
-## Example
-
-Consider a learning agent for a car. The performance element decides the steering angle and applied force on the brake. Its decision making is improved by the learning element. It can learn that tips tend to increase if the car does not smash into a tree on the way to the destination. The critic tells the learning element that smashing into trees is bad. The problem generator suggests experimenting with the breaks on different road surfaces under various conditions.
-
 # State Representation
 
-**How does an agent encode knowledge?** The representations of agent and environment states can be placed on a range of increasing expressive power. More expressive power translates to a more complex agent design but they are also more concise.
+**How does an agent encode knowledge?** The representations of agent and environment states can be placed on a range of increasing expressive power.
 
 ## Types
 
@@ -167,20 +165,20 @@ Three types of state representation are:
 - Factored representation
 - Structured representation
 
-In the **atomic representation**, each state of the world is indivisible; a black box with no internal structure. The algorithms for search and game-playing use atomic representations.
+In the **atomic representation**, each state of the world is indivisible; a black box with no internal structure. Search algorithms use atomic representations.
 
-A state with a **factored representation** has a list of attributes with values associated with them. The values can be a boolean, integer, string or an enumeration. Uncertainty can also be expressed by leaving the attribute blank. Areas including constraint satisfaction problems and propositional logic and machine learning use this representation.
+A state with a **factored representation** has a list of attributes with values associated with them. Uncertainty can be expressed by leaving the attribute blank. Areas including constraint satisfaction problems, propositional logic and machine learning use this representation.
 
-**Structured representation** portrays a state as multiple objects, each with their own attributes and relationships with other objects. Relational databases, first-order logic and natural language processing use such forms.
+**Structured representation** portrays a state as multiple objects, each with their own attributes and relationships with other objects. First-order logic and natural language processing use such state representations.
 
 <figure style="width: 550px">
 	<img src="/media/artificial intelligence/atomic-factored-structured.jpg" alt="Types of state representation">
 	<figcaption>Types of state representation</figcaption>
 </figure>
 
-Often, the more expressive language is much more concise; for example, the rules of chess can be written in a page or two of a structured-representation language such as first-order logic but require thousands of pages when written in a factored-representation language such as propositional logic.
+Often, the more expressive language is much more concise; for example, the rules of chess can be written in a page or two using a structured-representation language such as first-order logic but require thousands of pages when written in a factored-representation language such as propositional logic.
 
-On the other hand, reasoning and learning become more complex as the expressive power of the representation increases. To gain the benefits of expressive representations while avoiding their drawbacks, intelligent systems in the real world may need to operate at all points along the axis simultaneously.
+On the other hand, reasoning and learning become more complex as the expressive power of the representation increases. To gain the benefits of expressive representations while avoiding their drawbacks, intelligent systems in the real world may need to operate using all representations simultaneously.
 
 # Environments
 
@@ -194,7 +192,7 @@ The range of environments that arise in AI is vast, but an environment can still
 
 ### Fully Observable vs Partially Observable vs Unobservable
 
-If the agent's sensors can access all properties of environment, relevant for choice of action, then the task environment is **fully observable**. In case of a defective sensor we have a **partially observable** task environment. If the agent has no sensors then the environment is **unobservable**.
+If the agent's sensors can access all properties of environment, relevant for choice of action, then the task environment is **fully observable**. In case it is a defective sensor, we have a **partially observable** task environment. If the agent has no sensors then the environment is **unobservable**.
 
 ### Deterministic vs Stochastic vs Non-Deterministic
 
@@ -202,7 +200,7 @@ If the next state of the environment is completely determined by the current sta
 
 If the agent is not in a deterministic environment, then it has to keep track of all possible current states at each point of time. If there are probabilities associated with each of these states, then it is **stochastic**, otherwise it is **non-deterministic**.
 
-#### Episodic vs Sequential
+### Episodic vs Sequential
 
 In an **episodic task environment**, the agent's experience is divided into atomic episodes where one episode does not affect another. In each episode, it receives a percept and it performs a single action. Spotting a defective item in an assembly line is an episodic environment.
 
@@ -232,8 +230,7 @@ This distinction applies to the way time, the states of the environment or perce
 
 If the agent knows the rules or laws of physics of the environment, ie. knows outcome of all actions, then it is a **known environment**, otherwise it is an **unknown environment**. Obviously, if the environment is unknown, then the agent has to learn how it works to make good decisions.
 
-It is quite possible for an agent to be in a known and yet partially observable environment. Card games are an example of this. Her
-e, we know the rules of the game but we cannot see what cards the opponent has. Conversely, an unknown environment can be fully observable, as in a new video game. Here I can see the whole screen but have no idea what the controller's buttons do until I try them.
+It is quite possible for an agent to be in a known and yet partially observable environment. Card games are an example of this. Here, we know the rules of the game but we cannot see what cards the opponent has. Conversely, an unknown environment can be fully observable, like a new video game. Here we can see the whole screen but we don't know what the buttons do until we try them.
 
 # References
 

@@ -47,7 +47,7 @@ For training the LeNet to recognize handwritten digits, we can use the MNIST dat
 	<figcaption>AlexNet</figcaption>
 </figure>
 
-LeNet achieved good results on small datasets. But its performance and feasibility of training on larger datasets was low.
+LeNet achieved good results on small datasets. The success of this model convinced the computer vision community to take deep learning seriously.
 
 The **AlexNet** paper's primary conclusion was that the depth of the model was essential for high performance. This is computationally expensive, but is made feasible due GPUs.
 
@@ -65,6 +65,8 @@ Maximum pooling with window size $3 \times 3$ is done after the first, second an
 Due to the limited memory in early GPUs, the original AlexNet was split between two separate GPUs. That is not required today.
 
 Then we flatten the volume and pass it through three fully-connected layers. The output layer uses *softmax* to provide probabilities.
+
+Its performance and feasibility of training on larger datasets was low.
 
 # VGG
 
@@ -86,19 +88,33 @@ The original VGG network has $5$ blocks followed by $3$ fully-connected layers.
 
 The first two blocks have *one* convolutional layer each. The other three blocks contain *two* convolutional layers each. All blocks end with *one* max pooling layer.
 
-<!-- The number of filters start from $64$ and doubles for each subsequent block. -->
+Convolution in all layers uses $3 \times 3$ filters with stride $1$ and same padding. Max pooling is done using $2 \times 2$ windows with stride $2$. This simplified the network architecture and reduced the number of hyperparameters.
 
-Since this network uses $8$ convolutional layers and $3$ fully-connected layers, it is often called **VGG-11**.
+The convolution layers in the first block uses $64$ filters *each*. Subsequent blocks *double* the number of filters used per convolution layer.
 
-All the filters are $3 \times 3$ with one pixel padding.
+In this network, $11$ layers have weights; $8$ convolutional layers and $3$ fully-connected layers. So, it is often called **VGG-11**.
 
-Max pooling is done using $2 \times 2$ windows with stride $2$. This reduces the spatial size by half.
-
-Empirically, several layers of deep networks with narrow filters are more effective than shallow networks with wider filters.
+Empirically, VGG shows that several layers of deep networks with narrow filters are more effective than shallow networks with wider filters. The drawback of VGG is the large number of parameters. It is very slow to train.
 
 # Network in Network
 
-# GoogLeNet
+<figure style="width: 450px">
+	<img src="/media/vision/cnn/network-in-network-vert.png" alt="Network in Network">
+	<figcaption>Network in Network</figcaption>
+</figure>
+
+A **NiN block** consists of one convolutional layer followed by two $1 \times 1$ convolutional layers. They act as per-pixel fully-connected layers with ReLU activations. The convolution width of the first layer is typically set by the user. The subsequent widths are fixed to 1×1.
+
+The original NiN network was proposed shortly after AlexNet and clearly draws some inspiration. NiN uses convolutional layers with window shapes of 11×11, 5×5, and 3×3, and the corresponding numbers of output channels are the same as in AlexNet. Each NiN block is followed by a maximum pooling layer with a stride of 2 and a window shape of 3×3.
+
+<figure style="width: 200px">
+	<img src="/media/vision/cnn/one by one conv.gif" alt="1 x 1 Convolution">
+	<figcaption>1 x 1 Convolution</figcaption>
+</figure>
+
+Once significant difference between NiN and AlexNet is that NiN avoids dense connections altogether. Instead, NiN uses an NiN block with a number of output channels equal to the number of label classes, followed by a global average pooling layer, yielding a vector of logits. One advantage of NiN’s design is that it significantly reduces the number of required model parameters. However, in practice, this design sometimes requires increased model training time.
+
+Removing the dense layers reduces overfitting. NiN has dramatically fewer parameters.
 
 # References
 
@@ -107,3 +123,5 @@ Empirically, several layers of deep networks with narrow filters are more effect
 - [Convolutional Neural Networks (LeNet)](https://d2l.ai/chapter_convolutional-neural-networks/lenet.html)
 - [Deep Convolutional Neural Networks (AlexNet)](https://d2l.ai/chapter_convolutional-modern/alexnet.html)
 - [Networks Using Blocks (VGG)](https://d2l.ai/chapter_convolutional-modern/vgg.html)
+- [Andrew Ng : Convolutional Neural Networks - Classic Networks](https://www.coursera.org/lecture/convolutional-neural-networks/classic-networks-MmYe2)
+- [Common architectures in convolutional neural networks](https://www.jeremyjordan.me/convnet-architectures/)

@@ -3,7 +3,7 @@ title: "Adaptive Boosting"
 date: "2019-12-4"
 template: "post"
 draft: false
-slug: "/posts/adaptive-boosting/"
+
 category: "Machine Learning"
 tags:
   - ""
