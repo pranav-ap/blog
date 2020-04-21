@@ -10,7 +10,7 @@ tags:
 description: ""
 ---
 
-**Linear Algebra** is a branch of mathematics that is widely used in science and engineering. It is essential for understanding many machine learning algorithms. It is used to describe rotations and translations in 3D animations.
+**Linear Algebra** is a branch of mathematics that is widely used in science and engineering. It is essential for understanding many machine learning algorithms. It is also used to describe rotations and translations in animations.
 
 # Scalars, Vectors and Matrices
 
@@ -130,7 +130,7 @@ Here, $0$ is a vector where all the elements are $0$, also known as a zero vecto
 
 ## Subtraction
 
-**Subtraction** too can be visualized similarly. The tourist just have to move in the opposite direction of $\bold{w}$.
+**Subtraction** too can be visualized similarly. The tourist just has to move in the opposite direction of $\bold{w}$.
 
 <figure style="width: 900px">
 	<img src="/media/linear algebra/vector subtraction.png" alt="Vector Subtraction">
@@ -1022,7 +1022,7 @@ $$
 
 **Back substitution** is the procedure where we first solve for $x_2$, then substitute $x_2 = -2$ into the first equation to find $x_1$. This is a natural way of solving a linear system, as long as the system is in triangular form.
 
-**Gauss Elimination** is a method to convert any linear system into the *row echelon form*, while keeping the solution set unchanged. It works directly with augmented matrices and consists of a series of simple operations on the rows of the matrix.
+**Gauss Elimination** is a method to convert any linear system into the *row echelon form*, while keeping the solution unchanged. It works directly with augmented matrices and consists of a series of simple operations on the rows of the matrix.
 
 A matrix is in **row echelon form** if it satisfies the following conditions:
 

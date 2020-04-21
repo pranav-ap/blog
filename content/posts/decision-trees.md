@@ -118,7 +118,7 @@ The leaf nodes do not have to be pure for us to make predictions. If a new obser
 
 # Handling Continuous values
 
-## What if the input variable is continuous?
+### What if the input variable is continuous?
 
 Consider a new continuous feature, *weight* to predict heart disease.
 
@@ -137,7 +137,7 @@ In the case of categorical data, we can simply create one branch per class. We c
 
 The Gini gain of this split can be compared with other features like Chest Pain, Blocked Arteries, etc. The rest of the tree construction process remains the same.
 
-## What if the target variable is continuous?
+### What if the target variable is continuous?
 
 If the target variable is continuous, we calculate the average of the values in the target column as the value for the observation's target variable.
 

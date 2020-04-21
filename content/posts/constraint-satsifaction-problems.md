@@ -43,7 +43,7 @@ Each node of the search tree or graph represents a partial or complete assignmen
 	<figcaption>CSP Search Tree for variables A, B and C</figcaption>
 </figure>
 
-This is where we notice the advantage of a *factored representation* over an atomic representation. We can determine whether a state (or assignment) is a goal state (or solution) or not, before reaching the leaves of the tree. ie. just by looking at a partial assignment.
+This is where we see the advantage of a *factored representation* over an atomic representation. We can determine whether a state (or assignment) is a goal state (or solution) or not, before reaching the leaves of the tree. ie. just by looking at a partial assignment.
 
 Large areas of the search-space can thus be eliminated by identifying variable-value combinations that violate constraints. The factored representation, can also tell us *why* a certain assignment is not a solution by looking at the variables that violate the constraints.
 
@@ -65,7 +65,7 @@ $$
 
 We reduce its domain of $A$ to $\{ 3, 4 \}$ due to its unary constraint. But this domain reduction has made $B\text{'s}$ domain inconsistent.
 
-So, now we have to update $B\text{'s}$ domain to maintain consistency. This is why it is called propagation. Propagation reduces the domain size of the variables, thus making search operation faster.
+So, now we have to update $B\text{'s}$ domain to maintain consistency. This is why it is called propagation. Propagation eliminates inconsistencies and reduces the domain size of the variables, thus making search operation faster.
 
 In case a domain becomes empty, then it means that the combination of assignments that lead to this state does not yield a solution.
 
@@ -242,7 +242,7 @@ def min_conflicts ():
   return failure
 ```
 
-Local search is very useful in scheduling problems. Bad weather can render a flight schedule unusable. The best revision/solution is one with the least major changes. This can be accomplished with a local search algorithm starting from the current schedule.
+Local search is very useful in scheduling problems. For example, bad weather will require us to modify the flight schedule. The best revision is one with the *least* major changes. This can be accomplished with a local search algorithm starting from the *current* schedule.
 
 # References
 

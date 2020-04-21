@@ -58,7 +58,7 @@ The procedure to build a Random forest is almost the same as for Bagging. The di
 
 Suppose we had a dataset with $n$ features. Instead of trying all features every time we make a new decision node, we *only try a random subset of the features*, usually of size $\sqrt{n}$ or $\frac{n}{3}$. This technique is called **feature bagging**.
 
-Using bootstrapped datasets and feature bagging introduces randomness that makes individual trees more unique and reduces correlation between them. This variety makes the Random forest more effective than individual trees for predicting new data.
+Using bootstrapped datasets and feature bagging introduces randomness that makes individual trees more unique and reduces correlation between them. This *variety* makes the Random forest more effective than individual trees for predicting new data.
 
 # References
 

@@ -25,7 +25,7 @@ But it's impossible measure the heights of all these people. We can only measure
 
 There will be some inaccuracy in our conclusions about the population based upon a sample. This should be obvious - we have fewer members in our sample than our population therefore we have lost some information.
 
-A characteristic or attribute of a population, such as the mean or standard deviation, is called a **parameter**;whereas a characteristic or attribute of a sample is called a **statistic**.
+A characteristic or attribute of a population, such as the mean or standard deviation, is called a **parameter**; whereas a characteristic or attribute of a sample is called a **statistic**.
 
 Parameters hold the true values of a real world distribution. A statistic is an estimate of a population parameter. In most cases, we only have access to a portion of the population distribution, so we almost always work with statistics.
 
@@ -41,7 +41,7 @@ In **simple random sampling**, each member of the population has an equal probab
 
 In **stratified sampling**, we divide the population into groups based on some characteristic. Then, within each group, we select a random sample. These groups are called **strata**.
 
-Suppose we conduct a national survey. We might divide the population into strata based on gender. Then within each stratum, we might randomly select survey respondents.
+Suppose we conduct a national survey, we might divide the population into strata based on gender. Then within each stratum, we might randomly select survey respondents.
 
 ## Cluster sampling
 
@@ -154,7 +154,7 @@ Consider the following experiment,
 
 As this experiment is repeated, ie. the more samples we take, the graph showing the sample means will increasingly look normal.
 
-The central limit theorem lets us continue performing statistical analysis even if we do not the true form of the population distribution.
+The central limit theorem lets us continue performing statistical analysis even if we do not know the true form of the population distribution.
 
 # Maximum Likelihood Estimation
 

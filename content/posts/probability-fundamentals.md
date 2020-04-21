@@ -158,7 +158,7 @@ where $N$ is the total number of trials.
 Note that joint probability is symmetric. This means
 
 $$
-P(X = x_i, Y = y_i) = (Y = y_i, X = x_i)
+P(X = x_i, Y = y_i) = P(Y = y_i, X = x_i)
 $$
 
 This is because both of them point to the same box in the grid.
@@ -246,7 +246,7 @@ $$
 
 **Bayes theorem** lets us update our beliefs based on new evidence.
 
-Imagine that we are trying to find the probability that a person has cancer. Initially, we say it is whatever percent of the population has cancer. However, given new evidence that the person is a smoker, we can improve our probability estimation.
+Say we are trying to find the probability that a person has cancer. Initially, the probability is the percentage of the population that has cancer. However, given new evidence that the person is a smoker, we can improve our probability estimation.
 
 We know that the probability of $B$ given $A$ is,
 
