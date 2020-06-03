@@ -21,9 +21,9 @@ It is a very simple model that uses *linear regression* followed by a *threshold
 
 Each component of the input vector has a weight associated with it. The **weight** expresses its relative importance while calculating the output. The weights are stored in the vector $w$.
 
-# Calculating the Classification
+# Calculating the Output Class
 
-Now, calculate the weighted sum $\sum_i w_i  x_i$. The output depends on whether this sum is greater than or less than a **threshold value**.
+The output depends on whether the weighted sum $\sum_i w_i  x_i$ is greater than or less than a **threshold value**.
 
 <figure style="width: 450px">
 	<img src="/media/deep learning/step-function.jpeg" alt="Step Function">

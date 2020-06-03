@@ -90,7 +90,7 @@ $$
 
 where, $w_s$ is the weight of the stump and $w_i$ is the weight of $o_i$.
 
-## The Purpose of assigning stump weights
+## The Purpose of assigning Stump weights
 
 The result of boosting is a *forest of stumps*. When it is time for the ensemble to make a prediction, each stump gets a vote, ie. each stump makes a prediction.
 

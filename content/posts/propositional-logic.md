@@ -192,6 +192,17 @@ $$
 
 Logical equivalences can be also be used as inference rules.
 
+## Implementing theorem proving
+
+How can a computer perform theorem proving? The answer is to define it as a search problem. Search algorithms like iterative deepening can be used to find the sequence of steps that constitute a proof.
+
+It can be defined as follows:
+
+- Initial state - initial knowledge base
+- Actions - a set of logical equivalencies and inference rules that match the LHS of the current sentence
+- Result - the result of the action on a sentence
+- Goal - is the sentence we want to derive
+
 ## Proof by Contradiction
 
 The basic idea behind this is to assume that the statement $\beta$ we want to prove is false, and then show that this assumption leads to nonsense.
@@ -202,20 +213,9 @@ Lets say, $\alpha$ does entail $\beta$. In this case the sentence $\alpha \wedge
 
 $\alpha \wedge \neg \beta$ is said to be unsatisfiable, if we find a contradiction.
 
-## Implementing theorem proving
-
-How can a computer perform proof by contradiction? The answer is to define it as a search problem. Search algorithms like iterative deepening can be used to find the sequence of steps that constitute a proof.
-
-It can be defined as follows:
-
-- Initial state - initial knowledge base
-- Actions - a set of logical equivalencies and inference rules that match the LHS of the current sentence
-- Result - the result of the action on a sentence
-- Goal - is the sentence we want to derive
-
 ## Proof by Resolution
 
-One problem we face here is that the inference algorithm is not complete. This is because if a particular inference rule is not available, then the goal is unreachable.
+One problem we face is that the inference algorithm is not complete. This is because if a particular inference rule is not available, then the goal is unreachable.
 
 But a single inference rule, named *resolution* when coupled with any complete search algorithm, it yields a complete inference algorithm.
 
@@ -314,7 +314,7 @@ The algorithm picks a random unsatisfied clause and picks a symbol in the clause
 
 We do this for a specified number of steps, or until it finds a model that satisfies every clause.
 
-If a model is returned, then WalkSAT has indeed proved satisfiability of the set of clauses (sentence). Failure, on the other hand, can represent either of the following:
+If a model is returned, then WalkSAT has indeed proved satisfiability of the set of clauses. Failure, on the other hand, can represent either of the following:
 
 - The sentence is unsatisfiable
 - The algorithm needs more time, ie. larger `max_flips` to find a model that satisfies the propositions
