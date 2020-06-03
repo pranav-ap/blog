@@ -296,6 +296,53 @@ $$
 \end{aligned}
 $$
 
-### Law of sines
+### Law of Sines
 
-### Law of cosines
+<figure style="width: 650px">
+   <img src="/media/geometry/triangle.png" alt="Triangle">
+   <figcaption>Triangle</figcaption>
+</figure>
+
+The area of any arbitrary triangle is given by,
+
+$$
+\frac {1} {2} \space base \times height
+$$
+
+So, depending on the choice of base, we can write area of a triangle as,
+
+$$
+\frac {1} {2} \space b \space (c \space \text{sin} \space A)
+=
+\frac {1} {2} \space c \space (a \space \text{sin} \space B)
+=
+\frac {1} {2} \space a \space (b \space \text{sin} \space C)
+$$
+
+Simplifying,
+
+$$
+b \space c \space \text{sin} \space A
+=
+c \space a \space \text{sin} \space B
+=
+a \space b \space \text{sin} \space C
+$$
+
+Divide by $a \space b \space c$,
+
+$$
+\tag{16} \frac {\text{sin} \space A} {a}
+=
+\frac {\text{sin} \space B} {b}
+=
+\frac {\text{sin} \space C} {c}
+$$
+
+### Law of Cosines
+
+[here](https://www.mathopenref.com/lawofcosinesproof.html)
+
+## Reference
+
+- Thomas' Calculus
