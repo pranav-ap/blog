@@ -341,8 +341,10 @@ $$
 
 ### Law of Cosines
 
-[here](https://www.mathopenref.com/lawofcosinesproof.html)
+[Proof is here](https://www.mathopenref.com/lawofcosinesproof.html)
 
 ## Reference
 
 - Thomas' Calculus
+- [Wikipedia](https://en.wikipedia.org/wiki/List_of_trigonometric_identities)
+- [Math is fun](https://www.mathsisfun.com/algebra/functions-odd-even.html)

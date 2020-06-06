@@ -172,7 +172,7 @@ $$
 
 ## Scalar Multiplication
 
-Vectors can be stretched and squished by any factor. This is called **scalar multiplication**. If we want to double the length of a vector, we simply multiply all its elements by $2$.
+Vectors can be stretched and squished by any factor. This is called **scalar multiplication**. If we want to double the length of a vector, we multiply all its elements by $2$.
 
 <figure style="width: 900px">
 	<img src="/media/linear algebra/vector scaling.png" alt="Scalar Multiplication">
@@ -291,9 +291,15 @@ The length of the resulting vector equals the area of the parallelogram formed b
 It is defined by the formula :
 
 $$
-a \times b = \pm \mid a \mid \mid b \mid sin(\theta)
+a \times b = \pm \mid a \mid \mid b \mid sin(\theta) \space n
 $$
 
+where $\theta$ is the angle between $a$ and $b$, and $n$ is a unit vector perpendicular to $a$ and $b$. The direction of $n$ is determined by the right hand rule.
+
+<figure style="width: 390px">
+	<img src="/media/linear algebra/rhs cross.jpg" alt="Right hand rule">
+	<figcaption>Right hand rule</figcaption>
+</figure>
 
 ## Norms
 
@@ -329,9 +335,9 @@ $$
 \parallel x \parallel_2 \space = \space \Bigg( \sum_i \mid x_i \mid^2 \Bigg)^{\frac {1}{2}}
 $$
 
-The $L^2$ norm is the sum of the squares of the components, which is simply the Euclidean distance between $\bold{x}$ and the origin (a *zero vector*). It is also called **Euclidean norm**, and its the most commonly used norm.
+The $L^2$ norm is the sum of the squares of the components, which is the Euclidean distance between $\bold{x}$ and the origin (a *zero vector*). It is also called **Euclidean norm**, and its the most commonly used norm.
 
-It is also common to measure the size of a vector using the *squared* $L^2$ norm, which can be calculated as $x^T x$.
+It is also be calculated as $x^T x$.
 
 ### Max Norm
 
@@ -547,23 +553,33 @@ The **Gram–Schmidt process** takes in a basis $V$ and generates an orthonormal
 
 Consider a basis $V$ with three vectors $\{ v^{(1)}, v^{(2)}, v^{(3)}, v^{(4)}, v^{(5)} \}$. We will incrementally build an orthonormal basis $U$, by iterating through this $V$.
 
+### Finding $u^{(1)}$
+
 First we pick $v^{(1)}$ and make it a unit vector $u^{(1)}$.
 
 $$
 u^{(1)} = \frac {v^{(1)}} {\parallel v^{(1)} \parallel}
 $$
 
+### Finding $u^{(2)}$
+
 Next we pick $v^{(2)}$. If $v^{(2)}$ has a non-zero projection on $u^{(1)}$, then it is not orthogonal to $u^{(1)}$.
 
 <figure style="width: 390px">
-	<img src="/media/linear algebra/gram schmidt projection.png" alt="Removing the Projection">
+	<img src="/media/linear algebra/gram schmidt projection.svg" alt="Removing the Projection">
 	<figcaption>Removing the Projection</figcaption>
 </figure>
 
-We can simply subtract the projection of $v^{(2)}$ onto $u^{(1)}$ from $v^{(2)}$ itself, to get the corresponding orthogonal vector $u^{(2)\prime}$.
+Note that $v^{(2)}$ can be written as a sum of its $x$ and $y$ components,
 
 $$
-u^{(2)\prime} = {v^{(2)}} - ({v^{(2)}} \cdot {u^{(1)}}) {u^{(1)}}
+v^{(2)} = ({v^{(2)}} \cdot {u^{(1)}})  \space  u^{(1)} + u^{(2)\prime}
+$$
+
+By rewriting, we get
+
+$$
+u^{(2)\prime} = {v^{(2)}} - ({v^{(2)}} \cdot {u^{(1)}}) \space u^{(1)}
 $$
 
 $u^{(2)\prime}$ is divided by its length to get the orthonormal vector $u^{(2)}$.
@@ -572,14 +588,30 @@ $$
 u^{(2)} = \frac {u^{(2)\prime}} {\parallel u^{(2)\prime} \parallel}
 $$
 
-Now we pick up $v^{(3)}$. The procedure to generate $u^{(3)}$ remains the same. This time $u^{(3)}$ must be made orthogonal to *both* $u^{(1)}$ and $u^{(2)}$.
+### Finding $u^{(3)}$
+
+The goal is to generate $u^{(3)}$ such that it is orthogonal to *both* $u^{(1)}$ and $u^{(2)}$. Note that $v^{(2)}$ can be written as a sum of its $x$ and $y$ components,
 
 $$
-u^{(3)\prime} = {v^{(3)}} - ({v^{(3)}} \cdot {u^{(1)}}) {u^{(1)}} - ({v^{(3)}} \cdot {u^{(2)}}) {u^{(2)}}
+v^{(3)} = \text{projection}_{u^{(1)} u^{(2)} \text{plane}} + u^{(3)\prime}
 $$
 
+Expand and rewrite,
+
 $$
-u^{(3)} = \frac {u^{(3)\prime}} {\parallel u^{(3)\prime} \parallel}
+\begin{aligned}
+   u^{(3)\prime} &=
+      v^{(3)} - \Big ( (v^{(3)} \cdot u^{(1)}) \space u^{(1)} + (v^{(3)} \cdot u^{(2)}) \space u^{(2)} \Big )
+
+   \\\\
+
+   u^{(3)\prime} &=
+      v^{(3)} - (v^{(3)} \cdot u^{(1)}) \space u^{(1)} - (v^{(3)} \cdot u^{(2)}) \space u^{(2)}
+
+   \\\\
+
+   u^{(3)} &= \frac {u^{(3)\prime}} {\parallel u^{(3)\prime} \parallel}
+\end{aligned}
 $$
 
 Continue this process until the span of the original vectors $V$ has been reached by $U$.
@@ -919,6 +951,110 @@ An **orthogonal matrix** is a square matrix whose rows and columns are orthogona
 
 Orthogonal unit vectors are also called orthonormal vectors.
 
+# Column Space and Row Space
+
+The **row space** of a matrix $A$ is the span of the rows of $A$, where each row is treated as a basis vector.
+
+<figure style="width: 900px">
+	<img src="/media/linear algebra/row vectors.png" alt="Row Vectors">
+	<figcaption>Row Vectors</figcaption>
+</figure>
+
+Any vector $\bold{v}$ from the span can be reached as a linear combination,
+
+$$
+\begin{aligned}
+   \bold{v} &= A \bold{x}
+
+   \\\\
+
+   \bold{v} &=
+      \begin{bmatrix}
+         1 & 8 & 13 & 12\\\\
+         14 & 11 & 2 & 7 \\\\
+         4 & 5 & 16 & 9 \\\\
+         15 & 10 & 3 & 6
+      \end{bmatrix}
+
+      \begin{bmatrix}
+         a \\\\
+         b \\\\
+         c \\\\
+         d
+      \end{bmatrix}
+
+\end{aligned}
+$$
+
+The **column space** of a matrix $A$ is the span of the columns of $A$, where each column is treated as a basis vector.
+
+<figure style="width: 900px">
+	<img src="/media/linear algebra/column vectors.png" alt="Column Vectors">
+	<figcaption>Column Vectors</figcaption>
+</figure>
+
+Any vector $\bold{v}$ from the span can be reached as a linear combination,
+
+$$
+\begin{aligned}
+   \bold{v} &= A \bold{x}
+
+   \\\\
+
+   \bold{v} &= A
+      \begin{bmatrix}
+         a \\\\
+         b \\\\
+         c \\\\
+         d
+      \end{bmatrix}
+
+   \\\\
+
+   \bold{v} &=
+      a 	\begin{bmatrix}
+         1 \\\\
+         14 \\\\
+         4 \\\\
+         15
+      \end{bmatrix}
+
+      +
+
+      b 	\begin{bmatrix}
+         8 \\\\
+         11 \\\\
+         5 \\\\
+         10
+      \end{bmatrix}
+
+      +
+
+      c 	\begin{bmatrix}
+         13 \\\\
+         2 \\\\
+         16 \\\\
+         3
+      \end{bmatrix}
+
+      +
+
+      d 	\begin{bmatrix}
+         12 \\\\
+         7 \\\\
+         9 \\\\
+         6
+      \end{bmatrix}
+
+\end{aligned}
+$$
+
+# Null Space
+
+A null space of a matrix $A$ contain all vectors $\bold{v}$ such that satisfy the homogenous system $A \bold{v} = 0$.
+
+[Finding the null space](https://youtu.be/xRJCdbFY17k)
+
 # System of Linear Equations
 
 A system of $m$ linear equations with $n$ unknowns is a set of equations in the form of:
@@ -1000,7 +1136,7 @@ a_\text{21} x_1 + a_\text{22} x_2 = b_2
 $$
 
 If we interpret $x_1$ and $x_2$ as coordinates on an $xy$ axis, then each of these equations represent a straight line, and $\begin{bmatrix}
-   a & b
+   p & q
 \end{bmatrix}^T$ will be a solution if it is a point that coincides with both the lines.
 
 - If the lines *intersect*, there is one unique solution.
@@ -1011,7 +1147,7 @@ This geometric visualization can be extended to solving a system with three equa
 
 A system is called **over determined** if it has more equations than unknowns. It is called **determined** if *m = n*. It is called **under determined** if it has fewer equations than unknowns.
 
-## Solving a System of Linear Equations using Gauss Elimination and Back Substitution
+## Solving a System of Linear Equations using Gauss Elimination
 
 Consider a linear system in upper triangular form,
 
@@ -1020,8 +1156,6 @@ $$
 13 x_2 = -26
 $$
 
-**Back substitution** is the procedure where we first solve for $x_2$, then substitute $x_2 = -2$ into the first equation to find $x_1$. This is a natural way of solving a linear system, as long as the system is in triangular form.
-
 **Gauss Elimination** is a method to convert any linear system into the *row echelon form*, while keeping the solution unchanged. It works directly with augmented matrices and consists of a series of simple operations on the rows of the matrix.
 
 A matrix is in **row echelon form** if it satisfies the following conditions:
@@ -1029,27 +1163,20 @@ A matrix is in **row echelon form** if it satisfies the following conditions:
 - Any rows with all zero elements are below rows having non-zero elements
 - The leftmost nonzero entry is further to the right than the leftmost nonzero entry of the previous row
 
-The **elementary row operations for matrices** are as follows:
 
-- Interchange two rows of the matrix
-- Multiplying a row by a nonzero constant
-- Adding a constant multiple of one row to another row
+Two linear systems are said to be **row equivalent** if one can be obtained from the other using a finitely many row operations. Row equivalent linear systems share the same solution set. The **row operations for matrices** are as follows:
 
-The interchange of two rows corresponds with the interchange of two equations. Clearly, this does not alter the solution set.
+- *Interchange two rows of the matrix* - It corresponds to the interchange of two equations.
+- *Multiplying a row by a nonzero constant* $c$ - It corresponds to multiplying both sides of an equation by the same constant $c$.
+- *Adding a constant multiple of one row to another row* - It corresponds to adding two equations together, after multiplying both sides of one of the equations by a constant $c$.
 
-Multiplication of a row by a nonzero constant $c$ corresponds to multiplying both sides of an equation by the same constant $c$. This too does not change the solution set.
+Note that we use *row operations*, not *column operations*. This is because column operations would alter the underlying equations into having different solution sets.
 
-Addition of a constant multiple of one row to another corresponds to adding two equations together, after multiplying both sides of one of the equations by a constant $c$.
-
-Two linear systems are said to be **row equivalent** if one can be obtained from the other using a finitely many row operations. Row equivalent linear systems share the same solution set.
-
-Note that we use *row operations*, not *column operations*.This is because column operations would alter the underlying equations into having different solution sets.
+Once the system is in row echelon form, we can use back substitution. **Back substitution** is the procedure where we first solve for $x_2$, then substitute $x_2 = -2$ into the first equation to find $x_1$.
 
 ## Interpreting the result of Gauss Elimination
 
 If the linear system has **no solutions**, then Gauss elimination will show this by producing a contradiction in the resulting row echelon form.
-
-A system with a contradiction is called **inconsistent** and it does not have any solutions. Otherwise, a system is **consistent** and has at least one solution.
 
 The following result of a gauss elimination is inconsistent, due to the presence of the contradiction, $0 = 12$.
 
@@ -1061,9 +1188,11 @@ $$
 \end{bmatrix}
 $$
 
-If the system is consistent and the number of rows (equations) is fewer than the number of unknowns, we assign some unknowns arbitrary values and express the other unknowns in terms of these arbitrarily assigned unknowns. Due to the arbitrary assignments, the system has **infinitely many solutions**.
+A system with a contradiction is called **inconsistent** and it does not have any solutions. Otherwise, a system is **consistent** and has at least one solution.
 
-A system has a **unique solution** if it is consistent and the number of rows equals the number of unknowns.
+If the system is consistent and under determined, we assign some variables arbitrary values and express the other variables in terms of these arbitrarily assigned unknowns. Due to the arbitrary assignments, the system has **infinitely many solutions**.
+
+A system has a **unique solution** if it is consistent and determined.
 
 # Linear Transformations
 
@@ -1073,7 +1202,7 @@ In some cases, the input vector space, can get squished into a smaller dimension
 
 A transformation is said to be **linear** if the origin stays at the same location, and the grid lines remain evenly spaced and parallel to each other.
 
-What are the new coordinates of a point $V$, after a linear transformation? It turns out that we only need to record where the basis vectors land after the transformation. The *transformed* $V$ is simply the same linear combination of the *transformed* basis vectors.
+What are the new coordinates of a point $V$, after a linear transformation? It turns out that we only need to record where the basis vectors land after the transformation. The *transformed* $V$ is the same linear combination of the *transformed* basis vectors.
 
 **Example**
 
@@ -1107,7 +1236,7 @@ $$
 \end{bmatrix}
 $$
 
-The *transformed* vector $\bold{p}$ is obtained simply by the same linear combination of the *transformed* basis vectors.
+The *transformed* vector $\bold{p}$ is obtained by the same linear combination of the *transformed* basis vectors.
 
 $$
 -1
@@ -1220,7 +1349,7 @@ $$
 	<figcaption>Calculating Determinant</figcaption>
 </figure>
 
-We simply calculate the area using basic geometric formulas. Read [this](https://www.mathsisfun.com/algebra/matrix-determinant.html) for learning how to calculate the determinant for higher dimensions.
+We calculate the area using basic geometric formulas. Read [this](https://www.mathsisfun.com/algebra/matrix-determinant.html) for learning how to calculate the determinant for higher dimensions.
 
 # Inverse of a Matrix
 
@@ -1240,15 +1369,13 @@ Not all matrices have inverses. Only matrices that satisfy the following conditi
 - It must be a square matrix $n \times n$.
 - The *rank* of the matrix must be $n$.
 
-If the determinant becomes $0$, we know that some dimensions of space have been lost. There is no way to regain them by using a transformation.
+If the determinant becomes $0$, we know that some dimensions of space have been lost. There is no way to regain them by using another transformation.
 
-This is because a transformation is simply a function that takes in one vector and gives out a *single* output vector. Converting a straight line into a plane will require each point in the straight line to be converted into multiple points of the plane.
+**Rank** is defined as the maximum number of linearly independent column vectors in the matrix. The maximum number of linearly independent vectors in a matrix is equal to the number of non-zero rows in its row echelon matrix.
 
-**Rank** is defined as the maximum number of linearly independent column vectors in the matrix. The maximum number of linearly independent vectors in a matrix is equal to the number of non-zero rows in its row echelon matrix. When all of the vectors in a matrix are linearly independent, the matrix is said to be **full rank**.
+When all of the vectors in a matrix are linearly independent, the matrix is said to be **full rank**.
 
-A matrix with inverses are called a **non singular matrix** or **invertible matrix**, else it is called a **singular matrix**.
-
-Not every matrix has an inverse; but if a it does have an inverse, it is always unique.
+A matrix with inverses are called a **non singular matrix** or **invertible matrix**, else it is called a **singular matrix**. Not every matrix has an inverse; but if it does have an inverse, it is always unique.
 
 # Inverse of a Matrix using Gauss-Jordan Elimination
 
@@ -1353,7 +1480,6 @@ $$
 
 \lambda
 
-
 \begin{bmatrix}
 	x_1 \\
 	x_2
@@ -1383,10 +1509,12 @@ $$
 Equation $(1)$ is called the **characteristic matrix**. It reduces $\bold{v}$ to a zero vector. This equation only holds true if the determinant of the matrix is $0$.
 
 $$
-det( A - \lambda I ) = 0
+\mid A - \lambda I \mid = 0
 $$
 
 $$
+\Bigg |
+
 \begin{bmatrix}
 	-5 & 2\\
 	2 & -2
@@ -1401,10 +1529,14 @@ $$
 	0 & 1
 \end{bmatrix}
 
+\Bigg |
+
 = 0
 $$
 
 $$
+\Bigg |
+
 \begin{bmatrix}
 	-5 & 2\\
 	2 & -2
@@ -1417,14 +1549,16 @@ $$
 	0 & \lambda
 \end{bmatrix}
 
+\Bigg |
+
 = 0
 $$
 
 $$
-\begin{bmatrix}
+\begin{vmatrix}
 	-5 - \lambda & 2\\
 	2 & -2 - \lambda
-\end{bmatrix}
+\end{vmatrix}
 
 = 0
 $$
@@ -1436,6 +1570,8 @@ $$
 Equation $D(\lambda)$ is called the **characteristic equation** of $A$. The solutions to this equation are the eigenvalues of matrix $A$. The solutions are $\lambda_1 = -1$ and $\lambda_2 = -6$.
 
 To find the eigenvectors, we plugin each of the eigenvalues in place of $\lambda$ in the characteristic matrix and solve for $\bold{v}$ using Gauss Elimination.
+
+[Another Example](https://youtu.be/IdsV0RaC9jM)
 
 ## Eigen Decomposition
 
