@@ -540,6 +540,11 @@ The above diagram shows two sets of basis vectors $U$ and $V$ with two dimension
 
 It is often useful to be able to change the representation of a vector from one basis to another. This operation is called the **change of basis**. This is explained later.
 
+<figure style="width: 500px">
+	<img src="/media/linear algebra/change of basis 2.png" alt="Change of Basis">
+	<figcaption>Change of Basis</figcaption>
+</figure>
+
 # Gram-Schmidt Process
 
 Sometimes, life is easier if we use an orthonormal basis for a vector space. An **orthonormal basis** consists of vectors with unit norm that are orthogonal to each other.
@@ -903,9 +908,16 @@ $$
 \end{bmatrix}
 $$
 
+
+### Orthogonal Matrix
+
+An **orthogonal matrix** is a square matrix whose rows and columns are orthogonal unit vectors. Two vectors $x$ and $y$ are orthogonal to each other if $x^T y = 0$
+
+Orthogonal unit vectors are also called orthonormal vectors.
+
 ### Diagonal Matrices
 
-**Diagonal matrices** are square matrices that can have non-zero elements only on the main diagonal. All other elements must be $0$.
+**Diagonal matrices** are square matrices where all entries outside the main diagonal are $0$. The diagonal elements can be zero or non-zero.
 
 $$
 \begin{bmatrix}
@@ -945,11 +957,11 @@ $$
 \end{bmatrix}
 $$
 
-### Orthogonal Matrix
+Diagonal matrices allow for fast computation of determinants, powers and inverses.
 
-An **orthogonal matrix** is a square matrix whose rows and columns are orthogonal unit vectors. Two vectors $x$ and $y$ are orthogonal to each other if $x^T y = 0$
-
-Orthogonal unit vectors are also called orthonormal vectors.
+- The determinant is the product of its diagonal values.
+- A diagonal matrix $D$ raised to the power $k$ is given by each diagonal entry raised to the power $k$.
+- The inverse $D^{-1}$ is the reciprocal of all diagonal elements in $D$.
 
 # Column Space and Row Space
 
@@ -1371,7 +1383,7 @@ Not all matrices have inverses. Only matrices that satisfy the following conditi
 
 If the determinant becomes $0$, we know that some dimensions of space have been lost. There is no way to regain them by using another transformation.
 
-**Rank** is defined as the maximum number of linearly independent column vectors in the matrix. The maximum number of linearly independent vectors in a matrix is equal to the number of non-zero rows in its row echelon matrix.
+**Rank** is defined as the number of linearly independent column vectors in the matrix. The maximum number of linearly independent vectors in a matrix is equal to the number of non-zero rows in its row echelon matrix. It is also equal to the number of linearly independent row vectors in the matrix.
 
 When all of the vectors in a matrix are linearly independent, the matrix is said to be **full rank**.
 
@@ -1506,7 +1518,7 @@ $$
 \tag{1} (A - \lambda I ) \bold{v} = 0
 $$
 
-Equation $(1)$ is called the **characteristic matrix**. It reduces $\bold{v}$ to a zero vector. This equation only holds true if the determinant of the matrix is $0$.
+Equation $(1)$ holds true only if the determinant of the matrix $A$ is $0$.
 
 $$
 \mid A - \lambda I \mid = 0
@@ -1573,9 +1585,9 @@ To find the eigenvectors, we plugin each of the eigenvalues in place of $\lambda
 
 [Another Example](https://youtu.be/IdsV0RaC9jM)
 
-## Eigen Decomposition
+# Eigen Decomposition
 
-Just like integers can be decomposed into prime factors, matrices can be decomposed into a set of eigenvectors and eigenvalues. Doing so can help us understand certain properties of the matrix.
+Just like integers can be decomposed into prime factors, square matrices can be decomposed into a set of eigenvectors and eigenvalues. Doing so can help us understand certain properties of the matrix.
 
 Consider a matrix $A$ that has $n$ linearly independent eigenvectors $\{ \bold{v}^\text{(1)}, \bold{v}^\text{(2)}, \cdots, \bold{v}^\text{(n)} \}$ with corresponding eigenvalues $\{ \lambda_1, \lambda_2, \cdots, \lambda_n \}$.
 
@@ -1584,8 +1596,16 @@ We can form a matrix $V$ with one eigenvector per column, $V = [ \bold{v}^\text{
 The **eigen decomposition** of $A$ is given by,
 
 $$
-A = V diag(\lambda) V^\text{-1}
+A = V diag(\lambda) V^{-1}
 $$
+
+- The first step is to find the eigen values. Then place them in any order as the diagonal elements of a diagonal matrix, denoted as $diag(\lambda)$.
+- Find the eigen vectors for these eigen values. Place them in any order as columns of matrix $V$.
+- Calculate the inverse of $V$.
+
+This is also called the **diagonalization** of matrix $A$.
+
+[Diagonalization Example](https://youtu.be/Sf91gDhVZWU)
 
 # Singular Value Decomposition
 

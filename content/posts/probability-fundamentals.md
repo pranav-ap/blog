@@ -43,7 +43,7 @@ The **probability** of an event is a number indicating how likely that event is 
 
 When a single die is thrown, there are $6$ possibilities and the all of them are equally likely to occur. We need a formula that assigns a numeric value to each of them.
 
-Since a probability of $1$ represents certainty, this formula must divide certainty *equally* among all the sample points like a pie.
+Since a probability of $1$ represents certainty, this formula must divide certainty *equally* among all the sample points.
 
 <figure style="width: 420px">
 	<img src="/media/statistics and probability theory/discrete-uniform-law.png" alt="Discrete uniform law">
