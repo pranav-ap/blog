@@ -10,7 +10,7 @@ tags:
 description: ""
 ---
 
-**Statistics** is concerned with the collection and analysis of datasets, and the presentation of results. It helps to make decisions in the face of uncertainty.
+**Statistics** is concerned with the collection, analysis and presentation of data.
 
 # Population and Samples
 
@@ -25,7 +25,7 @@ But it's impossible measure the heights of all these people. We can only measure
 
 There will be some inaccuracy in our conclusions about the population based upon a sample. This should be obvious - we have fewer members in our sample than our population therefore we have lost some information.
 
-A characteristic or attribute of a population, such as the mean or standard deviation, is called a **parameter**; whereas a characteristic or attribute of a sample is called a **statistic**.
+A characteristic of a population, such as the mean or standard deviation, is called a **parameter**; whereas a characteristic of a sample is called a **statistic**.
 
 Parameters hold the true values of a real world distribution. A statistic is an estimate of a population parameter. In most cases, we only have access to a portion of the population distribution, so we almost always work with statistics.
 
@@ -42,12 +42,6 @@ In **simple random sampling**, each member of the population has an equal probab
 In **stratified sampling**, we divide the population into groups based on some characteristic. Then, within each group, we select a random sample. These groups are called **strata**.
 
 Suppose we conduct a national survey, we might divide the population into strata based on gender. Then within each stratum, we might randomly select survey respondents.
-
-## Cluster sampling
-
-In **cluster sampling**, every member of the population is assigned to a single group called a **cluster**. A sample of clusters is chosen, using simple random sampling. Only individuals within sampled clusters are surveyed.
-
-Note that with stratified sampling, the sample includes elements from each stratum. But in cluster sampling, the sample includes elements only from sampled clusters.
 
 # Statistical Distribution
 
@@ -88,7 +82,7 @@ $$
 
 The difference tells you how far away $x_i$ is from the mean, and squaring each term makes sure the distance is positive.
 
-The sample variance is denoted by $\text{var} (x)$. It is estimated using,
+The sample variance is estimated using,
 
 $$
 s^2 = \frac { \sum_i ( x_i - \overline{x} )^2 } {N - 1}
@@ -107,6 +101,8 @@ $$
 Using $\overline{x}$ in the square of differences will result in the smallest possible value. This is because it is equidistant from all other sample points $x_i$. Using any other value instead of $\overline{x}$ will result in a larger value.
 
 Since $\mu \ne \overline{x}$, our current estimation $s^2$ is smaller than the population variance. Dividing by $n - 1$ increases $s^2$ to compensate for our use of $\overline{x}$.
+
+[watch this](https://youtu.be/92s7IVS6A34?list=WL)
 
 ## Standard Deviation
 

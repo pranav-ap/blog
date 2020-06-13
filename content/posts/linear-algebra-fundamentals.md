@@ -10,15 +10,51 @@ tags:
 description: ""
 ---
 
-**Linear Algebra** is a branch of mathematics that is widely used in science and engineering. It is essential for understanding many machine learning algorithms. It is also used to describe rotations and translations in animations.
+**Linear Algebra** is a branch of mathematics that is essential to understand learning algorithms and to describe rotations and translations in animations.
+
+# Contents
+
+- Basics
+
+   - Scalars, Vectors and Matrices
+   - Operations on Vectors
+   - Operations on Matrices
+   - Special Matrices
+   - Norms
+
+- Vector Space
+
+   - Vector Space and its properties
+   - Linear Combination and Span
+   - Linear Independence
+   - Basis of a Vector Space
+   - Change of Basis using the Gram-Schmidt Process
+   - Row and Column Spaces
+   - Null Space
+
+- System of Linear Equations
+
+   - Solving a System using Gauss Elimination
+   - Linear Transformations
+   - Determinant
+
+- Inverse of a Matrix
+
+   - Existence of an Inverse
+   - Finding the Inverse using Gauss-Jordan Elimination
+
+- Decomposition
+
+   - Eigen Decomposition
+   - Singular Value Decomposition
 
 # Scalars, Vectors and Matrices
 
-A **scalar** is just a single number. It can be a real-valued number, a natural number or an integer. A scalar is denoted by a lowercase alphabet.
+A **scalar** is just any real number. It is denoted by a lowercase alphabet.
 
 A **vector** is an ordered list of numbers and functions. The numbers and functions are called **components** of the vector. It is denoted by a bold lowercase alphabet.
 
-A vector with a single column is called a **column vector**, and a vector with a single row is called a **row vector**.
+A vector in the form of a column is called a **column vector**, and a vector in the form of a row is called a **row vector**.
 
 $$
 \begin{bmatrix}
@@ -76,8 +112,8 @@ A vector can be seen as an arrow in space, where its components are the coordina
 
 Numerically, it is represented as $
 \begin{bmatrix}
-   2 & 1
-\end{bmatrix} ^ T
+   2 \\ 1
+\end{bmatrix}
 $. The first number tells you how far away from the origin you have to move along the $x$-axis and the second number tells you how far away you have to move along the $y$-axis.
 
 The geometric interpretation of vectors will help us better understand vector operations.
@@ -253,13 +289,19 @@ Let's project a vector onto another vector. In the following figure $a$, $\bold{
 
 The **projection vector** of $\bold{v}$ onto $\bold{w}$ is like a shadow of $\bold{v}$ falling on $\bold{w}$. The length of the shadow will differ based on the angle $\theta$, but intuitively we can tell that the direction of the projection is always in the same direction as $\bold{w}$.
 
-The **length** of a projection is given by,
+The **length** of a projection is given by simple trigonometry,
 
 $$
-cos(\theta) = \frac{\text{Length of projection}}{|\bold{v}|}
+cos(\theta) = \frac{\text{Length of projection}}{\mid \bold{v} \mid}
 $$
 
 where, $\mid \bold{v} \mid$ is the magnitude of $\bold{v}$.
+
+The projection vector is,
+
+$$
+\bold{p} = \frac {\bold{w}} {\mid \bold{w} \mid} \mid \bold{v} \mid cos(\theta)
+$$
 
 ## Dot Product
 
@@ -271,7 +313,25 @@ The **dot product** of two vectors $\bold{v}$ and $\bold{w}$ is related to this 
 
 This operation takes two vectors of the same dimension and returns a scalar. Hence, it is also known as **scalar product**. Dot product between $\bold{x}$ and $\bold{y}$ is denoted by a central dot $\bold{x} \cdot \bold{y}$.
 
-It is defined by,
+Geometrically, dot product is defined as,
+
+<figure style="width: 390px">
+	<img src="/media/linear algebra/dot product.gif" alt="Finding Dot product">
+	<figcaption>Finding Dot product between <b>a</b> and <b>b</b></figcaption>
+</figure>
+
+$$
+\bold{x} \cdot \bold{y} = \mid \bold{x} \mid \mid \bold{y} \mid \text{cos} \space (\theta)
+$$
+
+To multiply two vectors it makes sense to multiply their lengths together but only when they point in the same direction. So we make one point in the same direction as the other by using its projection.
+
+Algebraically, dot product is defined as,
+
+<figure style="width: 390px">
+	<img src="/media/linear algebra/dot product 2.gif" alt="Finding Dot product">
+	<figcaption>Finding Dot product between <b>a</b> and <b>b</b></figcaption>
+</figure>
 
 $$
 \bold{x} \cdot \bold{y} = \bold{x}^T \bold{y} = \bold{y}^T \bold{x}
@@ -288,6 +348,11 @@ The **cross product** is another way to multiply two vectors. This operation res
 
 The length of the resulting vector equals the area of the parallelogram formed by the two input vectors. It reaches maximum length when the input vectors are at right angles. The length is zero when input vectors point in the same or opposite direction.
 
+<figure style="width: 390px">
+	<img src="/media/linear algebra/cross product area.svg" alt="Area of the parallelogram">
+	<figcaption>Area of the parallelogram</figcaption>
+</figure>
+
 It is defined by the formula :
 
 $$
@@ -301,325 +366,6 @@ where $\theta$ is the angle between $a$ and $b$, and $n$ is a unit vector perpen
 	<figcaption>Right hand rule</figcaption>
 </figure>
 
-## Norms
-
-We measure the *size* or *magnitude* of a vector using a function called a **norm**. Norms are functions that map vectors to non-negative values. Intuitively, they measure the distance of the vector from the origin.
-
-The general formula for norm is :
-
-$$
-\parallel x \parallel_p = \Bigg( \sum_i \mid x_i \mid^p \Bigg)^{\frac {1}{p}}
-$$
-
-for $p \in \R$ and $p \ge 1$.
-
-Not any function can be used as a norm. A norm needs to hold the following properties :
-
-- $f(x) = 0 \implies x = 0$. A zero vector must be assigned zero norm.
-- $f(x + y) \le f(x) + f(y)$ (the triangle inequality)
-- For any $c \in \R$, $f(cx) = \mid c \mid f(x)$. The norm of a vector scaled by $c$ must also be scaled by $c$.
-
-There are many types of norms, each useful in different situations.
-
-### $L^1$ Norm
-
-$$
-\parallel x \parallel_1 \space = \space \sum_i \mid x_i \mid
-$$
-
-$L^1$ norm is the sum of all components of the vector. It is also called the **Manhattan distance**.
-
-### $L^2$ Norm
-
-$$
-\parallel x \parallel_2 \space = \space \Bigg( \sum_i \mid x_i \mid^2 \Bigg)^{\frac {1}{2}}
-$$
-
-The $L^2$ norm is the sum of the squares of the components, which is the Euclidean distance between $\bold{x}$ and the origin (a *zero vector*). It is also called **Euclidean norm**, and its the most commonly used norm.
-
-It is also be calculated as $x^T x$.
-
-### Max Norm
-
-The **max norm** of a vector is the absolute value of the component with largest magnitude. It is also known as the $L^\infin$ norm.
-
-$$
-\parallel x \parallel_\infin \space = \space \text{max}_i \mid x_i \mid
-$$
-
-# Vector Space and its properties
-
-A **vector space** $V$ is a set of vectors upon which we have defined two operations: *scalar multiplication* and *vector addition*. For a set of vectors to be a vector space it must also hold the following properties:
-
-## Closure
-
-- *Additive closure* - If $\bold{u}, \bold{v} \in V$, then $\bold{u} + \bold{v} \in V$
-- *Scalar closure* - If $c \in \R$ and $\bold{u} \in V$, then $ c \bold{u} \in V$
-
-## Commutativity
-
-If $\bold{u}, \bold{v} \in V$, then $\bold{u} + \bold{v} = \bold{v} + \bold{u}$
-
-## Associativity
-
-- *Additive associativity* - If $\bold{u}, \bold{v}, \bold{w} \in V$, then $(\bold{u} + \bold{v}) + \bold{w} = \bold{u} + (\bold{v} + \bold{w})$
-- *Scalar multiplication associativity* - If $c \in \R$ and $\bold{u}, \bold{v} \in V$, then $\bold{u} (c \bold{v}) = (\bold{u} c) \bold{v}$
-
-## Distributivity
-
-- *Distributivity across vector addition* - If $c \in \R$ and $\bold{u}, \bold{v} \in V$, then $c (\bold{u} + \bold{v}) = c\bold{u} + c\bold{v}$
-- *Distributivity across scalar addition* - If $c, d \in \R$ and $\bold{u} \in V$, then $(c + d) \bold{u} = c \bold{u} + d \bold{u}$
-
-## Identity
-
-- *Zero vector* - There is a vector $0$, such that $\bold{u} + 0 \in V$ for all $u \in V$
-- *One vector* - There is a vector $1$, such that $1 \bold{u} \in V$ for all $u \in V$
-
-## Inverse
-
-If $\bold{u} \in V$, then there exists a vector $-\bold{u}$, such that $\bold{u} + (-\bold{u}) = 0$.
-
-This is called an *additive* inverse. Note that *multiplicative* inverse is not a property of $V$. This is because only scalar multiplication is defined for vector spaces.
-
-# Linear Combination and Span
-
-Consider a set of vectors $\{ \bold{v^{(1)}}, \bold{v^{(2)}}, ... , \bold{v^{(n)}} \}$ with the same dimension. We define an operation called a **linear combination** where we scale each vector and add all the resulting vectors together. This gives us another vector $\bold{p}$ with the same dimension as the input vectors.
-
-$$
-\bold{p} = \sum_i c_i \bold{v^{(i)}}
-$$
-
-The components of $\bold{p}$ define a point in space. So, by using different scales $c_i$ we can reach many other points. The set of all possible points reached by *atleast* one linear combination of coefficients (*scales*) is called the **span** of the vectors $\{ \bold{v^{(1)}}, \bold{v^{(2)}}, ... , \bold{v^{(n)}} \}$.
-
-<figure style="width: 540px">
-	<img src="/media/linear algebra/span.gif" alt="Span">
-	<figcaption>Span</figcaption>
-</figure>
-
-**Example**
-
-Consider the set $\{ \begin{bmatrix}
-	1 \\
-	0
-\end{bmatrix}, \begin{bmatrix}
-	0 \\
-	1
-\end{bmatrix} \}$. In linear combination they can reach any point $\begin{bmatrix}
-	a \\
-    b
-\end{bmatrix}$ in $2D$ space as shown below.
-
-$$
-\begin{bmatrix}
-	a \\
-	b
-\end{bmatrix}
-
-=
-a \begin{bmatrix}
-	1 \\
-	0
-\end{bmatrix}
-
-+
-
-b \begin{bmatrix}
-	0 \\
-	1
-\end{bmatrix}
-$$
-
-Formally, they are said to *span* the vector space $\R^2$.
-
-There can be many sets of vectors that can span the same vector space. For example, the set $\{ \begin{bmatrix}
-	1 \\
-	1
-\end{bmatrix}, \begin{bmatrix}
-	0 \\
-	1
-\end{bmatrix} \}$ can span $\R^2$ with the coefficients $a$ and $b-a$.
-
-$$
-a \begin{bmatrix}
-	1 \\
-	1
-\end{bmatrix}
-
-+
-
-(b - a) \begin{bmatrix}
-	0 \\
-	1
-\end{bmatrix}
-
-=
-
-a \begin{bmatrix}
-	1 \\
-	1
-\end{bmatrix}
-
-+
-
-b \begin{bmatrix}
-	0 \\
-	1
-\end{bmatrix}
-
--
-
-a \begin{bmatrix}
-	0 \\
-	1
-\end{bmatrix}
-
-=
-
-\begin{bmatrix}
-	a \\
-	b
-\end{bmatrix}
-$$
-
-# Linear Independence of a vector
-
-Consider three vectors $\bold{v^{(1)}}, \bold{v^{(2)}}$ and $\bold{v^{(3)}}$. The vector $\bold{v^{(3)}}$ is said to be linearly independent wrt $\bold{v^{(1)}}$ and $\bold{v^{(2)}}$ if it cannot be written as a linear combination of $\bold{v^{(1)}}$ and $\bold{v^{(2)}}$.
-
-$$
-\bold{v^{(3)}} \not = a \bold{v^{(1)}} + b \bold{v^{(2)}}
-$$
-
-**Example**
-
-Consider the set $\{ \begin{bmatrix}
-	1 \\
-	0
-\end{bmatrix}, \begin{bmatrix}
-	0 \\
-	1
-\end{bmatrix}, \begin{bmatrix}
-	2 \\
-	0
-\end{bmatrix} \}$. This is not a linearly independent set of vectors, because of the following $\begin{bmatrix}
-	2 \\
-	0
-\end{bmatrix}$ can be written as a linear combination of the other vectors, ie. it is *linearly dependent*.
-
-$$
-\begin{bmatrix}
-	2 \\
-	0
-\end{bmatrix}
-
-=
-2 \begin{bmatrix}
-	1 \\
-	0
-\end{bmatrix}
-
-+
-
-0 \begin{bmatrix}
-	0 \\
-	1
-\end{bmatrix}
-$$
-
-# Basis of a Vector Space
-
-A **basis** is a set of $n$ linearly independent vectors the span an $n$-dimensional space. Every vector in this $n$-dimensional space can be reached using the basis.
-
-A vector space $V$ has many different bases, but each basis always contains the same number of vectors. The number of basis vectors in a single basis is called the dimension of $V$.
-
-<figure style="width: 500px">
-	<img src="/media/linear algebra/change of basis.png" alt="Change of Basis">
-	<figcaption>Change of Basis</figcaption>
-</figure>
-
-The above diagram shows two sets of basis vectors $U$ and $V$ with two dimensions. We can reach any point in the vector space using either of the basis.
-
-It is often useful to be able to change the representation of a vector from one basis to another. This operation is called the **change of basis**. This is explained later.
-
-<figure style="width: 500px">
-	<img src="/media/linear algebra/change of basis 2.png" alt="Change of Basis">
-	<figcaption>Change of Basis</figcaption>
-</figure>
-
-# Gram-Schmidt Process
-
-Sometimes, life is easier if we use an orthonormal basis for a vector space. An **orthonormal basis** consists of vectors with unit norm that are orthogonal to each other.
-
-The **Gram–Schmidt process** takes in a basis $V$ and generates an orthonormal basis $U$ for the same vector space.
-
-<figure style="width: 390px">
-	<img src="/media/linear algebra/gram schmidt process.gif" alt="Gram-Schmidt Process">
-	<figcaption>Gram-Schmidt Process</figcaption>
-</figure>
-
-Consider a basis $V$ with three vectors $\{ v^{(1)}, v^{(2)}, v^{(3)}, v^{(4)}, v^{(5)} \}$. We will incrementally build an orthonormal basis $U$, by iterating through this $V$.
-
-### Finding $u^{(1)}$
-
-First we pick $v^{(1)}$ and make it a unit vector $u^{(1)}$.
-
-$$
-u^{(1)} = \frac {v^{(1)}} {\parallel v^{(1)} \parallel}
-$$
-
-### Finding $u^{(2)}$
-
-Next we pick $v^{(2)}$. If $v^{(2)}$ has a non-zero projection on $u^{(1)}$, then it is not orthogonal to $u^{(1)}$.
-
-<figure style="width: 390px">
-	<img src="/media/linear algebra/gram schmidt projection.svg" alt="Removing the Projection">
-	<figcaption>Removing the Projection</figcaption>
-</figure>
-
-Note that $v^{(2)}$ can be written as a sum of its $x$ and $y$ components,
-
-$$
-v^{(2)} = ({v^{(2)}} \cdot {u^{(1)}})  \space  u^{(1)} + u^{(2)\prime}
-$$
-
-By rewriting, we get
-
-$$
-u^{(2)\prime} = {v^{(2)}} - ({v^{(2)}} \cdot {u^{(1)}}) \space u^{(1)}
-$$
-
-$u^{(2)\prime}$ is divided by its length to get the orthonormal vector $u^{(2)}$.
-
-$$
-u^{(2)} = \frac {u^{(2)\prime}} {\parallel u^{(2)\prime} \parallel}
-$$
-
-### Finding $u^{(3)}$
-
-The goal is to generate $u^{(3)}$ such that it is orthogonal to *both* $u^{(1)}$ and $u^{(2)}$. Note that $v^{(2)}$ can be written as a sum of its $x$ and $y$ components,
-
-$$
-v^{(3)} = \text{projection}_{u^{(1)} u^{(2)} \text{plane}} + u^{(3)\prime}
-$$
-
-Expand and rewrite,
-
-$$
-\begin{aligned}
-   u^{(3)\prime} &=
-      v^{(3)} - \Big ( (v^{(3)} \cdot u^{(1)}) \space u^{(1)} + (v^{(3)} \cdot u^{(2)}) \space u^{(2)} \Big )
-
-   \\\\
-
-   u^{(3)\prime} &=
-      v^{(3)} - (v^{(3)} \cdot u^{(1)}) \space u^{(1)} - (v^{(3)} \cdot u^{(2)}) \space u^{(2)}
-
-   \\\\
-
-   u^{(3)} &= \frac {u^{(3)\prime}} {\parallel u^{(3)\prime} \parallel}
-\end{aligned}
-$$
-
-Continue this process until the span of the original vectors $V$ has been reached by $U$.
 
 # Operations on Matrices
 
@@ -872,7 +618,7 @@ Certain types of matrices occur frequently in linear algebra. We will look at so
 
 If a matrix has an equal number of rows and columns, it is called a **square matrix**. In a square matrix, the diagonal containing the entries $a, b, c$ is called the **main diagonal**. The diagonal containing $c, e, g$ is called the **secondary diagonal**.
 
-### Symmetric and Skew-Symmetric Matrices
+## Symmetric and Skew-Symmetric Matrices
 
 **Symmetric Matrices** are square matrices whose transpose equals matrix itself.
 
@@ -886,7 +632,7 @@ $$
 A^T = -A
 $$
 
-### Triangular Matrices
+## Triangular Matrices
 
 **Upper triangular matrices** are square matrices that can have non-zero elements only on and above the main diagonal. All elements below the main diagonal must be $0$.
 
@@ -909,13 +655,19 @@ $$
 $$
 
 
-### Orthogonal Matrix
+## Orthogonal Matrix
 
-An **orthogonal matrix** is a square matrix whose rows and columns are orthogonal unit vectors. Two vectors $x$ and $y$ are orthogonal to each other if $x^T y = 0$
+Two vectors $\bold{x}$ and $\bold{y}$ are said to be orthogonal to each other if
 
-Orthogonal unit vectors are also called orthonormal vectors.
+$$
+\bold{x}^T \bold{y} = 0
+$$
 
-### Diagonal Matrices
+Orthogonal unit vectors are called **orthonormal** vectors.
+
+An **orthogonal matrix** is a square matrix whose rows and columns are orthogonal vectors. An **orthonormal matrix** is a square matrix whose rows and columns are orthonormal vectors.
+
+## Diagonal Matrices
 
 **Diagonal matrices** are square matrices where all entries outside the main diagonal are $0$. The diagonal elements can be zero or non-zero.
 
@@ -963,7 +715,316 @@ Diagonal matrices allow for fast computation of determinants, powers and inverse
 - A diagonal matrix $D$ raised to the power $k$ is given by each diagonal entry raised to the power $k$.
 - The inverse $D^{-1}$ is the reciprocal of all diagonal elements in $D$.
 
-# Column Space and Row Space
+# Norms
+
+We measure the *size* or *magnitude* of a vector using a function called a **norm**. Norms are functions that map vectors to non-negative values. Intuitively, they measure the distance of the vector from the origin.
+
+The general formula for norm is :
+
+$$
+\parallel x \parallel_p = \Bigg( \sum_i \mid x_i \mid^p \Bigg)^{\frac {1}{p}}
+$$
+
+for $p \in \R$ and $p \ge 1$.
+
+Not any function can be used as a norm. A norm needs to hold the following properties :
+
+- $f(x) = 0 \implies x = 0$. A zero vector must be assigned zero norm.
+- $f(x + y) \le f(x) + f(y)$ (the triangle inequality)
+- For any $c \in \R$, $f(cx) = \mid c \mid f(x)$. The norm of a vector scaled by $c$ must also be scaled by $c$.
+
+There are many types of norms, each useful in different situations.
+
+## $L^1$ Norm
+
+$$
+\parallel x \parallel_1 \space = \space \sum_i \mid x_i \mid
+$$
+
+$L^1$ norm is the sum of all components of the vector. It is also called the **Manhattan distance**.
+
+## $L^2$ Norm
+
+$$
+\parallel x \parallel_2 \space = \space \Bigg( \sum_i \mid x_i \mid^2 \Bigg)^{\frac {1}{2}}
+$$
+
+The $L^2$ norm is the sum of the squares of the components, which is the Euclidean distance between $\bold{x}$ and the origin (a *zero vector*). It is also called **Euclidean norm**, and its the most commonly used norm.
+
+It is also be calculated as $x^T x$.
+
+## Max Norm
+
+The **max norm** of a vector is the absolute value of the component with largest magnitude. It is also known as the $L^\infin$ norm.
+
+$$
+\parallel x \parallel_\infin \space = \space \text{max}_i \mid x_i \mid
+$$
+
+# Vector Space and its properties
+
+A **vector space** $V$ is a set of vectors upon which we have defined two operations: *scalar multiplication* and *vector addition*. For a set of vectors to be a vector space it must also hold the following properties:
+
+## Closure
+
+- *Additive closure* - If $\bold{u}, \bold{v} \in V$, then $\bold{u} + \bold{v} \in V$
+- *Scalar closure* - If $c \in \R$ and $\bold{u} \in V$, then $ c \bold{u} \in V$
+
+## Commutativity
+
+If $\bold{u}, \bold{v} \in V$, then $\bold{u} + \bold{v} = \bold{v} + \bold{u}$
+
+## Associativity
+
+- *Additive associativity* - If $\bold{u}, \bold{v}, \bold{w} \in V$, then $(\bold{u} + \bold{v}) + \bold{w} = \bold{u} + (\bold{v} + \bold{w})$
+- *Scalar multiplication associativity* - If $c \in \R$ and $\bold{u}, \bold{v} \in V$, then $\bold{u} (c \bold{v}) = (\bold{u} c) \bold{v}$
+
+## Distributivity
+
+- *Distributivity across vector addition* - If $c \in \R$ and $\bold{u}, \bold{v} \in V$, then $c (\bold{u} + \bold{v}) = c\bold{u} + c\bold{v}$
+- *Distributivity across scalar addition* - If $c, d \in \R$ and $\bold{u} \in V$, then $(c + d) \bold{u} = c \bold{u} + d \bold{u}$
+
+## Identity
+
+- *Zero vector* - There is a vector $0$, such that $\bold{u} + 0 \in V$ for all $u \in V$
+- *One vector* - There is a vector $1$, such that $1 \bold{u} \in V$ for all $u \in V$
+
+## Inverse
+
+If $\bold{u} \in V$, then there exists a vector $-\bold{u}$, such that $\bold{u} + (-\bold{u}) = 0$.
+
+This is called an *additive* inverse. Note that *multiplicative* inverse is not a property of $V$. This is because only scalar multiplication is defined for vector spaces.
+
+
+# Linear Combination and Span
+
+Consider a set of vectors $\{ \bold{v^{(1)}}, \bold{v^{(2)}}, ... , \bold{v^{(n)}} \}$ with the same dimension. We define an operation called a **linear combination** where we scale each vector and add all the resulting vectors together. This gives us another vector $\bold{p}$ with the same dimension as the input vectors.
+
+$$
+\bold{p} = \sum_i c_i \bold{v^{(i)}}
+$$
+
+The components of $\bold{p}$ define a point in space. So, by using different scales $c_i$ we can reach many other points.
+
+<figure style="width: 540px">
+	<img src="/media/linear algebra/span.gif" alt="Span">
+	<figcaption>Span</figcaption>
+</figure>
+
+The set of all possible points reached by *atleast* one linear combination of coefficients (*scales*) is called the **span** of the vectors $\{ \bold{v^{(1)}}, \bold{v^{(2)}}, ... , \bold{v^{(n)}} \}$.
+
+**Example**
+
+Consider the set $\{ \begin{bmatrix}
+	1 \\
+	0
+\end{bmatrix}, \begin{bmatrix}
+	0 \\
+	1
+\end{bmatrix} \}$. In linear combination they can reach any point $\begin{bmatrix}
+	a \\
+    b
+\end{bmatrix}$ in $2D$ space as shown below.
+
+$$
+\begin{bmatrix}
+	a \\
+	b
+\end{bmatrix}
+
+=
+a \begin{bmatrix}
+	1 \\
+	0
+\end{bmatrix}
+
++
+
+b \begin{bmatrix}
+	0 \\
+	1
+\end{bmatrix}
+$$
+
+Formally, they are said to *span* the vector space $\R^2$.
+
+There can be many sets of vectors that can span the same vector space. For example, the set $\{ \begin{bmatrix}
+	1 \\
+	1
+\end{bmatrix}, \begin{bmatrix}
+	0 \\
+	1
+\end{bmatrix} \}$ can span $\R^2$ with the coefficients $a$ and $b-a$.
+
+$$
+a \begin{bmatrix}
+	1 \\
+	1
+\end{bmatrix}
+
++
+
+(b - a) \begin{bmatrix}
+	0 \\
+	1
+\end{bmatrix}
+
+=
+
+a \begin{bmatrix}
+	1 \\
+	1
+\end{bmatrix}
+
++
+
+b \begin{bmatrix}
+	0 \\
+	1
+\end{bmatrix}
+
+-
+
+a \begin{bmatrix}
+	0 \\
+	1
+\end{bmatrix}
+
+=
+
+\begin{bmatrix}
+	a \\
+	b
+\end{bmatrix}
+$$
+
+# Linear Independence
+
+Consider three vectors $\bold{v^{(1)}}, \bold{v^{(2)}}$ and $\bold{v^{(3)}}$. The vector $\bold{v^{(3)}}$ is said to be linearly independent *wrt* $\bold{v^{(1)}}$ and $\bold{v^{(2)}}$ if it cannot be written as a linear combination of $\bold{v^{(1)}}$ and $\bold{v^{(2)}}$.
+
+$$
+\bold{v^{(3)}} \not = a \bold{v^{(1)}} + b \bold{v^{(2)}}
+$$
+
+To prove that a set of vectors $\bold{v^{(1)}}, \bold{v^{(2)}}$ and $\bold{v^{(3)}}$ are independent, check if their linear combination is $0$ only if all the coefficients are set to $0$.
+
+$$
+a \bold{v^{(1)}} + b \bold{v^{(2)}} + c \bold{v^{(3)}} = 0
+$$
+
+Some interesting points to note are:
+
+- A vector set with a zero vector is linearly dependent
+- A vector set with only one vector is linearly independent as long as it is not a zero vector.
+- If the vector set is already linearly independent, then removing a vector does not affect independence.
+
+[Example](https://youtu.be/yLi8RxqfowA)
+
+# Basis of a Vector Space
+
+A **basis** is a set of $n$ linearly independent vectors the span an $n$-dimensional space. Every point in this $n$-dimensional space can be reached using the basis.
+
+A vector space $V$ can have many number of different bases, but each basis always contains the same number of vectors. The number of basis vectors in a single basis is called the dimension of $V$.
+
+<figure style="width: 500px">
+	<img src="/media/linear algebra/change of basis.png" alt="Change of Basis">
+	<figcaption>Change of Basis</figcaption>
+</figure>
+
+The above diagram shows two sets of basis vectors $U$ and $V$ with two dimensions. We can reach any point in the vector space using either of the basis.
+
+It is often useful to be able to change the representation of a vector from one basis to another. This operation is called the **change of basis**.
+
+<figure style="width: 500px">
+	<img src="/media/linear algebra/change of basis 2.png" alt="Change of Basis">
+	<figcaption>Change of Basis</figcaption>
+</figure>
+
+# Gram-Schmidt Process
+
+Sometimes, life is easier if we use an orthonormal basis for a vector space. An **orthonormal basis** consists of vectors with unit norm that are orthogonal to each other.
+
+The **Gram–Schmidt process** takes in a basis $V$ and generates an orthonormal basis $U$ for the same vector space.
+
+<figure style="width: 390px">
+	<img src="/media/linear algebra/gram schmidt process.gif" alt="Gram-Schmidt Process">
+	<figcaption>Gram-Schmidt Process</figcaption>
+</figure>
+
+Consider a basis $V$ with three vectors $\{ v^{(1)}, v^{(2)}, v^{(3)}, v^{(4)}, v^{(5)} \}$. We will incrementally build an orthonormal basis $U$, by iterating through this $V$.
+
+### Finding $u^{(1)}$
+
+First we pick $v^{(1)}$ and make it a unit vector $u^{(1)}$.
+
+$$
+u^{(1)} = \frac {v^{(1)}} {\parallel v^{(1)} \parallel}
+$$
+
+### Finding $u^{(2)}$
+
+Next we pick $v^{(2)}$. If $v^{(2)}$ has a non-zero projection on $u^{(1)}$, then it is not orthogonal to $u^{(1)}$.
+
+<figure style="width: 390px">
+	<img src="/media/linear algebra/gram schmidt projection.svg" alt="Removing the Projection">
+	<figcaption>Removing the Projection</figcaption>
+</figure>
+
+Note that $v^{(2)}$ can be written as a sum of its $x$ and $y$ components,
+
+$$
+v^{(2)} = ({v^{(2)}} \cdot {u^{(1)}})  \space  u^{(1)} + u^{(2)\prime}
+$$
+
+By rewriting, we get
+
+$$
+u^{(2)\prime} = {v^{(2)}} - ({v^{(2)}} \cdot {u^{(1)}}) \space u^{(1)}
+$$
+
+$u^{(2)\prime}$ is divided by its length to get the orthonormal vector $u^{(2)}$.
+
+$$
+u^{(2)} = \frac {u^{(2)\prime}} {\parallel u^{(2)\prime} \parallel}
+$$
+
+### Finding $u^{(3)}$
+
+The goal is to generate $u^{(3)}$ such that it is orthogonal to *both* $u^{(1)}$ and $u^{(2)}$. Note that $v^{(2)}$ can be written as a sum of its $x$ and $y$ components,
+
+$$
+v^{(3)} = \text{projection}_{u^{(1)} u^{(2)} \text{plane}} + u^{(3)\prime}
+$$
+
+Expand and rewrite,
+
+$$
+\begin{aligned}
+   u^{(3)\prime} &=
+      v^{(3)} - \Big ( (v^{(3)} \cdot u^{(1)}) \space u^{(1)} + (v^{(3)} \cdot u^{(2)}) \space u^{(2)} \Big )
+
+   \\\\
+
+   u^{(3)\prime} &=
+      v^{(3)} - (v^{(3)} \cdot u^{(1)}) \space u^{(1)} - (v^{(3)} \cdot u^{(2)}) \space u^{(2)}
+
+   \\\\
+
+   u^{(3)} &= \frac {u^{(3)\prime}} {\parallel u^{(3)\prime} \parallel}
+\end{aligned}
+$$
+
+Continue this process until the span of the original vectors $V$ has been reached by $U$.
+
+# Null Space
+
+A null space of a matrix $A$ is a set of vectors that satisfy the homogenous system $A \bold{v} = 0$. It is also called a kernel.
+
+To find the null space, use Gaussian elimination to solve for all possible $\bold{v}$.
+
+[Finding the Null Space Example](https://youtu.be/xRJCdbFY17k)
+
+# Row and Column Spaces
 
 The **row space** of a matrix $A$ is the span of the rows of $A$, where each row is treated as a basis vector.
 
@@ -1013,16 +1074,6 @@ $$
 
    \\\\
 
-   \bold{v} &= A
-      \begin{bmatrix}
-         a \\\\
-         b \\\\
-         c \\\\
-         d
-      \end{bmatrix}
-
-   \\\\
-
    \bold{v} &=
       a 	\begin{bmatrix}
          1 \\\\
@@ -1060,12 +1111,6 @@ $$
 
 \end{aligned}
 $$
-
-# Null Space
-
-A null space of a matrix $A$ contain all vectors $\bold{v}$ such that satisfy the homogenous system $A \bold{v} = 0$.
-
-[Finding the null space](https://youtu.be/xRJCdbFY17k)
 
 # System of Linear Equations
 
@@ -1138,7 +1183,7 @@ $$
 
 The augmented matrix characterizes the system completely because it contains all the numbers appearing in the system.
 
-## Existence and Uniqueness of solutions
+# Existence and Uniqueness of solutions
 
 Consider a system of two linear equations with two unknowns,
 
@@ -1159,13 +1204,13 @@ This geometric visualization can be extended to solving a system with three equa
 
 A system is called **over determined** if it has more equations than unknowns. It is called **determined** if *m = n*. It is called **under determined** if it has fewer equations than unknowns.
 
-## Solving a System of Linear Equations using Gauss Elimination
+# Solving a System using Gauss Elimination
 
 Consider a linear system in upper triangular form,
 
 $$
-2x_1 + 5 x_2 = 2  \\\\
-13 x_2 = -26
+2 x_1 + 5 x_2 = 2 \\\\
+3 x_1 + 13 x_2 = -26
 $$
 
 **Gauss Elimination** is a method to convert any linear system into the *row echelon form*, while keeping the solution unchanged. It works directly with augmented matrices and consists of a series of simple operations on the rows of the matrix.
@@ -1175,8 +1220,9 @@ A matrix is in **row echelon form** if it satisfies the following conditions:
 - Any rows with all zero elements are below rows having non-zero elements
 - The leftmost nonzero entry is further to the right than the leftmost nonzero entry of the previous row
 
+Triangular form is a type of row echelon form. Two linear systems are said to be **row equivalent** if one can be obtained from the other using a finitely many row operations. Row equivalent linear systems share the same solution set.
 
-Two linear systems are said to be **row equivalent** if one can be obtained from the other using a finitely many row operations. Row equivalent linear systems share the same solution set. The **row operations for matrices** are as follows:
+The **row operations for matrices** are as follows:
 
 - *Interchange two rows of the matrix* - It corresponds to the interchange of two equations.
 - *Multiplying a row by a nonzero constant* $c$ - It corresponds to multiplying both sides of an equation by the same constant $c$.
@@ -1184,7 +1230,12 @@ Two linear systems are said to be **row equivalent** if one can be obtained from
 
 Note that we use *row operations*, not *column operations*. This is because column operations would alter the underlying equations into having different solution sets.
 
-Once the system is in row echelon form, we can use back substitution. **Back substitution** is the procedure where we first solve for $x_2$, then substitute $x_2 = -2$ into the first equation to find $x_1$.
+[Reduced Row Echelon Form Example](https://youtu.be/1rBU0yIyQQ8)
+
+Once the system is in row echelon form, we can use back substitution to find the unknowns.
+
+[Gauss Elimination Example 1](https://youtu.be/2j5Ic2V7wq4)
+[Gauss Elimination Example 2](https://youtu.be/RgnWMBpQPXk)
 
 ## Interpreting the result of Gauss Elimination
 
@@ -1389,7 +1440,7 @@ When all of the vectors in a matrix are linearly independent, the matrix is said
 
 A matrix with inverses are called a **non singular matrix** or **invertible matrix**, else it is called a **singular matrix**. Not every matrix has an inverse; but if it does have an inverse, it is always unique.
 
-# Inverse of a Matrix using Gauss-Jordan Elimination
+# Finding the Inverse using Gauss-Jordan Elimination
 
 **Gauss-Jordan Elimination** is a variation of the Gauss Elimination and is used to find the inverse of a matrix. Given a matrix $A$, we create a corresponding identity matrix with the same dimensions,
 
