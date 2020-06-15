@@ -1,18 +1,195 @@
 ---
-title: "The Fundamentals of Probability Theory"
+title: "The Fundamentals of Statistics and Probability Theory"
 date: "2019-11-1"
 template: "post"
 draft: false
-slug: "/posts/probability-theory-fundamentals/"
+slug: "/posts/statistics-and-probability-theory-fundamentals/"
 category: "Statistics and Probability Theory"
 tags:
  - ""
 description: ""
 ---
 
-**Probability theory** is a mathematical framework for quantifying uncertainty. It is used widely in game theory and artificial intelligence.
+**Statistics** is concerned with the collection, analysis and presentation of data. **Probability theory** is a mathematical framework for quantifying uncertainty. It is used widely in game theory and artificial intelligence.
 
-# Random experiment
+# Table of Contents
+
+- Population and Samples
+- Statistical Distribution
+- Central Limit Theorem
+- Random Experiment
+- Types of Events
+- Probability of an Event
+- Conditional Probability
+- Random Variables
+- Probability Mass Function
+- Probability Density Function
+- Sum and Product Rules
+- Total Probability Theorem
+- Independence
+- Bayes Theorem
+- Expectation, Variance and Standard Deviation of a Random Variable
+
+# Population and Samples
+
+The **population** is the complete set of observations or individuals that we *wish* to study. For example, if you want to know the average height of the Chinese, then all the Chinese people make up the population.
+
+But it's impossible measure the heights of all these people. We can only measure the heights of some. A **sample** is a subset of the population, and is the set of observations we *actually use* for analysis. This sample is used to make estimations of the characteristics of the population.
+
+<figure style="width: 900px">
+    <img src="/media/statistics and probability theory/population-sample.png" alt="Sampling a Population">
+    <figcaption>Sampling a Population</figcaption>
+</figure>
+
+There will be some inaccuracy in our conclusions about the population based upon a sample. This should be obvious - we have fewer members in our sample than our population therefore we have lost some information.
+
+A characteristic of a population, such as the mean or standard deviation, is called a **parameter**; whereas a characteristic of a sample is called a **statistic**.
+
+Parameters hold the true values of a real world distribution. A statistic is an estimate of a population parameter. In most cases, we only have access to a portion of the population distribution, so we almost always work with statistics.
+
+# Statistical Distribution
+
+It is important to remember that the sample we draw from the population is only one from a large number of *potential samples*. If ten researchers were all studying the same population, each will draw a different sample and thus may obtain different results after analysis.
+
+<figure style="width: 700px">
+    <img src="/media/statistics and probability theory/mean-and-std-dev.png" alt="Mean and Standard Deviation">
+    <figcaption>Mean and Standard Deviation</figcaption>
+</figure>
+
+Data can be spread out or distributed in different ways and can have all kinds of interesting shapes. Distributions are defined by statistics like mean, variance and standard deviation.
+
+## Mean
+
+The **mean** tells you where the middle of distribution is. It is the sum of all measurements divided by the number of observations $N$ in the data set.
+
+The population mean is denoted by $\mu$, and calculated using,
+
+$$
+\mu = \frac {\sum_i x_i} {N}
+$$
+
+The sample mean is denoted by $\overline{x}$, and estimated using,
+
+$$
+\overline{x} = \frac {\sum_i x_i} {N}
+$$
+
+## Variance
+
+The variance measures how far the observations are spread out from their average observation. It is the average of the *squared differences* from the mean.
+
+The population variance is denoted by $\sigma^2$. It is calculated using,
+
+$$
+\sigma^2 = \frac {\sum_i ( x_i - \mu )^2 } {N}
+$$
+
+The difference tells you how far away $x_i$ is from the mean, and squaring each term makes sure the distance is positive.
+
+The sample variance is estimated using,
+
+$$
+s^2 = \frac { \sum_i ( x_i - \overline{x} )^2 } {N - 1}
+$$
+
+**Bessel's correction**
+
+It refers to the use of $N - 1$ instead of $N$ in the formula for sample variance to get an better estimate of the population variance.
+
+Lets start with,
+
+$$
+s^2 = \frac { \sum_i ( x_i - \overline{x} )^2 } {N}
+$$
+
+Using $\overline{x}$ in the square of differences will result in the smallest possible value. This is because it is equidistant from all other sample points $x_i$. Using any other value instead of $\overline{x}$ will result in a larger value.
+
+Since $\mu \ne \overline{x}$, our current estimation $s^2$ is smaller than the population variance. Dividing by $n - 1$ increases $s^2$ to compensate for our use of $\overline{x}$.
+
+[watch this](https://youtu.be/92s7IVS6A34?list=WL)
+
+## Standard Deviation
+
+Variance is measured in square units. This makes it difficult to reason with. So, we define the **standard deviation**, to measure the spread of data. It is simply the square root of the variance.
+
+The population standard deviation is denoted by $\sigma$. It is calculated using,
+
+$$
+\sigma = \sqrt { \frac {\sum_i ( x_i - \mu )^2 } {N} }
+$$
+
+The sample standard deviation is denoted by $s$. It is estimated using,
+
+$$
+s = \sqrt { \frac {\sum_i ( x_i - \overline{x} )^2 } {N - 1} }
+$$
+
+## Standard Error
+
+**Standard Error** measures the variation of a statistic calculated from multiple samples. It is simply the standard deviation of the distribution of a statistic.
+
+The *standard error of the mean* is visualized below. You can calculate standard error for any statistic you wish.
+
+<figure style="width: 600px">
+    <img src="/media/statistics and probability theory/standard-error-of-mean.png" alt="Standard Error of Mean">
+    <figcaption>Standard Error of Mean</figcaption>
+</figure>
+
+When the standard error increases, the means are more spread out; and it becomes more likely that any given mean is far from the population mean.
+
+# Central Limit Theorem
+
+The **Central Limit Theorem** states that the sample means $\overline{x}$ will be normally distributed for large samples from a population distribution; regardless of the type of the population distribution.
+
+<figure style="width: 880px">
+    <img src="/media/statistics and probability theory/central-limit-theorem.png" alt="Central Limit Theorem  demonstrated by various distributions">
+    <figcaption>Central Limit Theorem demonstrated by various distributions</figcaption>
+</figure>
+
+Consider the following experiment,
+
+1. Roll a die $20$ times and count the number of heads
+2. Note down the sample mean
+3. Repeat this multiple times
+
+As this experiment is repeated, ie. the more samples we take, the graph showing the sample means will increasingly look normal.
+
+The central limit theorem lets us continue performing statistical analysis even if we do not know the true form of the population distribution.
+
+# Maximum Likelihood Estimation
+
+**Likelihood** tells you how probable it is for a set of observations $O$ to came from a distribution $D$. It is denoted by $L ( D \mid O )$.
+
+Since a distribution is described by its parameters or statistics like the mean and standard deviation we write likelihood as $L ( \mu = 15, \sigma = 2 \mid O )$. This denotes the likelihood of a distribution with a mean of $15$ and a standard deviation of $2$ given observations $O$.
+
+<figure style="width: 650px">
+	<img src="/media/statistics and probability theory/probability-vs-likelihood.png" alt="Probability vs Likelihood">
+	<figcaption>Probability vs Likelihood</figcaption>
+</figure>
+
+Given a set of observations, **maximum likelihood estimation** (MLE) finds a distribution from which they were most likely sampled from. We must perform MLE for each and every statistic we wish to estimate.
+
+## MLE for Mean
+
+First we choose a distribution with a constant standard deviation $\sigma$. Then we vary the mean $\mu$, and calculate the likelihood. The mean that gives the maximum likelihood is called the *maximum likelihood estimate for the mean* $\mu_\text{MSE}$.
+
+<figure style="width: 650px">
+	<img src="/media/statistics and probability theory/mle.gif" alt="Maximum Likelihood Estimation for the mean">
+	<figcaption>Maximum Likelihood Estimation for the Mean</figcaption>
+</figure>
+
+## MLE for Standard Deviation
+
+Now that we have found the MLE for the mean, we can move onto estimating the standard deviation. Here we hold the $\mu_\text{MSE}$ constant and vary $\sigma$.
+
+The standard deviation that results in the maximum likelihood is called *maximum likelihood estimate for standard deviation* $\sigma_\text{MSE}$.
+
+<figure style="width: 650px">
+	<img src="/media/statistics and probability theory/mle-std.png" alt="Maximum Likelihood Estimation for the Standard Deviation">
+	<figcaption>Maximum Likelihood Estimation for the Standard Deviation</figcaption>
+</figure>
+
+# Random Experiment
 
 A **random experiment** is an trial or observation that can be repeated multiple times under the same set of conditions.
 
@@ -163,7 +340,7 @@ $$
 
 This is because both of them point to the same box in the grid.
 
-Sometimes we know the joint probability distribution over a set of variables, and may want to know the probability of a subset of these random variables taking on some values. The is calculated using **marginal probability**. It is denoted by $P(X = x_i)$.
+Sometimes we know the joint probability distribution over a set of variables, and may want to know the probability of a subset of these random variables taking on some values. The is calculated using **marginal probability**. It is denoted by $P(X = x_i)$ and is informally represented by,
 
 $$
 P(X = x_i) = \frac { c_i } {N}
@@ -190,6 +367,17 @@ Here, we substitute the formula for conditional and marginal probability,
 
 $$
 P (X = x_i, Y = y_i) = P (Y = y_i \mid X = x_i) \space P (X = x_i)
+$$
+
+The product can be generalized to $n$ number of terms. This is called the **chain rule**. It is a way to split a joint probability into a condition probability and a smaller joint probability. This smaller joint probability can again be split.
+
+$$
+P (X_n, \ldots, X_0)
+=
+P (X_n \mid X_{n-1}, \ldots, X_0) \space
+P (X_{n-1} \mid X_{n-2}, \ldots, X_0)
+\ldots
+P (X_0)
 $$
 
 # Total Probability Theorem
@@ -245,8 +433,6 @@ $$
 # Bayes Theorem
 
 **Bayes theorem** lets us update our beliefs based on new evidence.
-
-Say we are trying to find the probability that a person has cancer. Initially, the probability is the percentage of the population that has cancer. However, given new evidence that the person is a smoker, we can improve our probability estimation.
 
 We know that the probability of $B$ given $A$ is,
 
@@ -329,6 +515,11 @@ $$
 
 # References
 
+- [Statistical Distribution](https://youtu.be/oI3hZJqXJuc?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
+- [StatQuest: Maximum Likelihood](https://youtu.be/XepXtl9YKwc?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
+- [The Sample Variance: Why Divide by n-1?](https://youtu.be/9ONRMymR2Eg)
+- [StatQuickie: Standard Deviation vs Standard Error](https://youtu.be/A82brFpdr9g?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
+- [The Central Limit Theorem](https://youtu.be/YAlJCEDH2uY?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
 - [MIT Introduction to Probability](https://www.youtube.com/playlist?list=PLUl4u3cNGP60hI9ATjSFgLZpbNJ7myAg6)
 - [Math is Fun : Random Variables](https://www.mathsisfun.com/data/random-variables.html)
 - [Stat Trek : Probability](https://stattrek.com/probability/probability-rules.aspx?tutorial=prob)
@@ -339,3 +530,4 @@ $$
 - [Discrete Probability Distribution: Khan Academy](https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/random-variables-discrete/v/discrete-probability-distribution)
 - [Expected value of a discrete random variable](https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/random-variables-discrete/v/expected-value-of-a-discrete-random-variable)
 - [Variance and standard deviation of a discrete random variable](https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/random-variables-discrete/v/variance-and-standard-deviation-of-a-discrete-random-variable)
+- [Stack Overflow : Chain rule](https://math.stackexchange.com/questions/228811/understanding-the-chain-rule-in-probability-theory)

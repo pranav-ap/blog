@@ -12,7 +12,7 @@ description: ""
 
 **Linear Algebra** is a branch of mathematics that is essential to understand learning algorithms and to describe rotations and translations in animations.
 
-# Contents
+# Table of Contents
 
 - Basics
 
@@ -29,12 +29,13 @@ description: ""
    - Linear Independence
    - Basis of a Vector Space
    - Change of Basis using the Gram-Schmidt Process
-   - Row and Column Spaces
    - Null Space
+   - Row and Column Spaces
 
 - System of Linear Equations
 
-   - Solving a System using Gauss Elimination
+   - Elementary Matrices and Row Echelon Form
+   - Solving a System using Gaussian Elimination
    - Linear Transformations
    - Determinant
 
@@ -46,6 +47,7 @@ description: ""
 - Decomposition
 
    - Eigen Decomposition
+   - LU Decomposition
    - Singular Value Decomposition
 
 # Scalars, Vectors and Matrices
@@ -924,7 +926,7 @@ Some interesting points to note are:
 
 A **basis** is a set of $n$ linearly independent vectors the span an $n$-dimensional space. Every point in this $n$-dimensional space can be reached using the basis.
 
-A vector space $V$ can have many number of different bases, but each basis always contains the same number of vectors. The number of basis vectors in a single basis is called the dimension of $V$.
+A vector space $V$ can have many number of different bases, but each basis always contains the same number of vectors. The number of basis vectors in a single basis is called the **dimension** of $V$.
 
 <figure style="width: 500px">
 	<img src="/media/linear algebra/change of basis.png" alt="Change of Basis">
@@ -1024,7 +1026,7 @@ To find the null space, use Gaussian elimination to solve for all possible $\bol
 
 [Finding the Null Space Example](https://youtu.be/xRJCdbFY17k)
 
-# Row and Column Spaces
+# Row Space
 
 The **row space** of a matrix $A$ is the span of the rows of $A$, where each row is treated as a basis vector.
 
@@ -1058,6 +1060,8 @@ $$
 
 \end{aligned}
 $$
+
+# Column Space
 
 The **column space** of a matrix $A$ is the span of the columns of $A$, where each column is treated as a basis vector.
 
@@ -1111,6 +1115,39 @@ $$
 
 \end{aligned}
 $$
+
+[Example](https://youtu.be/A27d9YKFcDE?list=PLkZjai-2Jcxlg-Z1roB0pUwFU-P58tvOx)
+
+# Elementary Matrices and Row Echelon Form
+
+An **elementary matrix** is a square matrix obtained from an identity matrix by performing an elementary row or column operations.
+
+The **row operations for matrices** are as follows:
+
+- *Interchange two rows of the matrix* - It corresponds to the interchange of two equations.
+- *Multiplying a row by a nonzero constant* $c$ - It corresponds to multiplying both sides of an equation by the same constant $c$.
+- *Adding a constant multiple of one row to another row* - It corresponds to adding two equations together, after multiplying both sides of one of the equations by a constant $c$.
+
+Column operations are similar to this, but unlike row operations they alter the underlying equations into having different solutions.
+
+Row operations are used to convert matrices to the row echelon form. This is called **Gaussian elimination**. A matrix is in **row echelon form** if it satisfies the following conditions:
+
+- Any rows with all zero elements are below rows having non-zero elements
+- The leftmost nonzero entry in a row is further to the right than the leftmost nonzero entry of the previous row
+
+For example, triangular matrices are in the row echelon form. Two linear systems are said to be **row equivalent** if one can be obtained from the other using a finitely many row operations. Row equivalent linear systems share the same solution set.
+
+Row echelon forms are useful in solving a system of linear equations, calculating the inverse of a matrix and its rank and nullity.
+
+The **reduced row echelon form** is a more stricter version of the row echelon form.
+
+- It is in row echelon form
+- The leading entry in each non-zero row is $1$
+- Any column with a leading entry $1$ has zeros in all its other entries
+
+When you use Gaussian elimination to get a *reduced* row echelon form, it is called the **Gauss-Jordan elimination**.
+
+[Reduced Row Echelon Form Example](https://youtu.be/1rBU0yIyQQ8)
 
 # System of Linear Equations
 
@@ -1183,7 +1220,7 @@ $$
 
 The augmented matrix characterizes the system completely because it contains all the numbers appearing in the system.
 
-# Existence and Uniqueness of solutions
+# Existence and Uniqueness of Solutions
 
 Consider a system of two linear equations with two unknowns,
 
@@ -1204,40 +1241,14 @@ This geometric visualization can be extended to solving a system with three equa
 
 A system is called **over determined** if it has more equations than unknowns. It is called **determined** if *m = n*. It is called **under determined** if it has fewer equations than unknowns.
 
-# Solving a System using Gauss Elimination
+# Solving a System using Gaussian Elimination
 
-Consider a linear system in upper triangular form,
+**Gaussian Elimination** is a method to convert any linear system into the *row echelon form*, while keeping the solution unchanged. It works with augmented matrices. A system of linear equations is said to be in row echelon form if its augmented matrix is in row echelon form.
 
-$$
-2 x_1 + 5 x_2 = 2 \\\\
-3 x_1 + 13 x_2 = -26
-$$
+Once the system is in row echelon form, we can use *back substitution* to find the unknowns.
 
-**Gauss Elimination** is a method to convert any linear system into the *row echelon form*, while keeping the solution unchanged. It works directly with augmented matrices and consists of a series of simple operations on the rows of the matrix.
-
-A matrix is in **row echelon form** if it satisfies the following conditions:
-
-- Any rows with all zero elements are below rows having non-zero elements
-- The leftmost nonzero entry is further to the right than the leftmost nonzero entry of the previous row
-
-Triangular form is a type of row echelon form. Two linear systems are said to be **row equivalent** if one can be obtained from the other using a finitely many row operations. Row equivalent linear systems share the same solution set.
-
-The **row operations for matrices** are as follows:
-
-- *Interchange two rows of the matrix* - It corresponds to the interchange of two equations.
-- *Multiplying a row by a nonzero constant* $c$ - It corresponds to multiplying both sides of an equation by the same constant $c$.
-- *Adding a constant multiple of one row to another row* - It corresponds to adding two equations together, after multiplying both sides of one of the equations by a constant $c$.
-
-Note that we use *row operations*, not *column operations*. This is because column operations would alter the underlying equations into having different solution sets.
-
-[Reduced Row Echelon Form Example](https://youtu.be/1rBU0yIyQQ8)
-
-Once the system is in row echelon form, we can use back substitution to find the unknowns.
-
-[Gauss Elimination Example 1](https://youtu.be/2j5Ic2V7wq4)
-[Gauss Elimination Example 2](https://youtu.be/RgnWMBpQPXk)
-
-## Interpreting the result of Gauss Elimination
+[Example 1](https://youtu.be/2j5Ic2V7wq4)
+[Example 2](https://youtu.be/RgnWMBpQPXk)
 
 If the linear system has **no solutions**, then Gauss elimination will show this by producing a contradiction in the resulting row echelon form.
 
@@ -1424,25 +1435,25 @@ $$
 L L^\text{-1} = L L^\text{-1} = I
 $$
 
+A matrix with an inverse is called a **non singular matrix** or **invertible matrix**, else it is called a **singular matrix**. Not every matrix has an inverse; but if it does have an inverse, it is always unique.
+
 # Existence of an Inverse
 
 Not all matrices have inverses. Only matrices that satisfy the following conditions are invertible:
 
-- The determinant of the matrix must not be zero.
 - It must be a square matrix $n \times n$.
+- The determinant of the matrix must not be zero.
 - The *rank* of the matrix must be $n$.
 
 If the determinant becomes $0$, we know that some dimensions of space have been lost. There is no way to regain them by using another transformation.
 
-**Rank** is defined as the number of linearly independent column vectors in the matrix. The maximum number of linearly independent vectors in a matrix is equal to the number of non-zero rows in its row echelon matrix. It is also equal to the number of linearly independent row vectors in the matrix.
+**Rank** is defined as the maximum number of linearly independent row or column vectors in the matrix. It is equal to the number of non-zero rows in its row echelon matrix.
 
 When all of the vectors in a matrix are linearly independent, the matrix is said to be **full rank**.
 
-A matrix with inverses are called a **non singular matrix** or **invertible matrix**, else it is called a **singular matrix**. Not every matrix has an inverse; but if it does have an inverse, it is always unique.
-
 # Finding the Inverse using Gauss-Jordan Elimination
 
-**Gauss-Jordan Elimination** is a variation of the Gauss Elimination and is used to find the inverse of a matrix. Given a matrix $A$, we create a corresponding identity matrix with the same dimensions,
+**Gauss-Jordan Elimination** can be used to find the inverse of a matrix. Given a matrix $A$, we create a corresponding identity matrix with the same dimensions,
 
 $$
 A  = \begin{bmatrix}
@@ -1658,11 +1669,87 @@ This is also called the **diagonalization** of matrix $A$.
 
 [Diagonalization Example](https://youtu.be/Sf91gDhVZWU)
 
+# LU Decomposition
+
+The **Lower-Upper decomposition** factors a square matrix $A$ as a product of a lower and an upper triangular matrix.
+
+$$
+A = L \space U
+$$
+
+Here is an example. Consider a matrix $A$,
+
+$$
+A
+=
+\begin{bmatrix}
+   1 & 2 & 4 \\
+   3 & 8 & 14 \\
+   2 & 6 & 13
+\end{bmatrix}
+$$
+
+It turns out we only need to consider a lower triangular matrix filled with $1$'s in the diagonal.
+
+$$
+L
+=
+\begin{bmatrix}
+   1 & 0 & 0 \\
+   L_{21} & 1 & 0 \\
+   L_{31} & L_{32} & 1
+\end{bmatrix}
+$$
+
+$U$ can be written as follows,
+
+$$
+U
+=
+\begin{bmatrix}
+   U_{11} & U_{12} & U_{13} \\
+   0 & U_{22} & U_{23} \\
+   0 & 0 & U_{33}
+\end{bmatrix}
+$$
+
+The decomposition can be written as,
+
+$$
+\begin{bmatrix}
+   1 & 2 & 4 \\
+   3 & 8 & 14 \\
+   2 & 6 & 13
+\end{bmatrix}
+
+=
+
+\begin{bmatrix}
+   U_{11}        & U_{12}                        & U_{13} \\
+   L_{21} U_{11} & U_{21} U_{12} + U_{22}        & U_{21} U_{13} + U_{23} \\
+   L_{31} U_{11} & U_{31} U_{12} + U_{32} U_{22} & U_{31} U_{13} + U_{32} U_{23} + U_{33}
+\end{bmatrix}
+$$
+
+We know the values of $U_{11}$, $U_{12}$ and $U_{13}$, so we use back substitution to find the values of $U_{ij}$ and $L_{ij}$.
+
+Now we can express the decomposition $A = L \space U$ using these values.
+
+## Row swapping
+
+A matrix is LU decomposable only if all its leading sub-matrices have non-zero determinants. If this is not the case, we need to re-order the rows of $A$ to make it so.
+
+$$
+P \space A = L \space U
+$$
+
+[Example](https://youtu.be/-eA2D_rIcNA)
+
 # Singular Value Decomposition
 
 **Singular value decomposition** provides another way to factorize a matrix into **singular vectors** and **singular values**.
 
-Eigen decomposition is not defined for all matrices. It only works for square matrices. **SVD** on the other hand works for all real matrices.
+**SVD** works for all matrices, unlike eigen decomposition which only works for square matrices.
 
 SVD is written as a product of three matrices:
 
