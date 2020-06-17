@@ -10,25 +10,32 @@ tags:
 description: ""
 ---
 
-**Statistics** is concerned with the collection, analysis and presentation of data. **Probability theory** is a mathematical framework for quantifying uncertainty. It is used widely in game theory and artificial intelligence.
+Probability and statistics are two sides of the same coin. You cannot study one without the other. **Probability theory** is a mathematical framework for quantifying uncertainty, while **statistics** is concerned with the collection, analysis and presentation of data. They are widely in game theory and artificial intelligence.
 
 # Table of Contents
 
-- Population and Samples
-- Statistical Distribution
-- Central Limit Theorem
-- Random Experiment
-- Types of Events
-- Probability of an Event
-- Conditional Probability
-- Random Variables
-- Probability Mass Function
-- Probability Density Function
-- Sum and Product Rules
-- Total Probability Theorem
-- Independence
-- Bayes Theorem
-- Expectation, Variance and Standard Deviation of a Random Variable
+- Statistics
+	- Population and Samples
+	- Statistical Distribution
+	- Central Limit Theorem
+	- Maximum Likelihood Estimation
+- Probability Theory
+	- Random Experiment
+	- Types of Events
+	- Probability of an Event
+	- Conditional Probability
+	- Sum and Product Rules
+	- Total Probability Theorem
+	- Independence
+	- Bayes Theorem
+	- Random Variables
+	- Probability Mass Function
+	- Probability Density Function
+	- Expectation of a function
+	- Variance of a function
+	- Total Expectation Theorem
+	- Cumulative Distribution Function
+	- Covariance
 
 # Population and Samples
 
@@ -254,65 +261,6 @@ $$
 
 Note that conditional probability is not defined if $A$ has no chance of occurring.
 
-# Random Variables
-
-A **random variable** is a variable that randomly takes on a value based on the outcome of a random experiment.
-
-<figure style="width: 390px">
-	<img src="/media/statistics and probability theory/random-variable.png" alt="Random Variable">
-	<figcaption>Random Variable X for a coin toss experiment</figcaption>
-</figure>
-
-We can have a random variable $X$ that takes on the value of $0$ for a heads outcome, and $1$ for a tails outcome. The values $0$ and $1$ can be replaced by any number we want.
-
-We define another random variable $Y$ where,
-
-$$
-Y = \text{number of heads after 5 flips of a fair coin}
-$$
-
-This takes on values from $\{ 0, 1, 2, 3, 4, 5 \}$.
-
-Note that we can have multiple random variables defined over a sample space.
-
-## Types of random variables
-
-A random variable can be **discrete** or **continuous**.
-
-A **discrete random variable** can only take on certain discrete values. For example, an element from a set of numbers or names.
-
-A **continuous random variable** can take any value within a range of values. For example, a person's height or weight.
-
-# Probability Mass Function
-
-The probability distribution of discrete random variables is described using a **probability mass function** (PMF).
-
-The PMF of a random variable $X$ is denoted by $P(X)$. The probability of $X$ taking on a value $x$ is denoted by $P(X = x)$ or $P(x)$.
-
-- The domain of $P(X)$ is the set of all possible states of $X$.
-- $\forall x \in X$, $P(x) \le 1$. An impossible event has a probability of $0$ and a guaranteed event has a probability of $1$, and everything else falls in between.
-- $\sum_{x \in X} P(x) = 1$. This ensures that the probabilities of various values are normalized.
-
-<figure style="width: 700px">
-	<img src="/media/statistics and probability theory/pmf-example.png" alt="PMF Example">
-	<figcaption>PMF Example</figcaption>
-</figure>
-
-# Probability Density Function
-
-The probability distribution of continuous random variables is described using a **probability density function** (PDF).
-
-The PDF of a random variable $X$ is denoted by $p(X)$. The probability of $X$ taking on a value $x$ is denoted by $p(X = x)$ or $p(X)$.
-
-- The domain of $p(X)$ is the set of all possible states of $X$.
-- $\forall x \in X$, $p(x) \le 1$. An impossible event has a probability of $0$ and a guaranteed event has a probability of $1$, and everything else falls in between.
-- $\int p(x) \space dx = 1$. This ensures that the probabilities of various values are normalized.
-
-<figure style="width: 700px">
-	<img src="/media/statistics and probability theory/pdf-example.png" alt="PDF Example">
-	<figcaption>PDF Example</figcaption>
-</figure>
-
 # Sum and Product Rules
 
 Consider two random variables $X$ and $Y$, that take some value $x_i$ and $y_j$ respectively.
@@ -476,42 +424,235 @@ $P(A)$ is the probability of any person in the population having malaria. $P(B)$
 
 $P (A \mid B)$ is the probability of you having malaria given that you have a fever. $P (B \mid A)$ is the probability that you will have high fever, in case you have malaria.
 
-# Expectation, Variance and Standard Deviation of a Random Variable
+# Random Variables
 
-**Expectation** or **expected value** of a random variable $X$ is the *mean* value that it is most likely to hold after the associated trial. It is denoted by $E(X)$ or $\mu_x$.
+A **random variable** is a variable that randomly takes on a value based on the outcome of a random experiment.
+
+<figure style="width: 390px">
+	<img src="/media/statistics and probability theory/random-variable.png" alt="Random Variable">
+	<figcaption>Random Variable X for a coin toss experiment</figcaption>
+</figure>
+
+We can have a random variable $X$ that takes on the value of $0$ for a heads outcome, and $1$ for a tails outcome. The values $0$ and $1$ can be replaced by any number we want.
+
+We define another random variable $Y$ where,
+
+$$
+Y = \text{number of heads after 5 flips of a fair coin}
+$$
+
+This takes on values from $\{ 0, 1, 2, 3, 4, 5 \}$.
+
+We can define multiple random variables over the same sample space. These variables can also be dependent on each other. For example, for a random variable $X$ can be defined as $X = Y + 2$, where $Y$ is another random variable.
+
+## Types of random variables
+
+A random variable can be **discrete** or **continuous**.
+
+A **discrete random variable** can only take on certain discrete values. For example, an element from a set of numbers or names.
+
+A **continuous random variable** can take any value within a range of values. For example, a person's height or weight.
+
+Some outcomes of an experiment are more likely than others, and similarly some values for a random variable are more likely than others. The PMF, PDF and CDF are ways to quantify that.
+
+# Probability Mass Function
+
+The probability distribution of discrete random variables is described using a **probability mass function** (PMF).
+
+<figure style="width: 700px">
+	<img src="/media/statistics and probability theory/pmf balls.svg" alt="PMF">
+	<figcaption>PMF</figcaption>
+</figure>
+
+In the above figure, we have two blue balls, a red ball and a yellow ball and the experiment is to just pick a ball at random blind-folded. The outcome of the experiment is stored in the random variable $X$. Since the outcome where we pick a blue ball is higher, this must get reflected in the PMF.
+
+The PMF of a random variable $X$ taking on a value $x$ is denoted by $P(X = x)$ or $p_X(x)$.
+
+- $\forall x \in X$, $p_X(x) \le 1$. An impossible event has a probability of $0$ and a guaranteed event has a probability of $1$, and everything else falls in between.
+- $\underset{x}{\sum} p_X(x) = 1$. This ensures that the probabilities of various values are normalized.
+
+<figure style="width: 700px">
+	<img src="/media/statistics and probability theory/pmf-example.png" alt="PMF Example">
+	<figcaption>PMF Example</figcaption>
+</figure>
+
+[Example](https://youtu.be/Qx2NKaUCUw0)
+
+If you want to find the probability of a collection of discrete values, you just need to calculate the PMF for each discrete value and add them all up. It is denoted by,
+
+$$
+P(a < X < b)
+=
+\underset{x : a < x < b}{\sum} p_X(x)
+$$
+
+*Conditional* PMF works similar to normal conditional probability and is denoted by $P_{X \mid A} (x)$ and is defined by,
+
+$$
+P_{X \mid A} (x)
+=
+\underset{x}{\sum} p_X(x)
+$$
+
+# Probability Density Function
+
+The probability distribution of continuous random variables is described using a **probability density function** (PDF).
+
+<figure style="width: 700px">
+	<img src="/media/statistics and probability theory/pdf.png" alt="PDF">
+	<figcaption>PDF</figcaption>
+</figure>
+
+The PDF of a random variable $X$ is denoted by $f(X)$. Since it works on continuous random variables, $f(X)$ considers a range of values as its input.
+
+The probability of $X$ taking on a value between $a$ and $b$ is,
+
+$$
+P(a < X < b)
+=
+\int_a^b f_X(x) \space dx
+$$
+
+- $\int_a^b f_X(x) \le 1$. An impossible event has a probability of $0$ and a guaranteed event has a probability of $1$, and everything else falls in between.
+- $\int f_X(x) \space dx = 1$. This ensures that the probabilities of various values are normalized.
+
+<figure style="width: 700px">
+	<img src="/media/statistics and probability theory/pdf-example.png" alt="PDF Example">
+	<figcaption>PDF Example</figcaption>
+</figure>
+
+# Expectation of a function
+
+The **expectation** of a function $g(x)$ with respect to a probability distribution $P(x)$ is the mean value that $g$ takes on when $x$ is drawn from $P$. It is denoted by $E_{x \in P}[g(x)]$ or $\mu_X$.
 
 In case of discrete random variables, it is the probability-weighted average of all its possible values.
 
 $$
-E(X) = \sum_i x_i \space p(x_i)
+E_{X \sim P}[g(x)] = \sum_x g(x) \space p_X(x)
 $$
 
 And for continuous random variables,
 
 $$
-E(X) = \int x \space p(x) \space dx
+E_{X \sim P}[g(x)] = \int g(x) \space f_X(x) \space dx
 $$
 
-**Variance** is a measure of spread of the values of a random variable around $E(X)$. It is denoted by $Var(X)$ or $\sigma^2$.
+[Khan Academy : Example](https://youtu.be/qafPcWNUiM8)
+[Patrick JMT : Example](https://youtu.be/DAjVAEDil_Q)
+
+### Properties of Expectation
+
+- **Non-negativity** : If $\forall x \in X \ge 0$, then $E_{X \sim P}[X] \ge 0$
+- **Monotonicity** : If $X \le Y$, then $E[X] \le E[Y]$
+- **Expectation of a constant** : $E_{X \sim P}[c] = c$, where $c$ is a constant
+- **Range of an expectation** : If $a \le X \le b$, then $a \le E_{X \sim P}[X] \le b$
+
+**Linearity of Expectations**
+
+Expectations are linear. This means the a term like $E_{X \sim P}[\alpha \space g(x) + \beta]$ can be simplified as,
 
 $$
-\begin{aligned}
-   Var (X) &= E [(X - \mu)^2] \\\\
-
-	&= \sum_i ( x_i - \mu )^2 \space p(x_i)
-\end{aligned}
+E_{X \sim P}[\alpha \space g(x) + \beta]
+=
+\alpha \space E_{X \sim P}[g(x)]
++
+\beta
 $$
 
-**Standard deviation** is simply the square root of the variance. It is denoted by $\sigma$.
+where $\alpha$ and $\beta$ are not dependent on $x$. This property even works for multiple random variables. For example,
 
 $$
-\sigma_X = \sqrt {Var(X)}
+E_{X \sim P, Y \sim P}[X + Y] = E_{X \sim P}[X] + E_{Y \sim P}[Y]
 $$
+
+[Proof](https://youtu.be/0IJFBMIU6x4?list=PLUl4u3cNGP60hI9ATjSFgLZpbNJ7myAg6)
 
 <figure style="width: 650px">
 	<img src="/media/statistics and probability theory/expectation-variance-discrete.png" alt="Expectation, Variance and Standard Deviation of RV">
 	<figcaption>Expectation, Variance and Standard Deviation of a RV</figcaption>
 </figure>
+
+# Variance of a function
+
+**Variance** is a measure of spread of the values of a random variable around $E(X)$. It is denoted by $Var(X)$ or $\sigma_X^2$.
+
+$$
+\begin{aligned}
+   Var (f(x)) &= E [(f(x) - E[f(x)])^2] \\\\
+
+	&= \sum_x ( f(x) - E[f(x)] )^2 \space p(x)
+\end{aligned}
+$$
+
+**Standard deviation** is simply the square root of the variance. It is denoted by $\sigma_X$.
+
+$$
+\sigma_X = \sqrt {Var(X)}
+$$
+
+# Total Expectation Theorem
+
+This is a random variable analogy to the Total Probability Theorem, which is,
+
+$$
+P(B) = P(A_1) P(B \mid A_1) + \cdots + P(A_n) P(B \mid A_n)
+$$
+
+Writing this in terms of PMF,
+
+$$
+p_X(x) = P(A_1) \space p_{X \mid A_1}(x) + \cdots + P(A_n) \space p_{X \mid A_n}(x)
+$$
+
+Multiply both sides by $\sum_x x$,
+
+$$
+\begin{aligned}
+
+\sum_x x \space p_X(x)
+&=
+P(A_1) \sum_x x \space p_{X \mid A_1}(x)
++
+\cdots
++
+P(A_n) \sum_x x \space p_{X \mid A_n}(x)
+
+\\\\
+
+E_{X \sim P}[X]
+&=
+P(A_1) \space E_{X \sim P}[X \mid A_1]
++
+\cdots
++
+P(A_n) \space E_{X \sim P}[X \mid A_n]
+
+\end{aligned}
+$$
+
+
+
+# Cumulative Distribution Function
+
+The **cumulative distribution function** provides the probability that $X$ will take a value less than or equal to $x$. It can be used by both discrete and continuous random variables. It is denoted by $F_X(x) = P(X \le x)$.
+
+For a discrete random variable $X$,
+
+$$
+F_X(x) = P(X \le x) = \sum_{k \le x} p_X(k)
+$$
+
+For a continuous random variable $X$,
+
+$$
+F_X(x) = P(X \le x) = \int_{-\infty}^x f_X(t) \space dt
+$$
+
+[CDF MIT](https://youtu.be/4QeL1ma_XJ0)
+
+# Covariance
+
+**Covariance**
 
 # References
 
@@ -531,3 +672,4 @@ $$
 - [Expected value of a discrete random variable](https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/random-variables-discrete/v/expected-value-of-a-discrete-random-variable)
 - [Variance and standard deviation of a discrete random variable](https://www.khanacademy.org/math/statistics-probability/random-variables-stats-library/random-variables-discrete/v/variance-and-standard-deviation-of-a-discrete-random-variable)
 - [Stack Overflow : Chain rule](https://math.stackexchange.com/questions/228811/understanding-the-chain-rule-in-probability-theory)
+- [MIT : Expectation](https://youtu.be/_yJsO5955ZE?list=PLUl4u3cNGP60hI9ATjSFgLZpbNJ7myAg6)
