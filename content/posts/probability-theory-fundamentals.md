@@ -1,200 +1,36 @@
 ---
-title: "The Fundamentals of Statistics and Probability Theory"
+title: "The Fundamentals of Probability Theory"
 date: "2019-11-1"
 template: "post"
 draft: false
-slug: "/posts/statistics-and-probability-theory-fundamentals/"
+slug: "/posts/probability-theory-fundamentals/"
 category: "Statistics and Probability Theory"
 tags:
  - ""
 description: ""
 ---
 
-Probability and statistics are two sides of the same coin. You cannot study one without the other. **Probability theory** is a mathematical framework for quantifying uncertainty, while **statistics** is concerned with the collection, analysis and presentation of data. They are widely in game theory and artificial intelligence.
+**Probability theory** is a mathematical framework for quantifying uncertainty. It is widely in game theory and artificial intelligence.
 
 # Table of Contents
 
-- Statistics
-	- Population and Samples
-	- Statistical Distribution
-	- Central Limit Theorem
-	- Maximum Likelihood Estimation
-- Probability Theory
-	- Random Experiment
-	- Types of Events
-	- Probability of an Event
-	- Conditional Probability
-	- Sum and Product Rules
-	- Total Probability Theorem
-	- Independence
-	- Bayes Theorem
-	- Random Variables
+- Random Experiment
+- Types of Events
+- Probability of an Event
+- Conditional Probability
+- Sum and Product Rules
+- Total Probability Theorem
+- Independence
+- Bayes Theorem
+- Random Variables
+- Probability Distribution Functions
 	- Probability Mass Function
 	- Probability Density Function
-	- Expectation of a function
-	- Variance of a function
-	- Total Expectation Theorem
 	- Cumulative Distribution Function
-	- Covariance
-
-# Population and Samples
-
-The **population** is the complete set of observations or individuals that we *wish* to study. For example, if you want to know the average height of the Chinese, then all the Chinese people make up the population.
-
-But it's impossible measure the heights of all these people. We can only measure the heights of some. A **sample** is a subset of the population, and is the set of observations we *actually use* for analysis. This sample is used to make estimations of the characteristics of the population.
-
-<figure style="width: 900px">
-    <img src="/media/statistics and probability theory/population-sample.png" alt="Sampling a Population">
-    <figcaption>Sampling a Population</figcaption>
-</figure>
-
-There will be some inaccuracy in our conclusions about the population based upon a sample. This should be obvious - we have fewer members in our sample than our population therefore we have lost some information.
-
-A characteristic of a population, such as the mean or standard deviation, is called a **parameter**; whereas a characteristic of a sample is called a **statistic**.
-
-Parameters hold the true values of a real world distribution. A statistic is an estimate of a population parameter. In most cases, we only have access to a portion of the population distribution, so we almost always work with statistics.
-
-# Statistical Distribution
-
-It is important to remember that the sample we draw from the population is only one from a large number of *potential samples*. If ten researchers were all studying the same population, each will draw a different sample and thus may obtain different results after analysis.
-
-<figure style="width: 700px">
-    <img src="/media/statistics and probability theory/mean-and-std-dev.png" alt="Mean and Standard Deviation">
-    <figcaption>Mean and Standard Deviation</figcaption>
-</figure>
-
-Data can be spread out or distributed in different ways and can have all kinds of interesting shapes. Distributions are defined by statistics like mean, variance and standard deviation.
-
-## Mean
-
-The **mean** tells you where the middle of distribution is. It is the sum of all measurements divided by the number of observations $N$ in the data set.
-
-The population mean is denoted by $\mu$, and calculated using,
-
-$$
-\mu = \frac {\sum_i x_i} {N}
-$$
-
-The sample mean is denoted by $\overline{x}$, and estimated using,
-
-$$
-\overline{x} = \frac {\sum_i x_i} {N}
-$$
-
-## Variance
-
-The variance measures how far the observations are spread out from their average observation. It is the average of the *squared differences* from the mean.
-
-The population variance is denoted by $\sigma^2$. It is calculated using,
-
-$$
-\sigma^2 = \frac {\sum_i ( x_i - \mu )^2 } {N}
-$$
-
-The difference tells you how far away $x_i$ is from the mean, and squaring each term makes sure the distance is positive.
-
-The sample variance is estimated using,
-
-$$
-s^2 = \frac { \sum_i ( x_i - \overline{x} )^2 } {N - 1}
-$$
-
-**Bessel's correction**
-
-It refers to the use of $N - 1$ instead of $N$ in the formula for sample variance to get an better estimate of the population variance.
-
-Lets start with,
-
-$$
-s^2 = \frac { \sum_i ( x_i - \overline{x} )^2 } {N}
-$$
-
-Using $\overline{x}$ in the square of differences will result in the smallest possible value. This is because it is equidistant from all other sample points $x_i$. Using any other value instead of $\overline{x}$ will result in a larger value.
-
-Since $\mu \ne \overline{x}$, our current estimation $s^2$ is smaller than the population variance. Dividing by $n - 1$ increases $s^2$ to compensate for our use of $\overline{x}$.
-
-[watch this](https://youtu.be/92s7IVS6A34?list=WL)
-
-## Standard Deviation
-
-Variance is measured in square units. This makes it difficult to reason with. So, we define the **standard deviation**, to measure the spread of data. It is simply the square root of the variance.
-
-The population standard deviation is denoted by $\sigma$. It is calculated using,
-
-$$
-\sigma = \sqrt { \frac {\sum_i ( x_i - \mu )^2 } {N} }
-$$
-
-The sample standard deviation is denoted by $s$. It is estimated using,
-
-$$
-s = \sqrt { \frac {\sum_i ( x_i - \overline{x} )^2 } {N - 1} }
-$$
-
-## Standard Error
-
-**Standard Error** measures the variation of a statistic calculated from multiple samples. It is simply the standard deviation of the distribution of a statistic.
-
-The *standard error of the mean* is visualized below. You can calculate standard error for any statistic you wish.
-
-<figure style="width: 600px">
-    <img src="/media/statistics and probability theory/standard-error-of-mean.png" alt="Standard Error of Mean">
-    <figcaption>Standard Error of Mean</figcaption>
-</figure>
-
-When the standard error increases, the means are more spread out; and it becomes more likely that any given mean is far from the population mean.
-
-# Central Limit Theorem
-
-The **Central Limit Theorem** states that the sample means $\overline{x}$ will be normally distributed for large samples from a population distribution; regardless of the type of the population distribution.
-
-<figure style="width: 880px">
-    <img src="/media/statistics and probability theory/central-limit-theorem.png" alt="Central Limit Theorem  demonstrated by various distributions">
-    <figcaption>Central Limit Theorem demonstrated by various distributions</figcaption>
-</figure>
-
-Consider the following experiment,
-
-1. Roll a die $20$ times and count the number of heads
-2. Note down the sample mean
-3. Repeat this multiple times
-
-As this experiment is repeated, ie. the more samples we take, the graph showing the sample means will increasingly look normal.
-
-The central limit theorem lets us continue performing statistical analysis even if we do not know the true form of the population distribution.
-
-# Maximum Likelihood Estimation
-
-**Likelihood** tells you how probable it is for a set of observations $O$ to came from a distribution $D$. It is denoted by $L ( D \mid O )$.
-
-Since a distribution is described by its parameters or statistics like the mean and standard deviation we write likelihood as $L ( \mu = 15, \sigma = 2 \mid O )$. This denotes the likelihood of a distribution with a mean of $15$ and a standard deviation of $2$ given observations $O$.
-
-<figure style="width: 650px">
-	<img src="/media/statistics and probability theory/probability-vs-likelihood.png" alt="Probability vs Likelihood">
-	<figcaption>Probability vs Likelihood</figcaption>
-</figure>
-
-Given a set of observations, **maximum likelihood estimation** (MLE) finds a distribution from which they were most likely sampled from. We must perform MLE for each and every statistic we wish to estimate.
-
-## MLE for Mean
-
-First we choose a distribution with a constant standard deviation $\sigma$. Then we vary the mean $\mu$, and calculate the likelihood. The mean that gives the maximum likelihood is called the *maximum likelihood estimate for the mean* $\mu_\text{MSE}$.
-
-<figure style="width: 650px">
-	<img src="/media/statistics and probability theory/mle.gif" alt="Maximum Likelihood Estimation for the mean">
-	<figcaption>Maximum Likelihood Estimation for the Mean</figcaption>
-</figure>
-
-## MLE for Standard Deviation
-
-Now that we have found the MLE for the mean, we can move onto estimating the standard deviation. Here we hold the $\mu_\text{MSE}$ constant and vary $\sigma$.
-
-The standard deviation that results in the maximum likelihood is called *maximum likelihood estimate for standard deviation* $\sigma_\text{MSE}$.
-
-<figure style="width: 650px">
-	<img src="/media/statistics and probability theory/mle-std.png" alt="Maximum Likelihood Estimation for the Standard Deviation">
-	<figcaption>Maximum Likelihood Estimation for the Standard Deviation</figcaption>
-</figure>
+- Expectation of a function
+- Variance of a function
+- Total Expectation Theorem
+- Covariance
 
 # Random Experiment
 
@@ -455,7 +291,11 @@ A **continuous random variable** can take any value within a range of values. Fo
 
 Some outcomes of an experiment are more likely than others, and similarly some values for a random variable are more likely than others. The PMF, PDF and CDF are ways to quantify that.
 
-# Probability Mass Function
+# Probability Distribution Functions
+
+A **probability distribution** is a function that gives the probability of occurrence of the different possible outcomes of an experiment.
+
+## Probability Mass Function
 
 The probability distribution of discrete random variables is described using a **probability mass function** (PMF).
 
@@ -494,7 +334,7 @@ P_{X \mid A} (x)
 \underset{x}{\sum} p_X(x)
 $$
 
-# Probability Density Function
+## Probability Density Function
 
 The probability distribution of continuous random variables is described using a **probability density function** (PDF).
 
@@ -521,9 +361,27 @@ $$
 	<figcaption>PDF Example</figcaption>
 </figure>
 
+## Cumulative Distribution Function
+
+The **cumulative distribution function** provides the probability that $X$ will take a value less than or equal to $x$. It can be used by both discrete and continuous random variables. It is denoted by $F_X(x) = P(X \le x)$.
+
+For a discrete random variable $X$,
+
+$$
+F_X(x) = P(X \le x) = \sum_{k \le x} p_X(k)
+$$
+
+For a continuous random variable $X$,
+
+$$
+F_X(x) = P(X \le x) = \int_{-\infty}^x f_X(t) \space dt
+$$
+
+[CDF MIT](https://youtu.be/4QeL1ma_XJ0)
+
 # Expectation of a function
 
-The **expectation** of a function $g(x)$ with respect to a probability distribution $P(x)$ is the mean value that $g$ takes on when $x$ is drawn from $P$. It is denoted by $E_{x \in P}[g(x)]$ or $\mu_X$.
+The **expectation** of a function $g(x)$ with respect to a probability distribution $P(x)$ is the mean value that $g$ takes on when $x$ is drawn from $P$. In other words, it is the probability weighted average of $g(x)$. It is denoted by $E_{x \in P}[g(x)]$ or $\mu_X$.
 
 In case of discrete random variables, it is the probability-weighted average of all its possible values.
 
@@ -540,14 +398,25 @@ $$
 [Khan Academy : Example](https://youtu.be/qafPcWNUiM8)
 [Patrick JMT : Example](https://youtu.be/DAjVAEDil_Q)
 
+Let's understand why this equation is the mean of a random variable.
+
+<figure style="width: 700px">
+	<img src="/media/statistics and probability theory/expectation derive.png" alt="Expectation informal derivation">
+	<figcaption>Expectation informal derivation</figcaption>
+</figure>
+
 ### Properties of Expectation
 
 - **Non-negativity** : If $\forall x \in X \ge 0$, then $E_{X \sim P}[X] \ge 0$
 - **Monotonicity** : If $X \le Y$, then $E[X] \le E[Y]$
-- **Expectation of a constant** : $E_{X \sim P}[c] = c$, where $c$ is a constant
 - **Range of an expectation** : If $a \le X \le b$, then $a \le E_{X \sim P}[X] \le b$
+- **Expectation of a constant** :
 
-**Linearity of Expectations**
+$E_{X \sim P}[c] = c$, where $c$ is a constant. Note that $E[E[X]] = E[c]$, since $E[X]$ is just a constant value.
+
+[Khan Academy](https://youtu.be/ualmyZiPs9w)
+
+- **Linearity of Expectations**
 
 Expectations are linear. This means the a term like $E_{X \sim P}[\alpha \space g(x) + \beta]$ can be simplified as,
 
@@ -578,10 +447,16 @@ $$
 
 $$
 \begin{aligned}
-   Var (f(x)) &= E [(f(x) - E[f(x)])^2] \\\\
+   Var (x) &= E [(x - E[x])^2] \\\\
 
-	&= \sum_x ( f(x) - E[f(x)] )^2 \space p(x)
+	&= \sum_x (x - E[x] )^2 \space p(x)
 \end{aligned}
+$$
+
+This can be written as,
+
+$$
+Var(x) = E[x^2] - E[x]^2
 $$
 
 **Standard deviation** is simply the square root of the variance. It is denoted by $\sigma_X$.
@@ -630,37 +505,41 @@ P(A_n) \space E_{X \sim P}[X \mid A_n]
 \end{aligned}
 $$
 
-
-
-# Cumulative Distribution Function
-
-The **cumulative distribution function** provides the probability that $X$ will take a value less than or equal to $x$. It can be used by both discrete and continuous random variables. It is denoted by $F_X(x) = P(X \le x)$.
-
-For a discrete random variable $X$,
-
-$$
-F_X(x) = P(X \le x) = \sum_{k \le x} p_X(k)
-$$
-
-For a continuous random variable $X$,
-
-$$
-F_X(x) = P(X \le x) = \int_{-\infty}^x f_X(t) \space dt
-$$
-
-[CDF MIT](https://youtu.be/4QeL1ma_XJ0)
-
 # Covariance
 
-**Covariance**
+**Covariance** tells us the direction of the linear relationship between two random variables. It is denoted by $\text{Cov}_{X \sim P, Y \sim P}(X, Y)$.
+
+<figure style="width: 460px">
+	<img src="/media/statistics and probability theory/covariance.png" alt="Covariance">
+	<figcaption>Covariance</figcaption>
+</figure>
+
+A **positive** covariance means that when one variable increases the other also increases. A **negative** covariance means that when one variable increases the other decreases. It is defined as,
+
+$$
+\text{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])]
+$$
+
+You can simplify this,
+
+$$
+\begin{aligned}
+\text{Cov}(X, Y) &= E[XY - X \space E[Y] - Y \space E[X] + E[X] E[Y]]
+\\
+&= E[XY] - E[X \space E[Y]] - E[Y \space E[X]] + E[E[X] \space E[Y]]
+\\
+&= E[XY] - E[X] E[Y] - E[Y] E[X] + E[X] E[Y]
+\\
+&= E[XY] - E[X] E[Y]
+\end{aligned}
+$$
+
+
+
+
 
 # References
 
-- [Statistical Distribution](https://youtu.be/oI3hZJqXJuc?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
-- [StatQuest: Maximum Likelihood](https://youtu.be/XepXtl9YKwc?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
-- [The Sample Variance: Why Divide by n-1?](https://youtu.be/9ONRMymR2Eg)
-- [StatQuickie: Standard Deviation vs Standard Error](https://youtu.be/A82brFpdr9g?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
-- [The Central Limit Theorem](https://youtu.be/YAlJCEDH2uY?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
 - [MIT Introduction to Probability](https://www.youtube.com/playlist?list=PLUl4u3cNGP60hI9ATjSFgLZpbNJ7myAg6)
 - [Math is Fun : Random Variables](https://www.mathsisfun.com/data/random-variables.html)
 - [Stat Trek : Probability](https://stattrek.com/probability/probability-rules.aspx?tutorial=prob)
