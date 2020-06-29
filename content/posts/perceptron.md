@@ -10,11 +10,9 @@ tags:
 description: ""
 ---
 
-A **perceptron** is a binary classifier that linearly separates data. It takes in a vector of real numbers as input $x$ and spits out a binary classification of $1$ or $0$.
+A **perceptron** is a binary classifier that linearly separates data. It takes in a vector of real numbers as input $x$ and spits out a binary classification. It is a very simple model that uses *linear regression* followed by a *threshold function*.
 
-It is a very simple model that uses *linear regression* followed by a *threshold function*. Just like regular linear regression the weights and bias are calculated during the training phase.
-
-<figure style="width: 580px">
+<figure style="width: 800px">
 	<img src="/media/deep learning/perceptron.png" alt="Perceptron">
 	<figcaption>Perceptron</figcaption>
 </figure>
@@ -56,9 +54,9 @@ $$
 \end{cases}
 $$
 
-You can think of the bias as a measure of how easy it is to get the perceptron to output a 1.
+You can think of the bias as a measure of how easy it is to get the perceptron to output a $1$.
 
-For a perceptron with a large positive bias value, it's extremely easy for the perceptron to output a 1. But if the bias is a large negative value, then it's difficult for the perceptron to output a 1.
+For a perceptron with a large positive bias value, it's extremely easy for the perceptron to output a $1$. But if the bias is a large negative value, then it's difficult for the perceptron to output a $1$.
 
 # Learning algorithm
 
@@ -70,11 +68,6 @@ Small changes in weights and biases cause changes in the output. We can use this
 </figure>
 
 The general idea behind this learning algorithm is to initially draw a random decision boundary across the dataset, then move the boundary gradually to classify the training set accurately.
-
-<figure style="width: 620px">
-	<img src="/media/deep learning/perceptron-learning-algorithm.png" alt="Learning algorithm">
-	<figcaption>Perceptron Learning algorithm</figcaption>
-</figure>
 
 Let's say we have a *random* initial boundary line,
 
@@ -90,6 +83,11 @@ We also have a misclassified point $(1, 1)$. In order to classify this point pro
 </figure>
 
 $\alpha$ is the learning rate. It is a number between $0$ and $1$ that ensures that $\alpha x$ is a small number. This ensures that the boundary line does not take very large steps.
+
+<figure style="width: 620px">
+	<img src="/media/deep learning/perceptron-learning-algorithm.png" alt="Learning algorithm">
+	<figcaption>Perceptron Learning algorithm - 1 epoch</figcaption>
+</figure>
 
 # Limitations
 

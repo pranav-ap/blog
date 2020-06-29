@@ -2,7 +2,7 @@
 title: "Support Vector Machines"
 date: "2019-12-24"
 template: "post"
-draft: true
+draft: false
 slug: "/posts/svm/"
 category: "Machine Learning"
 tags:
