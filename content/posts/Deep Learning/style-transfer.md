@@ -2,7 +2,7 @@
 title: "Neural Style Transfer"
 date: "2020-3-15"
 template: "post"
-draft: true
+draft: false
 slug: "/posts/neural-style-transfer/"
 category: "Deep Learning"
 tags:

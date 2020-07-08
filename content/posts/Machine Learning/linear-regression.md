@@ -12,7 +12,7 @@ description: ""
 
 Regression analysis explores the relationship between a quantitative response variable and one or more explanatory variable.
 
-Linear regression methods attempt to solve regression tasks by assuming that the response $y$ is a *linear* function of one or more independent features $x_1, x_2, \cdots, x_n$.
+Linear regression methods attempt to solve regression tasks by assuming that the response $y$ is a *linear* function of one or more explanatory variable $x_1, x_2, \cdots, x_n$.
 
 The general form of a linear function or linear relationship is,
 
@@ -41,6 +41,8 @@ The goal of linear regression is to estimate the coefficients $\beta_0, \cdots, 
 	- Ordinary Least Squares
 	- Ordinary Least Squares with **L1** penalty
 	- Ordinary Least Squares with **L2** penalty
+- Calculating Model Performance
+	- Mean Squared Error
 
 # Simple Linear Regression
 
@@ -59,7 +61,7 @@ The **residual** $e_i$ is the difference between the observed response and the p
 
 $$
 \begin{aligned}
-	e_i &= \text{Observed} - \text{Predicted}
+	e_i &= \text{Observed value} - \text{Predicted value}
 	\\
 	&= y_i - \hat{y_i}
 \end{aligned}
@@ -67,11 +69,11 @@ $$
 
 The points above the line have positive residuals while the points below the line have negative residuals. Intuitively we can tell that the best line through the data is one that has the smallest residuals.
 
-To measure this we define the **sum of squared residues** or **residual sum of squares** as,
+To measure this we define the **sum of squared residues**,
 
 $$
 \begin{aligned}
-	\text{RSS} &= \sum_i e_i^2
+	\text{SSR} &= \sum_i e_i^2
 	\\
 	&= \sum_i (y_i - \hat{y_i})^2
 	\\
@@ -79,22 +81,22 @@ $$
 \end{aligned}
 $$
 
-A small RSS indicates that the model is tightly fit to the data. The reason we take the square is to cancel out the signs.
+A small SSR indicates that the model is tightly fit to the data.
 
 <figure style="width: 800px">
-	<img src="/media/machine learning/linear regression/Reducing RSS.png" alt="Reducing RSS">
-	<figcaption>Reducing RSS</figcaption>
+	<img src="/media/machine learning/linear regression/Reducing SSR.png" alt="Reducing SSR">
+	<figcaption>Reducing SSR</figcaption>
 </figure>
 
-We need to find values for the coefficients $\beta_0$ and $\beta_1$ such that the RSS is minimized. Graphically these values are the coordinates at the red dot. The red dot has a slope of $0$.
+We need to find values for the coefficients $\beta_0$ and $\beta_1$ such that the SSR is minimized. Graphically these values are the coordinates at the red dot. The red dot has a slope of $0$.
 
 Solve the following partial differential equations,
 
 $$
 \begin{aligned}
-	\frac {\partial \text{ RSS}} {\partial \beta_0} &= 0
+	\frac {\partial \text{ SSR}} {\partial \beta_0} &= 0
 	\\\\
-	\frac {\partial \text{ RSS}} {\partial \beta_1} &= 0
+	\frac {\partial \text{ SSR}} {\partial \beta_1} &= 0
 \end{aligned}
 $$
 
@@ -125,6 +127,8 @@ $$
 
 # Polynomial Linear Regression
 
+# Fitting Criteria
+
 # Calculating Model Performance
 
 In order to evaluate performance of a learning method on a given dataset, we need a way to measure how well its prediction responses actually match true responses in observed data.
@@ -138,7 +142,6 @@ MSE = \frac{1}{n}\sum_\text{i = 1}(y_i - \hat{f}(x_i))^2
 $$
 
 where $\hat{f}(x_i)$ provides the prediction for ith observation, and $y_i$ is the actual response variable for ith observation. The MSE value will be small if the predicted responses are very close to true responses.
-
 
 If training data is used to compute MSE, it is called **training MSE**, and if test data is used, it is **test MSE**.
 

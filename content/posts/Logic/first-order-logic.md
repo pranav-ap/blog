@@ -2,7 +2,7 @@
 title: "First Order Logic"
 date: "2019-12-15"
 template: "post"
-draft: true
+draft: false
 slug: "/posts/fo-logic/"
 category: "Logic"
 tags:
