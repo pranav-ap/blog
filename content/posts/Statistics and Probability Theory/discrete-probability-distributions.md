@@ -18,7 +18,10 @@ Some examples of discrete probability distributions include:
 
 - Bernoulli distribution
 - Binomial distribution
+- Hypergeometric distribution
 - Geometric distribution
+- Poisson Distribution
+- Multinomial Distribution
 
 # Bernoulli distribution
 
@@ -26,7 +29,7 @@ Bernoulli distribution is used to model a *single trial* of an experiment with o
 
 A **bernoulli trial** is a random experiment with exactly two possible outcomes, "success" and "failure". The probability of success is the same every time the experiment is conducted.
 
-A random variable $X$ describing a Bernoulli trial is given by,
+The PMF of a random variable $X$ describing a Bernoulli trial is given by,
 
 $$
 P(X = x) = p_X(x) =
@@ -100,19 +103,123 @@ $$
 
 # Binomial distribution
 
-Binomial distribution models the number of successes $k$ in $n$ independent trials.
+Binomial distribution models the number of successes $x$ in $n$ independent trials. The PMF of a binomial random variable $X$ is given by,
 
 $$
-P(X = k) = \begin{pmatrix} n \\ k \end{pmatrix} p^k (1 - p)^{n - k}
+P(X = x) = \begin{pmatrix} n \\ x \end{pmatrix} p^x (1 - p)^{n - x}
 $$
 
-where, the random variable $X$ holds the number of successes. $\begin{pmatrix} n \\ k \end{pmatrix}$ is called the **binomial coefficient** and is defined as,
+where, the random variable $X$ holds the number of successes. $\begin{pmatrix} n \\ x \end{pmatrix}$ is called the **binomial coefficient** and is defined as,
 
 $$
-\begin{pmatrix} n \\ k \end{pmatrix} = \frac {n!} {k! (n - k)!}
+\begin{pmatrix} n \\ x \end{pmatrix} = \frac {n!} {x! (n - x)!}
 $$
+
+The second part, $p^x (1 - p)^{n - x}$, gives you the probability for a particular sequence of successes and failures. Multiplying this by the binomial coefficient gives the total probability for any sequence with the same number of successes and failures.
+
+## Mean
+
+Let $U_1, U_2, \cdots, U_n$ be independent Bernoulli random variables.
+
+$$
+\begin{aligned}
+E[U_i] &= p
+\\\\
+Var[U_i] &= p (1 - p)
+\end{aligned}
+$$
+
+The binomial random variable can be thought of as the sum of $n$ Bernoulli random variables.
+
+$$
+\begin{aligned}
+X &= U_1 + U_2 + \cdots + U_n
+\\\\
+E[X] &= E[U_1 + U_2 + \cdots + U_n]
+\\
+&= E[U_1] + E[U_2] + \cdots + E[U_n]
+\\
+&= p + p + \cdots + p
+\\
+&= np
+\end{aligned}
+$$
+
+## Variance
+
+Variance follows similar reasoning,
+
+$$
+\begin{aligned}
+X &= U_1 + U_2 + \cdots + U_n
+\\\\
+Var[X] &= Var[U_1 + U_2 + \cdots + U_n]
+\\
+&= Var[U_1] + Var[U_2] + \cdots + Var[U_n]
+\\
+&= p(1 - p) + p(1 - p) + \cdots + p(1 - p)
+\\
+&= np(1 - p)
+\end{aligned}
+$$
+
+# Hypergeometric distribution
+
+Hypergeometric distribution models the probability of randomly selecting $x$ successes from a population size $N$ *without* replacement. Each draw is either a success or a failure. Since it is done without replacement, the probability of each successive draw changes.
+
+This stands in contrast to binomial distribution which describes the probability of $x$ successes in $n$ trials *with* replacement. The probability in each trial remains constant.
+
+The hypergeometric random variable $X$ holds the number of successes $x$ in the drawn sample. Its PMF is given by,
+
+$$
+P(X = x)
+=
+\frac
+{\begin{pmatrix} a \\ x \end{pmatrix} \begin{pmatrix} N - a \\ n - x \end{pmatrix} }
+{\begin{pmatrix} N \\ n \end{pmatrix}}
+$$
+
+where $a$ is the total number of successes in the population and $n$ is the number of draws.
 
 # Geometric distribution
+
+The geometric distribution models the number of trials needed to reach the first success in a series of independent Bernoulli trials.
+
+The PMF of a geometric random variable is given by,
+
+$$
+P(X = x) = (1 - p)^{x - 1} p
+$$
+
+where $p$ is the probability of the success event.
+
+The first part of the equation $(1 - p)^{x - 1}$ gives you the probability that the initial $x - 1$ trials are failures. The second part $p$ tells you the probability that the x*th* trial is a success.
+
+Together, they tell you the probability of $x - 1$ failures followed by a success.
+
+The mean in defined by,
+
+$$
+\mu = \frac {1}{p}
+$$
+
+[Proof](https://youtu.be/7br_-emGNec)
+
+The variance is given by,
+
+$$
+\sigma^2 = \frac {1 - p} {p^2}
+$$
+
+# Poisson Distribution
+
+The Poisson distribution models the number of times an event occurs in a given unit of time, distance, area or volume.
+
+$$
+P(X = x) = \frac {\lambda^k e^{- \lambda}}{k!}
+$$
+
+# Multinomial Distribution
 
 # References
 
@@ -120,3 +227,5 @@ $$
 - [JB statistics : Introduction to the Bernoulli Distribution](https://youtu.be/bT1p5tJwn_0)
 - [Wikipedia : Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial)
 - [Wikipedia : Binomial coefficient](https://en.wikipedia.org/wiki/Binomial_coefficient)
+- [JB statistics : An Introduction to the Binomial Distribution](https://youtu.be/qIzC1-9PwQo)
+
