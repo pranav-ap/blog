@@ -18,10 +18,11 @@ Some examples of discrete probability distributions include:
 
 - Bernoulli distribution
 - Binomial distribution
+- Multinomial Distribution
 - Hypergeometric distribution
+- Multivariate Hypergeometric distribution
 - Geometric distribution
 - Poisson Distribution
-- Multinomial Distribution
 
 # Bernoulli distribution
 
@@ -117,7 +118,7 @@ $$
 
 The second part, $p^x (1 - p)^{n - x}$, gives you the probability for a particular sequence of successes and failures. Multiplying this by the binomial coefficient gives the total probability for any sequence with the same number of successes and failures.
 
-## Mean
+## Expectation
 
 Let $U_1, U_2, \cdots, U_n$ be independent Bernoulli random variables.
 
@@ -163,6 +164,18 @@ Var[X] &= Var[U_1 + U_2 + \cdots + U_n]
 \end{aligned}
 $$
 
+# Multinomial Distribution
+
+The multinomial distribution is a generalization of the binomial distribution that allows for more than $2$ outcomes.
+
+The multinomial random variable $X$ represents the number of occurrences of outcome $i$. The PMF is given by,
+
+$$
+P(X_1 = x_1, \cdots, X_n = x_n)
+=
+\frac {n!} {x_1! \cdots x_n!} p_1^{\normalsize x_1} \cdots p_k^{\normalsize x_k}
+$$
+
 # Hypergeometric distribution
 
 Hypergeometric distribution models the probability of randomly selecting $x$ successes from a population size $N$ *without* replacement. Each draw is either a success or a failure. Since it is done without replacement, the probability of each successive draw changes.
@@ -181,6 +194,20 @@ $$
 
 where $a$ is the total number of successes in the population and $n$ is the number of draws.
 
+# Multivariate Hypergeometric distribution
+
+This is a generalization of hypergeometric distribution to support more than $2$ outcomes.
+
+$$
+P(X = x)
+=
+\frac
+{ \Pi_i \begin{pmatrix} n_i \\ x_i \end{pmatrix}}
+{\begin{pmatrix} N \\ x \end{pmatrix}}
+$$
+
+where $n_i$ is the total number of items of type $i$ available in the population, $x_i$ is the number of items of each type chosen, $N$ is the size of the population and $x$ is the total number of items chosen, $x_1 + x_2 + \cdots$.
+
 # Geometric distribution
 
 The geometric distribution models the number of trials needed to reach the first success in a series of independent Bernoulli trials.
@@ -197,10 +224,10 @@ The first part of the equation $(1 - p)^{x - 1}$ gives you the probability that 
 
 Together, they tell you the probability of $x - 1$ failures followed by a success.
 
-The mean in defined by,
+The expectation in defined by,
 
 $$
-\mu = \frac {1}{p}
+E[X] = \frac {1}{p}
 $$
 
 [Proof](https://youtu.be/7br_-emGNec)
@@ -208,18 +235,61 @@ $$
 The variance is given by,
 
 $$
-\sigma^2 = \frac {1 - p} {p^2}
+Var[X] = \frac {1 - p} {p^2}
 $$
 
 # Poisson Distribution
 
-The Poisson distribution models the number of times an event occurs in a given unit of time, distance, area or volume.
+The Poisson distribution expresses the probability of a given number of events occurring in a fixed interval of time, distance, etc.
 
 $$
-P(X = x) = \frac {\lambda^k e^{- \lambda}}{k!}
+P(X = x) = \frac {\lambda^x e^{- \lambda}}{x!}
 $$
 
-# Multinomial Distribution
+where $\lambda = E[X] = Var[X]$ and $x$ is the number of events.
+
+The expectation of a Poisson random variable is given by,
+
+$$
+\begin{aligned}
+E[X] &= \sum_x x \space p(x)
+\\\\
+&= \sum_{x = 0}^\infty x \frac {\lambda^x e^{- \lambda}}{x!}
+\\\\
+&= e^{- \lambda} \sum_{x = 0}^\infty x \frac {\lambda^x}{x!}
+\\\\
+&= \lambda e^{- \lambda} \sum_{x = 1}^\infty \frac {\lambda^{\normalsize (x - 1)}}{(x - 1)!}
+\end{aligned}
+$$
+
+Using the following series expansion,
+
+$$
+e^a = \sum_{y = 0}^{\infty} \frac {a^y} {y!}
+$$
+
+we simplify the expectation,
+
+$$
+\begin{aligned}
+E[X] &= \lambda e^{- \lambda} e^{\lambda}
+\\
+&= \lambda e^{- \lambda + \lambda}
+\\
+&= \lambda e^0
+\\
+&= \lambda
+\end{aligned}
+$$
+
+## Variance
+
+$$
+Var[X] = \lambda
+$$
+
+- [Deriving the Mean and Variance](https://youtu.be/65n_v92JZeE)
+- [The Relationship Between the Binomial and Poisson Distributions](https://youtu.be/eexQyHj6hEA)
 
 # References
 
@@ -228,4 +298,5 @@ $$
 - [Wikipedia : Bernoulli trial](https://en.wikipedia.org/wiki/Bernoulli_trial)
 - [Wikipedia : Binomial coefficient](https://en.wikipedia.org/wiki/Binomial_coefficient)
 - [JB statistics : An Introduction to the Binomial Distribution](https://youtu.be/qIzC1-9PwQo)
-
+- [JB statistics : Introduction to the Multinomial Distribution](https://youtu.be/syVW7DgvUaY)
+- [The Normal Approximation to the Binomial Distribution](https://youtu.be/CCqWkJ_pqNU)

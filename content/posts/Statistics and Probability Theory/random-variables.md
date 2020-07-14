@@ -211,6 +211,8 @@ $$
 Var(x) = E[x^2] - E[x]^2
 $$
 
+- [Variance of a Random Variable as Expected Values](https://youtu.be/h5zXABkHMYY)
+
 **Standard deviation** is simply the square root of the variance. It is denoted by $\sigma_X$.
 
 $$
