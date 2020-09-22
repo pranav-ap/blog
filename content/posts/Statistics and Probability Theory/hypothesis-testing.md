@@ -59,12 +59,6 @@ A **Type II error** occurs when you fail to reject a false null hypothesis. The 
 
 ## Power
 
-For example, consider a normally distributed population with a mean of $10$ and a standard deviation of $2$. This distribution indicates that $95.44 \%$ of the values in this population are between $6$ and $14$.
-
-When you gather a sample from this population, it is possible that it has a mean of $4$. From such a sample you wouldn't know that the population mean is actually $10$.
-
-Of course, the odds of getting such a sample are incredibly small, but it is nevertheless, possible. Improbable samples can lead you to the wrong conclusion. While you can't know when this will occur, you can estimate how often it will occur. That's where power comes in.
-
 The **power** of a hypothesis test is the probability that the test correctly rejects the null hypothesis. It is the probability of *not* committing a Type **II** error.
 
 - [Increase the power of a hypothesis test](https://support.minitab.com/en-us/minitab-express/1/help-and-how-to/basic-statistics/inference/supporting-topics/basics/increase-the-power-of-a-hypothesis-test/)
@@ -91,6 +85,7 @@ The steps involved in hypothesis testing:
 - Choose a level of significance $\alpha$
 - Choose and calculate the test statistic
 - Calculate $p$-value
+- If $p$-value is smaller than level of significance then reject the null hypothesis
 
 <figure style="width: 920px">
     <img src="/media/statistics and probability theory/hyp-test.png" alt="Hypothesis Testing">
@@ -104,27 +99,31 @@ The steps involved in hypothesis testing:
 
 # Level of Significance
 
-The level of significance is the conditional probability of getting a certain sample statistic value assuming that the sample statistic is true. Often we choose $1 \%$ or $5 \%$.
+The level of significance is the threshold we use to reject a null hypothesis. Often we choose $1 \%$ or $5 \%$.
 
 - [Comparing P-values to different significance levels](https://youtu.be/DQCF4kTXf9Q)
 
 # P-value
 
-The $p$-value is a measure of the strength of the evidence against the null hypothesis. It is the probability of getting the observing value for the test statistic, if the null hypothesis is actually true.
+The $p$-value is a measure of the strength of the evidence against the null hypothesis. It is the probability of getting the observing value for the test statistic or a value with even greater evidence against the null hypothesis, if the null hypothesis is actually true.
 
 If the $p$-value is less than the chosen significance level $\alpha$ then reject the null hypothesis.
 
 # Region of acceptance
 
-The region of acceptance is a range of values. If the test statistic falls within this range, the null hypothesis is not rejected. The region of acceptance is defined so that the chance of making a Type I error is equal to the significance level.
+The **region of acceptance** is a range of values. If the test statistic falls within this range, the null hypothesis is not rejected. The region of acceptance is defined so that the chance of making a Type I error is equal to the significance level.
 
-The set of values outside the region of acceptance is called the region of rejection. If the test statistic falls within the region of rejection, the null hypothesis is rejected. In such cases, we say that the hypothesis has been rejected at the α level of significance.
+The set of values outside the region of acceptance is called the **region of rejection**. If the test statistic falls within the region of rejection, the null hypothesis is rejected. In such cases, we say that the hypothesis has been rejected at the $\alpha$ level of significance.
 
 ## One-Tailed and Two-Tailed Tests
 
-A test of a statistical hypothesis, where the region of rejection is on only one side of the sampling distribution, is called a one-tailed test. For example, suppose the null hypothesis states that the mean is less than or equal to 10. The alternative hypothesis would be that the mean is greater than 10. The region of rejection would consist of a range of numbers located on the right side of sampling distribution; that is, a set of numbers greater than 10.
+A hypothesis test where the region of rejection is on only one side of the sampling distribution is called a **one-tailed test**.
 
-A test of a statistical hypothesis, where the region of rejection is on both sides of the sampling distribution, is called a two-tailed test. For example, suppose the null hypothesis states that the mean is equal to 10. The alternative hypothesis would be that the mean is less than 10 or greater than 10. The region of rejection would consist of a range of numbers located on both sides of sampling distribution; that is, the region of rejection would consist partly of numbers that were less than 10 and partly of numbers that were greater than 10.
+For example, suppose the null hypothesis states that the mean is less than or equal to $10$. The alternative hypothesis would be that the mean is greater than $10$. The region of rejection would consist of numbers greater than $10$.
+
+A hypothesis test where the region of rejection is on both sides of the sampling distribution is called a **two-tailed test**.
+
+For example, suppose the null hypothesis states that the mean is equal to $10$. The alternative hypothesis would be that the mean is less than or greater than $10$. The region of rejection would consist of a range of numbers that were less than or greater than $10$.
 
 # References
 
