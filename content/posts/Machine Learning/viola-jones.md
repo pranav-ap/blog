@@ -18,7 +18,7 @@ There are two stages in this framework - **training** and **detection**. I will 
 
 The input image is first converted to grayscale as they are easier to process. A small sliding detection window is moved across the grayscale image in small steps, top to bottom and left to right.
 
-<figure style="width: 450px; float:right">
+<figure class="float-right" style="width: 450px">
 	<img src="/media/vision/viola jones/sliding-window.gif" alt="Sliding window">
 	<figcaption>Sliding window</figcaption>
 </figure>
@@ -49,7 +49,7 @@ Of course, a human face will not have an exact white or black rectangular pixel 
 	<figcaption>Frontal Features</figcaption>
 </figure>
 
-If the pixels under the feature are similar enough to it, then it means we have found a *good candidate* for this portion. Each feature has a *value* and a *threshold* associated with it.
+If the pixels under the feature are similar enough to it, then it means we have found a _good candidate_ for this portion. Each feature has a _value_ and a _threshold_ associated with it.
 
 The **threshold** is determined during the training stage. It tells you how similar the underlying pixels must be to the rectangular feature in order to be a good candidate, for example, a nose.
 
@@ -90,7 +90,7 @@ Let's say that during training, the threshold for finding a nose using an edge-f
 
 ## Integral image
 
-The summation of pixel values *(feature computation)* needs to be done often and this requires a lot of compute. In order to make the computation faster, we use an integral image.
+The summation of pixel values _(feature computation)_ needs to be done often and this requires a lot of compute. In order to make the computation faster, we use an integral image.
 
 An **integral image** at a location $(x, y)$ is an image we get by cumulative addition of pixel values found in the top-left region from $(x, y)$ of a grayscale image. The integral mage can be calculated in one pass over the grayscale.
 
@@ -135,9 +135,9 @@ The classifiers are arranged such that classifiers with simple features are used
 
 # Training
 
-Features can be scaled, oriented and stretched providing us with a variety of *combinations*. During training phase, we identify the combinations which are useful for detection and provide each of them with a threshold.
+Features can be scaled, oriented and stretched providing us with a variety of _combinations_. During training phase, we identify the combinations which are useful for detection and provide each of them with a threshold.
 
-For a $24 \times 24$ pixel sliding window, there are $162,336$ possible features and it would be expensive to perform feature calculation for *all* of them during detection.
+For a $24 \times 24$ pixel sliding window, there are $162,336$ possible features and it would be expensive to perform feature calculation for _all_ of them during detection.
 
 So during the training stage, the framework uses the **AdaBoost algorithm** to both select a small set of important features and to train a classifier.
 
@@ -166,7 +166,7 @@ Initially, all images are given the same weight. We now classify the images base
 
 This deliberate distortion of the dataset ensures that the next weak classifier focuses more on the misclassifications of the previous classifier and corrects these mistakes.
 
-This is how it adapts to mistakes during training and this is why it is named *adaptive* boosting.
+This is how it adapts to mistakes during training and this is why it is named _adaptive_ boosting.
 
 <!-- *Write algorithm here* -->
 
