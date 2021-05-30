@@ -18,7 +18,7 @@ There are two stages in this framework - **training** and **detection**. I will 
 
 The input image is first converted to grayscale as they are easier to process. A small sliding detection window is moved across the grayscale image in small steps, top to bottom and left to right.
 
-<figure class="float-right" style="width: 450px">
+<figure style="width: 450px">
 	<img src="/media/vision/viola jones/sliding-window.gif" alt="Sliding window">
 	<figcaption>Sliding window</figcaption>
 </figure>
