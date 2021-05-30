@@ -29,45 +29,45 @@ h6 {
 }
 
 h1 {
-  font-size: $typographic-base-font-size * 1.7;
+  font-size: $typographic-base-font-size * 1.8;
+  @include line-height(1);
+  @include margin-top(2);
+  @include margin-bottom(1);
+}
+
+h2 {
+  font-size: $typographic-base-font-size * 1.6875;
+  @include line-height(1);
+  @include margin-top(2);
+  @include margin-bottom(1);
+}
+
+h3 {
+  font-size: $typographic-base-font-size * 1.375;
+  @include line-height(1);
+  @include margin-top(2);
+  @include margin-bottom(1);
+}
+
+h4 {
+  font-size: $typographic-base-font-size * 1.2;
+  @include line-height(1);
+  @include margin-top(1.5);
+  @include margin-bottom(0.5);
+}
+
+h5 {
+  font-size: $typographic-base-font-size;
   @include line-height(1);
   @include margin-top(2);
   @include margin-bottom(0.5);
 }
 
-h2 {
-  font-size: $typographic-base-font-size * 1.48;
-  @include line-height(1);
-  @include margin-top(1);
-  @include margin-bottom(0.5);
-}
-
-h3 {
-  font-size: $typographic-base-font-size * 1.32;
-  @include line-height(1);
-  @include margin-top(1);
-  @include margin-bottom(0.5);
-}
-
-h4 {
-  font-size: $typographic-base-font-size * 1.15;
-  @include line-height(1);
-  @include margin-top(1);
-  @include margin-bottom(.5);
-}
-
-h5 {
-  font-size: $typographic-base-font-size * 1.1;
-  @include line-height(1);
-  @include margin-top(1);
-  @include margin-bottom(.5);
-}
-
 h6 {
   font-size: $typographic-base-font-size;
   @include line-height(1);
-  @include margin-top(1);
-  @include margin-bottom(.5);
+  @include margin-top(2);
+  @include margin-bottom(0.5);
 }
 
 img {
@@ -87,7 +87,15 @@ hr {
   margin-right: auto;
   margin-left: auto;
   background-size: 100% 26px;
-  background-image: linear-gradient(to bottom, transparent 1px, transparent 11px, $color-base 11px, $color-base 15px, transparent 15px, transparent 26px);
+  background-image: linear-gradient(
+    to bottom,
+    transparent 1px,
+    transparent 11px,
+    $color-base 11px,
+    $color-base 15px,
+    transparent 15px,
+    transparent 26px
+  );
   width: 100px;
 }
 
@@ -100,7 +108,6 @@ a {
   &:active {
     color: $typographic-link-s-font-color;
   }
-
 }
 
 b,
@@ -110,13 +117,12 @@ strong {
 
 ul {
   list-style: square;
-  @include margin-bottom(0.2);
+  @include margin-bottom(1);
 
   & li {
-    padding: 0 2px;
-    margin-bottom: 2px;
+    padding: 0 5px;
+    margin-bottom: 10px;
   }
-
 }
 
 p {
@@ -137,8 +143,8 @@ figure {
 }
 
 figcaption {
-  @include line-height(.75);
-  @include margin-top(.25);
+  @include line-height(0.75);
+  @include margin-top(0.25);
   color: $color-base;
   font-size: $typographic-small-font-size;
   font-style: italic;
@@ -167,7 +173,10 @@ figcaption {
   }
 }
 
-.language-json, .language-js, .language-python, .language-graphql {
+.language-json,
+.language-js,
+.language-python,
+.language-graphql {
   background-color: white !important;
 }
 

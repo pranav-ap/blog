@@ -21,7 +21,7 @@ module.exports = {
     },
     {
       label: 'Categories',
-      path: '/categories'
+      path: '/pages/categories'
     }
   ],
   author: {

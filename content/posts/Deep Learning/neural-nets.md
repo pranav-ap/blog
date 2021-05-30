@@ -6,23 +6,23 @@ draft: false
 slug: "/posts/neural-networks/"
 category: "Deep Learning"
 tags:
-   - ""
+  - ""
 description: ""
 ---
 
 Most knowledge required for tasks including speech and image recognition is informal, subjective and intuitive. This makes it difficult to encode into a program.
 
-The performance of learning algorithms depends heavily on the *representation* of the data they are given. Classical machine learning algorithms like Linear regression and SVMs require us to design the features / columns before training can begin.
+The performance of learning algorithms depends heavily on the _representation_ of the data they are given. Classical machine learning algorithms like Linear regression and SVMs require us to design the features / columns before training can begin.
 
 A **feature** is a measurable property of some phenomenon. Choosing informative and independent features is a crucial step for effective algorithms.
 
 However, for many tasks, coming up with features is difficult, time-consuming, requires expert knowledge. This is called **feature engineering**. If done well, the resulting dataset will lead us to the best possible model.
 
-Say we want to detect a car in an image. We can try to use the presence of a wheel as a feature. But, even though a wheel has a simple geometric shape, factors like lighting and   create varieties of images.
+Say we want to detect a car in an image. We can try to use the presence of a wheel as a feature. But, even though a wheel has a simple geometric shape, factors like lighting and create varieties of images.
 
 These are called **factors of variation**. Factors of variation are some factors which determine varieties in observed data. If that factors change, the variety within the dataset will change.
 
-One way to overcome this difficulty is to use *representation learning*.
+One way to overcome this difficulty is to use _representation learning_.
 
 # Representation learning
 
@@ -35,15 +35,15 @@ This replaces manual feature engineering and allows a machine to both learn usef
 	<figcaption>Learning Features</figcaption>
 </figure>
 
-Feature learning can be either *supervised* or *unsupervised*.
+Feature learning can be either _supervised_ or _unsupervised_.
 
 Examples of supervised feature learning include neural networks and multilayer perceptrons. Unsupervised feature learning includes principal component analysis and K-means clustering.
 
 # Layers
 
-Every neural net has three types of *layers*: input, hidden, and output.
+Every neural net has three types of _layers_: input, hidden, and output.
 
-Each layer has a set of nodes connected to the nodes in other layers by *links*. Each link has a weight, which determines the strength of the current node's influence on the next.
+Each layer has a set of nodes connected to the nodes in other layers by _links_. Each link has a weight, which determines the strength of the current node's influence on the next.
 
 The arrangement of the layers and nodes in the network is called its **architecture**.
 
@@ -73,7 +73,7 @@ The configuration of the hidden layers decide the type of function we can approx
 
 A neural net with a single hidden layer containing a finite number of neurons, can approximate any continuous function $f(x)$. This is called the **universal approximation theorem**. This holds true for any number of inputs and outputs.
 
-Note that the theorem doesn't say that a network can be used to *exactly* compute any function $f(x)$. Rather, we can get an *approximation* $g(x)$.
+Note that the theorem doesn't say that a network can be used to _exactly_ compute any function $f(x)$. Rather, we can get an _approximation_ $g(x)$.
 
 $$
 \mid g(x) - f(x) \mid < \epsilon, \text{ for all inputs } x
@@ -199,7 +199,7 @@ Now, we need to calculate how wrong the components of the output vector $\bold{a
 
 This error calculation is done by a **loss function** $J (\theta)$. It takes in all the weights of the network as the input and returns a real-valued number that quantifies the errors.
 
-The *Mean Squared Error* (MSE) is a widely used loss function, and is calculated as follows,
+The _Mean Squared Error_ (MSE) is a widely used loss function, and is calculated as follows,
 
 $$
 J (\theta) = \frac {1} {2 n} ( \bold{y} - \bold{a}^{(3)})^2
@@ -211,7 +211,7 @@ where $\bold{y}$ is the vector that holds the true values for the response varia
 
 During backward propagation, we define a relationship between the loss function $J (\theta)$ and each of the weights $\theta^{(p)}_{q \space r}$. Then we modify the weights with the aim of reducing the error as calculated by the loss function.
 
-This relationship is defined using *partial derivatives*. Consider the following,
+This relationship is defined using _partial derivatives_. Consider the following,
 
 $$
 \frac {\partial f(x, y)} {\partial x}

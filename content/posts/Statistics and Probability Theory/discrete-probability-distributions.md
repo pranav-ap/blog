@@ -6,7 +6,7 @@ draft: false
 slug: "/posts/discrete-probability-distributions/"
 category: "Statistics and Probability Theory"
 tags:
- - ""
+  - ""
 description: ""
 ---
 
@@ -26,7 +26,7 @@ Some examples of discrete probability distributions include:
 
 # Bernoulli distribution
 
-Bernoulli distribution is used to model a *single trial* of an experiment with only *two* possible outcomes. The outcomes are often encoded as $1$ and $0$, success and failure.
+Bernoulli distribution is used to model a _single trial_ of an experiment with only _two_ possible outcomes. The outcomes are often encoded as $1$ and $0$, success and failure.
 
 A **bernoulli trial** is a random experiment with exactly two possible outcomes, "success" and "failure". The probability of success is the same every time the experiment is conducted.
 
@@ -178,9 +178,9 @@ $$
 
 # Hypergeometric distribution
 
-Hypergeometric distribution models the probability of randomly selecting $x$ successes from a population size $N$ *without* replacement. Each draw is either a success or a failure. Since it is done without replacement, the probability of each successive draw changes.
+Hypergeometric distribution models the probability of randomly selecting $x$ successes from a population size $N$ _without_ replacement. Each draw is either a success or a failure. Since it is done without replacement, the probability of each successive draw changes.
 
-This stands in contrast to binomial distribution which describes the probability of $x$ successes in $n$ trials *with* replacement. The probability in each trial remains constant.
+This stands in contrast to binomial distribution which describes the probability of $x$ successes in $n$ trials _with_ replacement. The probability in each trial remains constant.
 
 The hypergeometric random variable $X$ holds the number of successes $x$ in the drawn sample. Its PMF is given by,
 

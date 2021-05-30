@@ -6,7 +6,7 @@ draft: false
 slug: "/posts/cnn/"
 category: "Deep Learning"
 tags:
-   - ""
+  - ""
 description: ""
 ---
 
@@ -28,13 +28,13 @@ In this way, we can think of any image as a 3D matrix or volume with some width,
 	<figcaption>Color Image</figcaption>
 </figure>
 
-The challenge is to create an image classifier that looks at these pixel values and can classify the image as a car under *varying* light conditions, angles and positions.
+The challenge is to create an image classifier that looks at these pixel values and can classify the image as a car under _varying_ light conditions, angles and positions.
 
 # Challenges faced by ordinary neural networks
 
-Ordinary feedforward neural nets receive a single input vector and transform it through a series of hidden layers. Each hidden layer is made up of a set of neurons, where each neuron is connected to *all* neurons in the previous layer. Neurons within a layer are completely independent of each other and do not share any connections.
+Ordinary feedforward neural nets receive a single input vector and transform it through a series of hidden layers. Each hidden layer is made up of a set of neurons, where each neuron is connected to _all_ neurons in the previous layer. Neurons within a layer are completely independent of each other and do not share any connections.
 
-**Scaling to large images** We could try to use a traditional feedforward net for image classification by *flattening* all the image pixels into a vector.
+**Scaling to large images** We could try to use a traditional feedforward net for image classification by _flattening_ all the image pixels into a vector.
 
 In CIFAR-10, images are only of size $32 \times 32 \times 3$, so a single fully-connected neuron in the first hidden layer of a regular neural net would have $32 \times 32 \times 3 = 3072$ weights. Clearly, fully connected layers cannot scale to larger images, since the number of weights would add up quickly!
 
@@ -51,9 +51,9 @@ Convolutional neural networks are very similar to ordinary neural networks. They
 
 Convolutional architectures make the explicit assumption that the inputs are images, which allows us to encode certain properties into the architecture.
 
-Each layer is a volume of neurons instead of a vector of neurons as in ordinary neural nets. We can use *parameter sharing* between some neurons within the same layer and *local connectivity* between neurons of different layers.
+Each layer is a volume of neurons instead of a vector of neurons as in ordinary neural nets. We can use _parameter sharing_ between some neurons within the same layer and _local connectivity_ between neurons of different layers.
 
-There are three main types of layers in a convolutional nets: *Convolutional layer*, *Pooling layer*, and *Fully-Connected layer*. They are stacked together in different number and order to form its architecture.
+There are three main types of layers in a convolutional nets: _Convolutional layer_, _Pooling layer_, and _Fully-Connected layer_. They are stacked together in different number and order to form its architecture.
 
 One very nice property of convolutional layers is that they’re composable. You can feed the output of one convolutional layer into another. With each layer, the network can detect higher-level, more abstract features.
 
@@ -75,9 +75,9 @@ A single column of neurons across all depth slices is called a **depth column**.
 
 # Convolution
 
-The *convolution* operation is the workhorse of convolutional nets. Convolution is used to transform an image to make it easier to identify primitive shapes within it. The primary tool for convolution is the **filter** or **kernel**. They are matrices that can detect lines, curves and edges within an image, while some can blur or sharpen the image.
+The _convolution_ operation is the workhorse of convolutional nets. Convolution is used to transform an image to make it easier to identify primitive shapes within it. The primary tool for convolution is the **filter** or **kernel**. They are matrices that can detect lines, curves and edges within an image, while some can blur or sharpen the image.
 
-Filters are small *spatially* (along width and height), but extend through the full depth of the input image.
+Filters are small _spatially_ (along width and height), but extend through the full depth of the input image.
 
 <figure style="width: 600px">
 	<img src="/media/vision/cnn/filter_in_action.gif" alt="Convolution Operation">
@@ -94,7 +94,7 @@ $$
 \end{bmatrix}
 $$
 
-We execute a convolution by sliding the filter over the input image. At every location, calculate perform *element-wise multiplication* between the filter matrix and the underlying values in the image and add the *bias* to get the final pixel value.
+We execute a convolution by sliding the filter over the input image. At every location, calculate perform _element-wise multiplication_ between the filter matrix and the underlying values in the image and add the _bias_ to get the final pixel value.
 
 The output matrix is called a **feature map** or an **activation map** and represents the filtered image. If an element is large, it means that the filter has found a good candidate for the feature it was looking for.
 
@@ -105,14 +105,14 @@ The output matrix is called a **feature map** or an **activation map** and repre
 
 The height and width of a filter are usually odd numbers like $3 \times 3$ or $5 \times 5$. This ensures that the filter has a proper center position, which in turn decides the location of the filtered pixel value.
 
-The values inside a kernel are the *weight* parameters. One $3 \times 3$ filter introduces $9$ weight parameters. A kernel also has a *bias* parameter associated with it. Both weight and bias parameters are learnt via backprop. *None* of the filters are hand-engineered by the designer.
+The values inside a kernel are the _weight_ parameters. One $3 \times 3$ filter introduces $9$ weight parameters. A kernel also has a _bias_ parameter associated with it. Both weight and bias parameters are learnt via backprop. _None_ of the filters are hand-engineered by the designer.
 
 <figure style="width: 400px">
 	<img src="/media/vision/cnn/convolution.gif" alt="Convolution Operation">
 	<figcaption>Convolution Operation</figcaption>
 </figure>
 
-The filter acts on every depth slice of the input volume and resizes it spatially. This is called [downsampling](https://en.wikipedia.org/wiki/Downsampling_(signal_processing)). So a filter can be considered a three dimensional volume, with a depth equal to the number of feature maps in the incoming layer.
+The filter acts on every depth slice of the input volume and resizes it spatially. This is called [downsampling](<https://en.wikipedia.org/wiki/Downsampling_(signal_processing)>). So a filter can be considered a three dimensional volume, with a depth equal to the number of feature maps in the incoming layer.
 
 <figure style="width: 700px">
 	<img src="/media/vision/cnn/k filters with depth C.png" alt="K filters with depth C">
@@ -133,7 +133,7 @@ A convolution layer accepts a volume of feature maps of size $W_1 \times H_1 \ti
 - Stride **S**
 - Amount of padding **P**
 
-**Number of filters** Typically, a convolution layer uses multiple filters, say $32$ filters. Each of them will produce a separate $2$-dimensional feature map. We will stack them to produce an *volume of feature maps* of depth $32$.
+**Number of filters** Typically, a convolution layer uses multiple filters, say $32$ filters. Each of them will produce a separate $2$-dimensional feature map. We will stack them to produce an _volume of feature maps_ of depth $32$.
 
 **Spatial extent** It refers to the height or width of a filter. Filters are square matrices, so they are both the same.
 
@@ -216,7 +216,7 @@ Pooling changes the height and width depending on the stride and window size. It
 	<figcaption>Downsampling</figcaption>
 </figure>
 
-**Zooming effect of Pooling** The pooling layer mimics an increase in the *field of view* for later layers. For example, a $3 \times 3$ kernel placed over an original input image will see a $3 \times 3$ pixel area at a time.
+**Zooming effect of Pooling** The pooling layer mimics an increase in the _field of view_ for later layers. For example, a $3 \times 3$ kernel placed over an original input image will see a $3 \times 3$ pixel area at a time.
 
 When you apply a kernel of the same size to a pooled version of the original input image, it will see the same number of pixels, but the $3 \times 3$ area corresponds to a larger area in the original input image. This allows later convolutional layers to detect features in a larger region of the input image.
 
@@ -249,7 +249,7 @@ D_2 &= K
 \end{aligned}
 $$
 
-In practice, we only use two variations of the max pooling layer: A pooling layer with $F = 3$, $S = 2$, also called *overlapping pooling*, and more commonly $F = 2$, $S = 2$, which is non-overlapping. Pooling sizes with larger receptive fields $F$ are too destructive.
+In practice, we only use two variations of the max pooling layer: A pooling layer with $F = 3$, $S = 2$, also called _overlapping pooling_, and more commonly $F = 2$, $S = 2$, which is non-overlapping. Pooling sizes with larger receptive fields $F$ are too destructive.
 
 # Local Connectivity and Parameter Sharing
 
@@ -266,11 +266,12 @@ Consider the neuron $n_1$ from the first layer of the depth column. It is connec
 
 For example, for an input image of dimensions $28 \times 28 \times 3$, if the receptive field is $5 \times 5$, then each neuron is connected to a region of $5 \times 5 \times 3$ in the input volume. Hence, the neuron $n_1$ will have $75$ weights.
 
-Other neurons in the same depth slice as $n_1$ looks at different local regions in the input volume, and they too will introduce $75$ weights *each*. This gives us another opportunity to optimize.
+Other neurons in the same depth slice as $n_1$ looks at different local regions in the input volume, and they too will introduce $75$ weights _each_. This gives us another opportunity to optimize.
 
 Instead of every neuron using a different set of weights, they could use the same set of weights by sharing the same set of weights. These weights $\bold{w}$ are stored as values in the three-dimensional filter matrix. This is called **parameter sharing** and this allows us to use a convolution.
 
 Sharing parameters gives the network the ability to look for a given feature everywhere in the image, rather than in just a certain area.
+
 <!--
 Now let’s say you have some prior knowledge about the structure of your images—for instance, your task is to classify images of four-legged animals, where the animals will always be scaled to the same size, will always be centered and will always face directly right. In such a scenario, the neurons assigned to the left of the image will always be looking at the butt of the animals and the neurons assigned to the top-right corner will always be looking at the head of the animals. It no longer makes sense to share parameters since forcing these neurons to look for the same thing is now inefficient. -->
 
@@ -313,7 +314,7 @@ Note that, there can be multiple fully connected hidden layers in the CNN archit
 - [Convolutional Neural Networks](https://cezannec.github.io/Convolutional_Neural_Networks/)
 - [CNNs, Part 1: An Introduction to Convolutional Neural Networks](https://victorzhou.com/blog/intro-to-cnns-part-1/)
 - [CNNs, Part 2: Training a Convolutional Neural Network](https://victorzhou.com/blog/intro-to-cnns-part-2/)
-- [Wikipedia: Kernel (image processing)](https://en.wikipedia.org/wiki/Kernel_(image_processing))
+- [Wikipedia: Kernel (image processing)](<https://en.wikipedia.org/wiki/Kernel_(image_processing)>)
 - [Basics of convolutions](https://aishack.in/tutorials/convolutions/)
 - [Image convolution examples](https://aishack.in/tutorials/image-convolution-examples/)
 - [Convolutional Neural Networks cheatsheet](https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks#)

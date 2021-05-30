@@ -44,6 +44,15 @@ const getIcon = (name: string) => {
     case 'codepen':
       icon = ICONS.CODEPEN;
       break;
+    case 'youtube':
+      icon = ICONS.YOUTUBE;
+      break;
+    case 'soundcloud':
+      icon = ICONS.SOUNDCLOUD;
+      break;
+    case 'medium':
+      icon = ICONS.MEDIUM;
+      break;
     default:
       icon = {};
       break;
