@@ -25,7 +25,7 @@ module.exports = {
     }
   ],
   author: {
-    name: 'Pranav AP',
+    name: 'Pranav\'s Blog',
     photo: '/photo.png',
     bio: '',
     contacts: {
