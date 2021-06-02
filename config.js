@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  url: 'https://pranav-ap.netlify.com/',
+  url: 'https://pranav-ap.netlify.app/',
   pathPrefix: '/',
   title: 'Pranav\'s Blog',
   subtitle: '',
@@ -21,16 +21,17 @@ module.exports = {
     },
     {
       label: 'Categories',
-      path: '/pages/categories'
+      path: '/categories'
     }
   ],
   author: {
-    name: 'Pranav\'s Blog',
+    name: 'Pranav AP',
     photo: '/photo.png',
     bio: '',
     contacts: {
       github: 'pranav-ap',
-      linkedin: 'pranav-ap-31b477193/'
+      linkedin: 'pranav-ap-31b477193/',
+      twitter: 'pranav49780408'
     }
   }
 };
