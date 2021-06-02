@@ -2,7 +2,7 @@
 title: "Understanding A* Search"
 date: "2021-6-1"
 template: "post"
-draft: false
+draft: true
 slug: "/posts/a-star/"
 category: "Search"
 tags:
@@ -12,18 +12,24 @@ description: ""
 
 Consider a graph with no step costs. Let the start node be $S$ and goal state be $X$. And as always, the frontier queue starts off with just the start node $S$.
 
-<figure style="width: 700px">
+<figure style="width: 320px">
 	<img src="/media/search/no-cost-graph.svg" alt="A Simple Graph">
 	<figcaption>A Simple Graph</figcaption>
 </figure>
 
 If you use _breadth-first search_ to find $X$, you will always get the shallowest node on the search tree with the state $X$.
 
-[Provide example]
+<figure style="width: 320px">
+	<img src="/media/search/no-cost-graph-search-tree.svg" alt="BFS search tree for the Simple Graph">
+	<figcaption>BFS search tree for the Simple Graph</figcaption>
+</figure>
 
 **But what happens when you introduce step costs into the graph?** BFS will not be optimal. This is because a shallow node can still have a higher _path cost_ than a deep node.
 
-[Provide example]
+<figure style="width: 320px">
+	<img src="/media/search/step-cost-graph.svg" alt="A graph with step costs">
+	<figcaption>A graph with step costs</figcaption>
+</figure>
 
 We need an algorithm that considers the step costs. This is where uniform-cost search comes in.
 
